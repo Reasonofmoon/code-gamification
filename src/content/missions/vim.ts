@@ -1,5 +1,9 @@
 import type { Mission } from "@/types/mission";
 
+/**
+ * 빔킵 18 미션 — 현재는 *단일 step (vim challenge 만)* 으로 마이그레이션.
+ * 다음 라운드에서 dialogue intro/outro + NPC (검사부 카엘) 추가 예정.
+ */
 export const VIM_MISSIONS: readonly Mission[] = [
   // ─── Chapter 1: 기본 보법 ──────────────────────────────────────
   {
@@ -8,18 +12,22 @@ export const VIM_MISSIONS: readonly Mission[] = [
     order: 1,
     title: "기본 보법 — hjkl",
     fantasyTitle: "검술 1식 — 「네 방향의 걸음」",
-    briefing:
-      "Normal 모드에서 `h j k l` 로만 커서를 움직여라. 마지막 줄 끝에 `END` 를 입력 모드로 추가하라.",
-    hint: "`j` 로 내려가고 `$` 또는 `l` 로 끝까지, `a` 로 입력 모드 진입.",
+    summary: "Normal 모드에서 hjkl 로 이동하고 마지막 줄 끝에 END 추가.",
     isBoss: false,
     xpReward: 60,
-    evaluator: {
-      kind: "vim",
-      initialText: ["첫 줄", "둘째 줄", "셋째 줄: 여기 끝에 END 를 붙여라"].join("\n"),
-      targetText: ["첫 줄", "둘째 줄", "셋째 줄: 여기 끝에 END 를 붙여라 END"].join("\n"),
-      parThreeStars: 10,
-      parTwoStars: 18,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing:
+          "Normal 모드에서 `h j k l` 로만 커서를 움직여라. 마지막 줄 끝에 `END` 를 입력 모드로 추가하라.",
+        hint: "`j` 로 내려가고 `$` 또는 `l` 로 끝까지, `a` 로 입력 모드 진입.",
+        initialText: ["첫 줄", "둘째 줄", "셋째 줄: 여기 끝에 END 를 붙여라"].join("\n"),
+        targetText: ["첫 줄", "둘째 줄", "셋째 줄: 여기 끝에 END 를 붙여라 END"].join("\n"),
+        parThreeStars: 10,
+        parTwoStars: 18,
+      },
+    ],
   },
   {
     id: "vimkeep-02",
@@ -27,18 +35,22 @@ export const VIM_MISSIONS: readonly Mission[] = [
     order: 2,
     title: "베기 — dd",
     fantasyTitle: "검술 2식 — 「한 줄을 베다」",
-    briefing:
-      "쓸데없이 끼어든 두 번째 줄을 통째로 베어내라. `dd` 한 번이면 충분하다.",
-    hint: "두 번째 줄에 커서를 두고 `dd`.",
+    summary: "쓸데없이 끼어든 줄을 dd 한 번에 베어내라.",
     isBoss: false,
     xpReward: 60,
-    evaluator: {
-      kind: "vim",
-      initialText: ["검의 가르침", "이 줄은 사라져야 한다", "현자의 마지막 말"].join("\n"),
-      targetText: ["검의 가르침", "현자의 마지막 말"].join("\n"),
-      parThreeStars: 4,
-      parTwoStars: 8,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing:
+          "쓸데없이 끼어든 두 번째 줄을 통째로 베어내라. `dd` 한 번이면 충분하다.",
+        hint: "두 번째 줄에 커서를 두고 `dd`.",
+        initialText: ["검의 가르침", "이 줄은 사라져야 한다", "현자의 마지막 말"].join("\n"),
+        targetText: ["검의 가르침", "현자의 마지막 말"].join("\n"),
+        parThreeStars: 4,
+        parTwoStars: 8,
+      },
+    ],
   },
   {
     id: "vimkeep-03",
@@ -46,18 +58,22 @@ export const VIM_MISSIONS: readonly Mission[] = [
     order: 3,
     title: "단어 보법 — w · b · e",
     fantasyTitle: "검술 3식 — 「단어를 가르는 걸음」",
-    briefing:
-      "한 글자씩 걷지 마라. `w` 로 다음 단어, `b` 로 이전, `e` 로 단어 끝까지 단숨에. 세 번째 단어 `체리` 를 베어내라.",
-    hint: "줄 첫머리에서 `w w d w`. `dw` 는 단어 단위 삭제.",
+    summary: "w/b/e 로 단어 단위 이동. 세 번째 단어를 베어내라.",
     isBoss: false,
     xpReward: 65,
-    evaluator: {
-      kind: "vim",
-      initialText: "사과 바나나 체리 두리안 망고",
-      targetText: "사과 바나나 두리안 망고",
-      parThreeStars: 4,
-      parTwoStars: 8,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing:
+          "한 글자씩 걷지 마라. `w` 로 다음 단어, `b` 로 이전, `e` 로 단어 끝. 세 번째 단어 `체리` 를 베어내라.",
+        hint: "줄 첫머리에서 `w w d w`. `dw` 는 단어 단위 삭제.",
+        initialText: "사과 바나나 체리 두리안 망고",
+        targetText: "사과 바나나 두리안 망고",
+        parThreeStars: 4,
+        parTwoStars: 8,
+      },
+    ],
   },
   {
     id: "vimkeep-04",
@@ -65,18 +81,22 @@ export const VIM_MISSIONS: readonly Mission[] = [
     order: 4,
     title: "줄의 양 끝 — 0 · $",
     fantasyTitle: "검술 4식 — 「줄의 시작과 끝을 동시에 베다」",
-    briefing:
-      "`0` 은 줄 첫머리, `$` 은 줄 끝. 한 줄의 양 끝에 봉인구 `[`, `]` 를 더하라.",
-    hint: "`I [` Esc `$ a ]` Esc. 또는 `0 i [` Esc `$ a ]` Esc.",
+    summary: "0 과 $ 로 줄 양 끝에 봉인구 추가.",
     isBoss: false,
     xpReward: 70,
-    evaluator: {
-      kind: "vim",
-      initialText: "고요한 새벽",
-      targetText: "[고요한 새벽]",
-      parThreeStars: 10,
-      parTwoStars: 18,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing:
+          "`0` 은 줄 첫머리, `$` 은 줄 끝. 한 줄의 양 끝에 봉인구 `[`, `]` 를 더하라.",
+        hint: "`I [` Esc `$ a ]` Esc.",
+        initialText: "고요한 새벽",
+        targetText: "[고요한 새벽]",
+        parThreeStars: 10,
+        parTwoStars: 18,
+      },
+    ],
   },
   {
     id: "vimkeep-05",
@@ -84,18 +104,22 @@ export const VIM_MISSIONS: readonly Mission[] = [
     order: 5,
     title: "파일의 양 끝 — gg · G",
     fantasyTitle: "검술 5식 — 「전장의 두 끝을 동시에 봉인하라」",
-    briefing:
-      "`gg` 로 파일 맨 위, `G` 로 맨 아래. 첫 줄 위에는 `HEAD`, 마지막 줄 아래에는 `FOOT` 줄을 추가하라.",
-    hint: "`gg O HEAD` Esc `G o FOOT` Esc. 대문자 `O` 는 위에, 소문자 `o` 는 아래에 새 줄.",
+    summary: "gg/G 로 파일 맨 위와 맨 아래에 봉인 줄 추가.",
     isBoss: false,
     xpReward: 70,
-    evaluator: {
-      kind: "vim",
-      initialText: ["선언", "두 번째", "세 번째", "네 번째", "결의"].join("\n"),
-      targetText: ["HEAD", "선언", "두 번째", "세 번째", "네 번째", "결의", "FOOT"].join("\n"),
-      parThreeStars: 14,
-      parTwoStars: 24,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing:
+          "`gg` 로 파일 맨 위, `G` 로 맨 아래. 첫 줄 위에 `HEAD`, 마지막 줄 아래에 `FOOT` 줄을 추가하라.",
+        hint: "`gg O HEAD` Esc `G o FOOT` Esc.",
+        initialText: ["선언", "두 번째", "세 번째", "네 번째", "결의"].join("\n"),
+        targetText: ["HEAD", "선언", "두 번째", "세 번째", "네 번째", "결의", "FOOT"].join("\n"),
+        parThreeStars: 14,
+        parTwoStars: 24,
+      },
+    ],
   },
   {
     id: "vimkeep-06",
@@ -103,47 +127,54 @@ export const VIM_MISSIONS: readonly Mission[] = [
     order: 6,
     title: "줄 번호로 도약 — :{n}",
     fantasyTitle: "검술 6식 — 「번호를 외치고 그곳으로 날아라」",
-    briefing:
-      "`:5<Enter>` 로 5번째 줄로 즉시 점프. 그 줄을 베어라.",
-    hint: "`:5` 입력 후 Enter, 그리고 `dd`.",
+    summary: ":5 로 점프 후 dd.",
     isBoss: false,
     xpReward: 65,
-    evaluator: {
-      kind: "vim",
-      initialText: [
-        "1번 줄",
-        "2번 줄",
-        "3번 줄",
-        "4번 줄",
-        "5번 줄 — 베야 한다",
-        "6번 줄",
-        "7번 줄",
-      ].join("\n"),
-      targetText: ["1번 줄", "2번 줄", "3번 줄", "4번 줄", "6번 줄", "7번 줄"].join("\n"),
-      parThreeStars: 6,
-      parTwoStars: 12,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing: "`:5<Enter>` 로 5번째 줄로 즉시 점프. 그 줄을 베어라.",
+        hint: "`:5` Enter 후 `dd`.",
+        initialText: [
+          "1번 줄",
+          "2번 줄",
+          "3번 줄",
+          "4번 줄",
+          "5번 줄 — 베야 한다",
+          "6번 줄",
+          "7번 줄",
+        ].join("\n"),
+        targetText: ["1번 줄", "2번 줄", "3번 줄", "4번 줄", "6번 줄", "7번 줄"].join("\n"),
+        parThreeStars: 6,
+        parTwoStars: 12,
+      },
+    ],
   },
 
-  // ─── Chapter 2: 베기·다듬기 ─────────────────────────────────────
+  // ─── Chapter 2 ────────────────────────────────────────────────
   {
     id: "vimkeep-07",
     realmId: "vimkeep",
     order: 7,
     title: "Insert 진입 — i · a · o",
     fantasyTitle: "검술 7식 — 「입력의 세 문」",
-    briefing:
-      "`i` 왼쪽 · `a` 오른쪽 · `o` 새 줄. 두 줄 중 사이에 `중간 줄` 한 줄을 끼워 넣어라.",
-    hint: "첫 줄에서 `o 중간 줄` Esc.",
+    summary: "두 줄 사이에 새 줄 삽입.",
     isBoss: false,
     xpReward: 70,
-    evaluator: {
-      kind: "vim",
-      initialText: ["위 줄", "아래 줄"].join("\n"),
-      targetText: ["위 줄", "중간 줄", "아래 줄"].join("\n"),
-      parThreeStars: 8,
-      parTwoStars: 16,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing:
+          "`i` 왼쪽 · `a` 오른쪽 · `o` 새 줄. 두 줄 사이에 `중간 줄` 한 줄을 끼워 넣어라.",
+        hint: "첫 줄에서 `o 중간 줄` Esc.",
+        initialText: ["위 줄", "아래 줄"].join("\n"),
+        targetText: ["위 줄", "중간 줄", "아래 줄"].join("\n"),
+        parThreeStars: 8,
+        parTwoStars: 16,
+      },
+    ],
   },
   {
     id: "vimkeep-08",
@@ -151,18 +182,22 @@ export const VIM_MISSIONS: readonly Mission[] = [
     order: 8,
     title: "글자·단어 베기 — x · dw",
     fantasyTitle: "검술 8식 — 「작은 베기와 큰 베기」",
-    briefing:
-      "`x` 한 글자, `dw` 단어 하나, `dd` 줄 통째. 줄 끝의 오타 `X` 를 떼어내고, 둘째 줄을 통째 베어라.",
-    hint: "`$ x` 로 끝의 글자, `j dd` 로 다음 줄 삭제.",
+    summary: "끝의 X 삭제 + 둘째 줄 통째 삭제.",
     isBoss: false,
     xpReward: 75,
-    evaluator: {
-      kind: "vim",
-      initialText: ["청검의 기록X", "여기는 함정이다", "마지막 자취"].join("\n"),
-      targetText: ["청검의 기록", "마지막 자취"].join("\n"),
-      parThreeStars: 6,
-      parTwoStars: 12,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing:
+          "`x` 한 글자, `dw` 단어, `dd` 줄. 줄 끝의 오타 `X` 를 떼어내고 둘째 줄을 통째 베어라.",
+        hint: "`$ x` 로 끝의 글자, `j dd` 로 다음 줄 삭제.",
+        initialText: ["청검의 기록X", "여기는 함정이다", "마지막 자취"].join("\n"),
+        targetText: ["청검의 기록", "마지막 자취"].join("\n"),
+        parThreeStars: 6,
+        parTwoStars: 12,
+      },
+    ],
   },
   {
     id: "vimkeep-09",
@@ -170,18 +205,21 @@ export const VIM_MISSIONS: readonly Mission[] = [
     order: 9,
     title: "변경 — cw",
     fantasyTitle: "검술 9식 — 「베고 다시 그어라」",
-    briefing:
-      "`cw` 는 단어를 베며 Insert 모드 진입. `old` 를 `new` 로 갈아라.",
-    hint: "단어 첫 글자에서 `cw new` Esc.",
+    summary: "단어 'old' 를 'new' 로.",
     isBoss: false,
     xpReward: 75,
-    evaluator: {
-      kind: "vim",
-      initialText: "this is old word",
-      targetText: "this is new word",
-      parThreeStars: 7,
-      parTwoStars: 14,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing: "`cw` 는 단어를 베며 Insert 모드 진입. `old` 를 `new` 로 갈아라.",
+        hint: "단어 첫 글자에서 `cw new` Esc.",
+        initialText: "this is old word",
+        targetText: "this is new word",
+        parThreeStars: 7,
+        parTwoStars: 14,
+      },
+    ],
   },
   {
     id: "vimkeep-10",
@@ -189,18 +227,21 @@ export const VIM_MISSIONS: readonly Mission[] = [
     order: 10,
     title: "복사·붙여넣기 — yy · p",
     fantasyTitle: "검술 10식 — 「자취를 새기고 다시 그리다」",
-    briefing:
-      "`yy` 줄 복사, `p` 아래 붙여넣기. 첫 줄을 복제해 두 줄로 만들어라.",
-    hint: "첫 줄에서 `yy p`.",
+    summary: "첫 줄 복사 → 아래 한 줄 더.",
     isBoss: false,
     xpReward: 75,
-    evaluator: {
-      kind: "vim",
-      initialText: ["반복할 가치 있는 말", "다른 줄"].join("\n"),
-      targetText: ["반복할 가치 있는 말", "반복할 가치 있는 말", "다른 줄"].join("\n"),
-      parThreeStars: 3,
-      parTwoStars: 6,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing: "`yy` 줄 복사, `p` 아래 붙여넣기. 첫 줄을 복제해 두 줄로 만들어라.",
+        hint: "첫 줄에서 `yy p`.",
+        initialText: ["반복할 가치 있는 말", "다른 줄"].join("\n"),
+        targetText: ["반복할 가치 있는 말", "반복할 가치 있는 말", "다른 줄"].join("\n"),
+        parThreeStars: 3,
+        parTwoStars: 6,
+      },
+    ],
   },
   {
     id: "vimkeep-11",
@@ -208,39 +249,47 @@ export const VIM_MISSIONS: readonly Mission[] = [
     order: 11,
     title: "되돌리기·반복 — u · .",
     fantasyTitle: "검술 11식 — 「과거를 지우고 한 동작을 부르다」",
-    briefing:
-      "`u` 직전 명령 취소. `.` 직전 명령 반복. 한 번 `dd` 한 뒤 `.` 두 번으로 위 세 줄을 베어내라.",
-    hint: "`dd . .`.",
+    summary: "dd 한 번 + . 두 번으로 위 세 줄 삭제.",
     isBoss: false,
     xpReward: 80,
-    evaluator: {
-      kind: "vim",
-      initialText: ["삭제1", "삭제2", "삭제3", "유지1", "유지2"].join("\n"),
-      targetText: ["유지1", "유지2"].join("\n"),
-      parThreeStars: 4,
-      parTwoStars: 8,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing:
+          "`u` 직전 취소. `.` 직전 반복. 한 번 `dd` 후 `.` 두 번으로 위 세 줄을 베어라.",
+        hint: "`dd . .`.",
+        initialText: ["삭제1", "삭제2", "삭제3", "유지1", "유지2"].join("\n"),
+        targetText: ["유지1", "유지2"].join("\n"),
+        parThreeStars: 4,
+        parTwoStars: 8,
+      },
+    ],
   },
 
-  // ─── Chapter 3: 비주얼·정밀 모션 ──────────────────────────────
+  // ─── Chapter 3 ────────────────────────────────────────────────
   {
     id: "vimkeep-12",
     realmId: "vimkeep",
     order: 12,
     title: "비주얼 — V · 라인 선택",
     fantasyTitle: "검술 12식 — 「선을 그어 베다」",
-    briefing:
-      "`V` 로 한 줄 선택 → `j` 로 확장 → `d` 로 베기. 가운데 세 줄을 비주얼 선택해서 한 번에 삭제.",
-    hint: "둘째 줄에서 `V 2j d`.",
+    summary: "V 로 세 줄 선택 후 d.",
     isBoss: false,
     xpReward: 85,
-    evaluator: {
-      kind: "vim",
-      initialText: ["유지1", "삭제A", "삭제B", "삭제C", "유지2"].join("\n"),
-      targetText: ["유지1", "유지2"].join("\n"),
-      parThreeStars: 5,
-      parTwoStars: 10,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing:
+          "`V` 로 한 줄 선택 → `j` 로 확장 → `d` 로 베기. 가운데 세 줄을 비주얼 선택해 한 번에 삭제.",
+        hint: "둘째 줄에서 `V 2j d`.",
+        initialText: ["유지1", "삭제A", "삭제B", "삭제C", "유지2"].join("\n"),
+        targetText: ["유지1", "유지2"].join("\n"),
+        parThreeStars: 5,
+        parTwoStars: 10,
+      },
+    ],
   },
   {
     id: "vimkeep-13",
@@ -248,18 +297,21 @@ export const VIM_MISSIONS: readonly Mission[] = [
     order: 13,
     title: "문자 점프 — f · t",
     fantasyTitle: "검술 13식 — 「표적을 보고 단숨에」",
-    briefing:
-      "`f{char}` 는 그 글자 위로, `t{char}` 는 직전까지. `d` 를 찾아 한 글자만 잘라내라.",
-    hint: "줄 시작에서 `f d x`.",
+    summary: "f 로 d 찾고 x.",
     isBoss: false,
     xpReward: 85,
-    evaluator: {
-      kind: "vim",
-      initialText: "abcdefghij",
-      targetText: "abcefghij",
-      parThreeStars: 3,
-      parTwoStars: 6,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing: "`f{char}` 그 글자 위로, `t{char}` 직전까지. `d` 를 찾아 한 글자 잘라내라.",
+        hint: "줄 시작에서 `f d x`.",
+        initialText: "abcdefghij",
+        targetText: "abcefghij",
+        parThreeStars: 3,
+        parTwoStars: 6,
+      },
+    ],
   },
   {
     id: "vimkeep-14",
@@ -267,18 +319,21 @@ export const VIM_MISSIONS: readonly Mission[] = [
     order: 14,
     title: "괄호 매칭 — %",
     fantasyTitle: "검술 14식 — 「쌍을 단숨에 베다」",
-    briefing:
-      "`%` 는 짝지어진 괄호로 점프. 함수 본문을 통째로 베어 `{}` 만 남겨라.",
-    hint: "`{` 위에서 `v % d` (또는 `d %` 변형).",
+    summary: "함수 본문을 % 로 통째 베기.",
     isBoss: false,
     xpReward: 90,
-    evaluator: {
-      kind: "vim",
-      initialText: ["function quest() {", "  treasure();", "  fight();", "}"].join("\n"),
-      targetText: ["function quest() {", "}"].join("\n"),
-      parThreeStars: 6,
-      parTwoStars: 14,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing: "`%` 는 짝지어진 괄호로 점프. 함수 본문을 통째 베고 `{}` 만 남겨라.",
+        hint: "`{` 위에서 `v % d`.",
+        initialText: ["function quest() {", "  treasure();", "  fight();", "}"].join("\n"),
+        targetText: ["function quest() {", "}"].join("\n"),
+        parThreeStars: 6,
+        parTwoStars: 14,
+      },
+    ],
   },
   {
     id: "vimkeep-15",
@@ -286,39 +341,46 @@ export const VIM_MISSIONS: readonly Mission[] = [
     order: 15,
     title: "들여쓰기 — >> · <<",
     fantasyTitle: "검술 15식 — 「자세를 한 칸 옮겨라」",
-    briefing:
-      "`>>` 줄 들여쓰기, `<<` 풀기. 모든 줄을 한 단계 들여쓰라.",
-    hint: "`gg V G >`. 라인 비주얼 + `>` 한 번.",
+    summary: "모든 줄을 한 단계 들여쓰기.",
     isBoss: false,
     xpReward: 80,
-    evaluator: {
-      kind: "vim",
-      initialText: ["heading", "line 1", "line 2"].join("\n"),
-      targetText: ["  heading", "  line 1", "  line 2"].join("\n"),
-      parThreeStars: 5,
-      parTwoStars: 12,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing: "`>>` 줄 들여쓰기, `<<` 풀기. 모든 줄을 한 단계 들여쓰라.",
+        hint: "`gg V G >`.",
+        initialText: ["heading", "line 1", "line 2"].join("\n"),
+        targetText: ["  heading", "  line 1", "  line 2"].join("\n"),
+        parThreeStars: 5,
+        parTwoStars: 12,
+      },
+    ],
   },
 
-  // ─── Chapter 4: 매크로·검색치환 ──────────────────────────────
+  // ─── Chapter 4 ────────────────────────────────────────────────
   {
     id: "vimkeep-16",
     realmId: "vimkeep",
     order: 16,
     title: "매크로 — q · @",
     fantasyTitle: "검술 16식 — 「한 동작을 사역마로 부리다」",
-    briefing:
-      "`qa…q` 로 매크로 `a` 녹화 → `@a` 로 재생, `4@a` 면 네 번. 모든 줄의 `) ` 를 `] ` 로 바꿔라.",
-    hint: "첫 줄에서 `qa f) r] j q` 그 다음 `4@a`.",
+    summary: "다섯 줄의 ')' 를 ']' 로 매크로 변환.",
     isBoss: false,
     xpReward: 100,
-    evaluator: {
-      kind: "vim",
-      initialText: ["1) one", "2) two", "3) three", "4) four", "5) five"].join("\n"),
-      targetText: ["1] one", "2] two", "3] three", "4] four", "5] five"].join("\n"),
-      parThreeStars: 22,
-      parTwoStars: 45,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing:
+          "`qa…q` 로 매크로 녹화, `@a` 로 재생. 모든 줄의 `) ` 를 `] ` 로 바꿔라.",
+        hint: "첫 줄에서 `qa f) r] j0 q` 후 `4@a`.",
+        initialText: ["1) one", "2) two", "3) three", "4) four", "5) five"].join("\n"),
+        targetText: ["1] one", "2] two", "3] three", "4] four", "5] five"].join("\n"),
+        parThreeStars: 22,
+        parTwoStars: 45,
+      },
+    ],
   },
   {
     id: "vimkeep-17",
@@ -326,18 +388,21 @@ export const VIM_MISSIONS: readonly Mission[] = [
     order: 17,
     title: "검색치환 — :%s/old/new/g",
     fantasyTitle: "검술 17식 — 「룬을 새 룬으로 바꿔라」",
-    briefing:
-      "`:%s/old/new/g<Enter>` 로 모든 `old` 를 `new` 로. 텍스트 안의 모든 `검` 을 `룬` 으로 바꿔라.",
-    hint: "`:%s/검/룬/g` Enter.",
+    summary: "모든 '검' 을 '룬' 으로.",
     isBoss: false,
     xpReward: 100,
-    evaluator: {
-      kind: "vim",
-      initialText: ["검의 길은 멀다", "또 다른 검의 흔적", "검은 침묵한다"].join("\n"),
-      targetText: ["룬의 길은 멀다", "또 다른 룬의 흔적", "룬은 침묵한다"].join("\n"),
-      parThreeStars: 16,
-      parTwoStars: 28,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing: "`:%s/old/new/g<Enter>`. 텍스트 안 모든 `검` 을 `룬` 으로.",
+        hint: "`:%s/검/룬/g` Enter.",
+        initialText: ["검의 길은 멀다", "또 다른 검의 흔적", "검은 침묵한다"].join("\n"),
+        targetText: ["룬의 길은 멀다", "또 다른 룬의 흔적", "룬은 침묵한다"].join("\n"),
+        parThreeStars: 16,
+        parTwoStars: 28,
+      },
+    ],
   },
 
   // ─── Chapter 5: 보스 ─────────────────────────────────────────
@@ -347,22 +412,26 @@ export const VIM_MISSIONS: readonly Mission[] = [
     order: 18,
     title: "드래곤의 글자 미궁",
     fantasyTitle: "🐉 보스 — 「용의 비문을 정화하라」",
-    briefing:
-      "비문의 네 줄 모두 `STATUS:` 접두사가 붙어 있다. 모든 줄에서 `STATUS:` 와 그 직후의 공백 하나를 한 번의 명령으로 제거하라. (보너스: par 안에 끝내면 ★3)",
-    hint: "검색치환을 활용. `:%s/^STATUS: //g` Enter. 또는 매크로 활용도 가능.",
+    summary: "네 줄 모두에서 STATUS: 접두사 제거.",
     isBoss: true,
     xpReward: 250,
-    evaluator: {
-      kind: "vim",
-      initialText: [
-        "STATUS: 잠자기",
-        "STATUS: 검술 연마",
-        "STATUS: 보스 격파",
-        "STATUS: 룬 해독",
-      ].join("\n"),
-      targetText: ["잠자기", "검술 연마", "보스 격파", "룬 해독"].join("\n"),
-      parThreeStars: 20,
-      parTwoStars: 40,
-    },
+    steps: [
+      {
+        id: "challenge",
+        kind: "vim",
+        briefing:
+          "비문 네 줄 모두 `STATUS:` 가 붙어 있다. 한 번의 명령으로 `STATUS: ` 전체를 제거하라.",
+        hint: "`:%s/^STATUS: //g` Enter.",
+        initialText: [
+          "STATUS: 잠자기",
+          "STATUS: 검술 연마",
+          "STATUS: 보스 격파",
+          "STATUS: 룬 해독",
+        ].join("\n"),
+        targetText: ["잠자기", "검술 연마", "보스 격파", "룬 해독"].join("\n"),
+        parThreeStars: 20,
+        parTwoStars: 40,
+      },
+    ],
   },
 ];

@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
-import type { Mission } from "@/types/mission";
+import type { VimStep } from "@/types/mission";
 import type { editor } from "monaco-editor";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), {
@@ -15,16 +15,11 @@ const MonacoEditor = dynamic(() => import("@monaco-editor/react"), {
 });
 
 type Props = {
-  mission: Mission;
+  step: VimStep;
   onSuccess: (info: { keystrokes: number }) => void;
 };
 
-export function VimEditor({ mission, onSuccess }: Props) {
-  if (mission.evaluator.kind !== "vim") {
-    throw new Error("VimEditor requires a vim mission");
-  }
-  const evaluator = mission.evaluator;
-
+export function VimEditor({ step, onSuccess }: Props) {
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const vimModeRef = useRef<{ dispose(): void } | null>(null);
   const successFiredRef = useRef(false);
@@ -40,15 +35,13 @@ export function VimEditor({ mission, onSuccess }: Props) {
   const checkSuccess = () => {
     if (successFiredRef.current) return;
     const editorVal = editorRef.current?.getValue() ?? "";
-    if (editorVal === evaluator.targetText) {
+    if (editorVal === step.targetText) {
       successFiredRef.current = true;
       onSuccess({ keystrokes });
     }
   };
 
-  const handleMount = async (
-    e: editor.IStandaloneCodeEditor
-  ) => {
+  const handleMount = async (e: editor.IStandaloneCodeEditor) => {
     editorRef.current = e;
 
     e.onKeyDown(() => setKeystrokes((k) => k + 1));
@@ -56,14 +49,14 @@ export function VimEditor({ mission, onSuccess }: Props) {
 
     try {
       const monacoVim = await import("monaco-vim");
-      const statusNode = document.getElementById(`vim-status-${mission.id}`);
+      const statusNode = document.getElementById(`vim-status-${step.id}`);
       vimModeRef.current = monacoVim.initVimMode(e, statusNode ?? undefined);
     } catch (err) {
       console.error("monaco-vim load failed", err);
     }
 
     const watcher = setInterval(() => {
-      const node = document.getElementById(`vim-status-${mission.id}`);
+      const node = document.getElementById(`vim-status-${step.id}`);
       if (node) setMode(node.textContent || "--NORMAL--");
     }, 200);
     e.onDidDispose(() => clearInterval(watcher));
@@ -83,7 +76,7 @@ export function VimEditor({ mission, onSuccess }: Props) {
         <MonacoEditor
           height="360px"
           defaultLanguage="markdown"
-          defaultValue={evaluator.initialText}
+          defaultValue={step.initialText}
           theme="vs-dark"
           onMount={(e) => void handleMount(e as editor.IStandaloneCodeEditor)}
           options={{
@@ -97,13 +90,13 @@ export function VimEditor({ mission, onSuccess }: Props) {
       </div>
       <div className="flex items-center justify-between">
         <div
-          id={`vim-status-${mission.id}`}
+          id={`vim-status-${step.id}`}
           className="font-mono text-xs px-2 py-1 rounded bg-surface-strong border border-border min-w-[120px] text-center"
         >
           {mode}
         </div>
         <div className="text-xs text-muted">
-          목표 키스트로크: ★★★ ≤ {evaluator.parThreeStars} / ★★ ≤ {evaluator.parTwoStars}
+          목표 키스트로크: ★★★ ≤ {step.parThreeStars} / ★★ ≤ {step.parTwoStars}
         </div>
       </div>
     </div>

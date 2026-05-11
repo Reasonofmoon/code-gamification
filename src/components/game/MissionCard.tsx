@@ -62,8 +62,11 @@ export function MissionCard({
         </div>
       </div>
       <p className="mt-3 text-sm text-foreground/80 line-clamp-2">
-        {mission.briefing}
+        {mission.summary}
       </p>
+      <div className="mt-2 text-[10px] text-muted font-mono">
+        {mission.steps.length} step{mission.steps.length > 1 ? "s" : ""}
+      </div>
       <div className="mt-3 text-xs text-accent">
         {locked ? (
           <span className="inline-flex items-center gap-1 text-muted">

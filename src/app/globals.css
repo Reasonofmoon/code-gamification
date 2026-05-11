@@ -61,6 +61,37 @@ body {
   text-shadow: 0 0 12px rgba(247, 185, 85, 0.45);
 }
 
+/* Dialogue line — gentle fade in for new lines */
+.dialogue-line {
+  animation: dialogue-fade-in 0.45s ease-out;
+}
+@keyframes dialogue-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Step progress chip */
+.step-chip {
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 9999px;
+  padding: 0.125rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+}
+.step-chip-active {
+  background: rgba(247, 185, 85, 0.15);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.step-chip-done {
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.4);
+  color: rgb(74, 222, 128);
+}
+
 /* Ending credits */
 .ending-bg {
   background-image:

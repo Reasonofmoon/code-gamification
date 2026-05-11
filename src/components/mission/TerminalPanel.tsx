@@ -3,16 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import { Terminal } from "@xterm/xterm";
 import { FitAddon } from "@xterm/addon-fit";
-import type { Mission } from "@/types/mission";
+import type { TerminalStep } from "@/types/mission";
 import { createShell, runCommand, type ShellState } from "@/lib/terminal/fake-shell";
 import { checkTerminalSuccess } from "@/lib/terminal/check";
 
 type Props = {
-  mission: Mission;
+  step: TerminalStep;
   onSuccess: () => void;
 };
 
-export function TerminalPanel({ mission, onSuccess }: Props) {
+export function TerminalPanel({ step, onSuccess }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const termRef = useRef<Terminal | null>(null);
   const fitRef = useRef<FitAddon | null>(null);
@@ -21,11 +21,6 @@ export function TerminalPanel({ mission, onSuccess }: Props) {
   const cursorRef = useRef(0);
   const successFiredRef = useRef(false);
   const [solved, setSolved] = useState(false);
-
-  if (mission.evaluator.kind !== "terminal") {
-    throw new Error("TerminalPanel requires a terminal mission");
-  }
-  const evaluator = mission.evaluator;
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -49,25 +44,22 @@ export function TerminalPanel({ mission, onSuccess }: Props) {
     termRef.current = term;
     fitRef.current = fit;
 
-    const shell = createShell(evaluator.initialFs, evaluator.initialCwd);
+    const shell = createShell(step.initialFs, step.initialCwd);
     shellRef.current = shell;
 
     const prompt = () =>
       term.write(`\r\n\x1b[35m${shell.cwd}\x1b[0m \x1b[33m❯\x1b[0m `);
 
-    term.writeln("\x1b[33m✦ Shellholm 항만의 견습 터미널에 오신 것을 환영합니다.\x1b[0m");
-    term.writeln("\x1b[90m  'help' 입력으로 사용 가능한 주문을 확인.\x1b[0m");
+    term.writeln("\x1b[33m✦ 견습 터미널 — 'help' 입력으로 사용 가능한 주문 확인.\x1b[0m");
     prompt();
 
     const evaluate = () => {
       if (successFiredRef.current) return;
-      if (checkTerminalSuccess(shell, evaluator.successWhen)) {
+      if (checkTerminalSuccess(shell, step.successWhen)) {
         successFiredRef.current = true;
         setSolved(true);
         term.writeln("");
-        term.writeln(
-          "\x1b[1;32m✔ 임무 성공! 사원의 종이 울린다…\x1b[0m"
-        );
+        term.writeln("\x1b[1;32m✔ 단계 통과 — 다음 장면으로…\x1b[0m");
         setTimeout(onSuccess, 600);
       }
     };
@@ -131,7 +123,7 @@ export function TerminalPanel({ mission, onSuccess }: Props) {
       onData.dispose();
       term.dispose();
     };
-  }, [evaluator, onSuccess]);
+  }, [step, onSuccess]);
 
   return (
     <div className="space-y-2">
@@ -141,7 +133,7 @@ export function TerminalPanel({ mission, onSuccess }: Props) {
       <div ref={containerRef} className="xterm-frame" />
       {solved && (
         <div className="text-sm text-emerald-400 fantasy-title">
-          ✓ 평가 통과. 잠시 후 결과 창이 열립니다…
+          ✓ 단계 통과. 다음 장면으로 이동합니다…
         </div>
       )}
     </div>

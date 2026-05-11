@@ -15,6 +15,9 @@ export const realmSchema = z.object({
 });
 export type Realm = z.infer<typeof realmSchema>;
 
+// ──────────────────────────────────────────────────────────
+// Terminal success-check schema (한 단계 평면화로 self-reference 회피)
+// ──────────────────────────────────────────────────────────
 const baseTerminalCheckSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("lastOutputMatches"), pattern: z.string() }),
   z.object({ type: z.literal("cwdEquals"), path: z.string() }),
@@ -31,27 +34,47 @@ const terminalCheckSchema = z.union([
     checks: z.array(baseTerminalCheckSchema),
   }),
 ]);
+export type TerminalCheck = z.infer<typeof terminalCheckSchema>;
+export type BaseTerminalCheck = z.infer<typeof baseTerminalCheckSchema>;
 
-const terminalEvaluatorSchema = z.object({
+// ──────────────────────────────────────────────────────────
+// Mission steps (multi-step scenarios)
+// ──────────────────────────────────────────────────────────
+const dialogueStepSchema = z.object({
+  id: z.string(),
+  kind: z.literal("dialogue"),
+  speaker: z.string(),
+  speakerEmoji: z.string().optional(),
+  /** 한 줄씩 표시될 대화. 사용자 클릭으로 다음 step. */
+  lines: z.array(z.string()).min(1),
+});
+
+const terminalStepSchema = z.object({
+  id: z.string(),
   kind: z.literal("terminal"),
+  briefing: z.string(),
+  hint: z.string().optional(),
   initialFs: z.record(z.string(), z.union([z.string(), z.null()])),
   initialCwd: z.string().default("/"),
   successWhen: terminalCheckSchema,
 });
 
-export type TerminalCheck = z.infer<typeof terminalCheckSchema>;
-export type BaseTerminalCheck = z.infer<typeof baseTerminalCheckSchema>;
-
-const vimEvaluatorSchema = z.object({
+const vimStepSchema = z.object({
+  id: z.string(),
   kind: z.literal("vim"),
+  briefing: z.string(),
+  hint: z.string().optional(),
   initialText: z.string(),
   targetText: z.string(),
   parThreeStars: z.number().int().positive(),
   parTwoStars: z.number().int().positive(),
 });
 
-const languageEvaluatorSchema = z.object({
+const languageStepSchema = z.object({
+  id: z.string(),
   kind: z.literal("language"),
+  briefing: z.string(),
+  hint: z.string().optional(),
   languageId: z.enum(["javascript", "python"]),
   starterCode: z.string(),
   testCases: z
@@ -64,25 +87,42 @@ const languageEvaluatorSchema = z.object({
     .min(1),
 });
 
-export const missionEvaluatorSchema = z.discriminatedUnion("kind", [
-  terminalEvaluatorSchema,
-  vimEvaluatorSchema,
-  languageEvaluatorSchema,
+export const missionStepSchema = z.discriminatedUnion("kind", [
+  dialogueStepSchema,
+  terminalStepSchema,
+  vimStepSchema,
+  languageStepSchema,
 ]);
-export type MissionEvaluator = z.infer<typeof missionEvaluatorSchema>;
+export type MissionStep = z.infer<typeof missionStepSchema>;
+export type DialogueStep = z.infer<typeof dialogueStepSchema>;
+export type TerminalStep = z.infer<typeof terminalStepSchema>;
+export type VimStep = z.infer<typeof vimStepSchema>;
+export type LanguageStep = z.infer<typeof languageStepSchema>;
 
+// ──────────────────────────────────────────────────────────
+// Mission
+// ──────────────────────────────────────────────────────────
 export const missionSchema = z.object({
   id: z.string(),
   realmId: realmIdSchema,
   order: z.number().int().positive(),
   title: z.string(),
   fantasyTitle: z.string(),
-  briefing: z.string(),
-  hint: z.string().optional(),
+  /** 카드 목록 등에 보이는 한 줄 요약 */
+  summary: z.string(),
   isBoss: z.boolean().default(false),
   xpReward: z.number().int().positive(),
-  evaluator: missionEvaluatorSchema,
+  steps: z.array(missionStepSchema).min(1),
 });
 export type Mission = z.infer<typeof missionSchema>;
-
 export type MissionId = Mission["id"];
+
+/** 미션이 어떤 트랙(검증 종류)인지 — 첫 challenge step 기준 */
+export function detectMissionTrackKind(
+  mission: Mission
+): "terminal" | "vim" | "language" | "story" {
+  for (const s of mission.steps) {
+    if (s.kind !== "dialogue") return s.kind;
+  }
+  return "story";
+}

@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { Play, Loader2 } from "lucide-react";
-import type { Mission } from "@/types/mission";
+import type { LanguageStep } from "@/types/mission";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), {
   ssr: false,
@@ -24,17 +24,12 @@ type RunResponse = {
 };
 
 type Props = {
-  mission: Mission;
+  step: LanguageStep;
   onSuccess: () => void;
 };
 
-export function CodeEditor({ mission, onSuccess }: Props) {
-  if (mission.evaluator.kind !== "language") {
-    throw new Error("CodeEditor requires a language mission");
-  }
-  const evaluator = mission.evaluator;
-
-  const [code, setCode] = useState(evaluator.starterCode);
+export function CodeEditor({ step, onSuccess }: Props) {
+  const [code, setCode] = useState(step.starterCode);
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<RunResponse | null>(null);
 
@@ -46,9 +41,9 @@ export function CodeEditor({ mission, onSuccess }: Props) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          languageId: evaluator.languageId,
+          languageId: step.languageId,
           code,
-          testCases: evaluator.testCases,
+          testCases: step.testCases,
         }),
       });
       const json: RunResponse = await res.json();
@@ -71,7 +66,7 @@ export function CodeEditor({ mission, onSuccess }: Props) {
       <div className="rounded-xl border border-border overflow-hidden">
         <MonacoEditor
           height="300px"
-          language={evaluator.languageId}
+          language={step.languageId}
           value={code}
           theme="vs-dark"
           onChange={(v) => setCode(v ?? "")}
@@ -85,7 +80,7 @@ export function CodeEditor({ mission, onSuccess }: Props) {
       </div>
       <div className="flex items-center justify-between">
         <div className="text-xs text-muted">
-          언어: <span className="text-accent uppercase">{evaluator.languageId}</span> · Judge0 실행
+          언어: <span className="text-accent uppercase">{step.languageId}</span> · Judge0 실행
         </div>
         <button
           onClick={run}

@@ -15,11 +15,13 @@ import type { RealmId } from "@/types/mission";
 import { TerminalPanel } from "@/components/mission/TerminalPanel";
 import { VimEditor } from "@/components/mission/VimEditor";
 import { CodeEditor } from "@/components/mission/CodeEditor";
+import { DialoguePanel } from "@/components/mission/DialoguePanel";
 import { ResultModal } from "@/components/game/ResultModal";
 import { EndingCredits } from "@/components/game/EndingCredits";
 import { useGameStore } from "@/lib/store/game-store";
 import { computeStars, xpForStars } from "@/lib/scoring";
 import type { BadgeId } from "@/types/player";
+import { cn } from "@/lib/utils";
 
 export default function MissionPage() {
   const params = useParams<{ missionId: string }>();
@@ -35,7 +37,11 @@ export default function MissionPage() {
   const hasHydrated = useGameStore((s) => s._hasHydrated);
   const previousResult = missionResults[mission.id];
 
+  // step runner 상태
+  const [stepIndex, setStepIndex] = useState(0);
   const [attempts, setAttempts] = useState(1);
+  const [totalKeystrokes, setTotalKeystrokes] = useState(0);
+
   const [modal, setModal] = useState<{
     open: boolean;
     stars: number;
@@ -50,12 +56,10 @@ export default function MissionPage() {
   // URL 직접 접근 잠금 검사 — hydration 완료 후에만 동작
   useEffect(() => {
     if (!hasHydrated) return;
-    // 1) Realm 잠금
     if (level < realm.requiredLevel) {
       router.replace(`/realm/${mission.realmId}`);
       return;
     }
-    // 2) 이전 미션 미클리어 시 차단 (이미 클리어한 미션은 항상 허용)
     if (!missionResults[mission.id]) {
       const realmMissions = missionsByRealm(mission.realmId);
       const idx = realmMissions.findIndex((m) => m.id === mission.id);
@@ -81,11 +85,15 @@ export default function MissionPage() {
     [mission]
   );
 
-  const handleSuccess = (info?: { keystrokes?: number }) => {
+  const totalSteps = mission.steps.length;
+  const currentStep = mission.steps[stepIndex];
+  const isLastStep = stepIndex >= totalSteps - 1;
+
+  const completeMission = (finalKeystrokes: number) => {
     const stars = computeStars({
       mission,
       attempts,
-      keystrokes: info?.keystrokes,
+      totalKeystrokes: finalKeystrokes > 0 ? finalKeystrokes : undefined,
     });
     const xp = xpForStars(stars, mission.xpReward);
     const isFirstClear = !missionResults[mission.id];
@@ -96,7 +104,6 @@ export default function MissionPage() {
     if (Object.keys(missionResults).length === 0) {
       earnedBadges.push("first-spell");
     }
-
     if (isFirstClear && mission.realmId === "vimkeep") {
       const vimMissions = missionsByRealm("vimkeep");
       const vimCleared = vimMissions.filter((m) => clearedAfter.has(m.id)).length;
@@ -121,13 +128,10 @@ export default function MissionPage() {
     if (realmsCleared.runescar) earnedBadges.push("runescar-champion");
 
     const allCleared = ALL_MISSIONS.every((m) => clearedAfter.has(m.id));
-    if (allCleared) {
-      earnedBadges.push("the-cursor-emperor");
-    }
+    if (allCleared) earnedBadges.push("the-cursor-emperor");
 
     if (stars === 3) earnedBadges.push("speedrunner");
     if (attempts === 1) earnedBadges.push("no-death-run");
-
     if (streakDays >= 7) earnedBadges.push("streak-7");
     if (streakDays >= 30) earnedBadges.push("streak-30");
 
@@ -136,7 +140,7 @@ export default function MissionPage() {
       stars,
       xp,
       attempts,
-      keystrokes: info?.keystrokes,
+      keystrokes: finalKeystrokes > 0 ? finalKeystrokes : undefined,
       earnedBadges,
     });
 
@@ -152,8 +156,20 @@ export default function MissionPage() {
     });
   };
 
+  const advance = (info?: { keystrokes?: number }) => {
+    const newKeystrokes = totalKeystrokes + (info?.keystrokes ?? 0);
+    if (info?.keystrokes) setTotalKeystrokes(newKeystrokes);
+    if (isLastStep) {
+      completeMission(newKeystrokes);
+    } else {
+      setStepIndex((i) => i + 1);
+    }
+  };
+
   const handleRetry = () => {
     setAttempts((a) => a + 1);
+    setStepIndex(0);
+    setTotalKeystrokes(0);
     router.refresh();
   };
 
@@ -163,7 +179,6 @@ export default function MissionPage() {
     if (shouldOpenEnding) setEndingOpen(true);
   };
 
-  // hydration 전엔 placeholder
   if (!hasHydrated) {
     return (
       <div className="parchment p-8 flex items-center justify-center gap-2 text-muted">
@@ -190,17 +205,34 @@ export default function MissionPage() {
           {mission.title}
         </h1>
         <p className="text-sm text-muted">{mission.fantasyTitle}</p>
-        <p className="mt-4 text-foreground/90">{mission.briefing}</p>
-        {mission.hint && (
-          <details className="mt-3 text-sm">
-            <summary className="cursor-pointer text-accent hover:text-accent-strong">
-              힌트 보기
-            </summary>
-            <p className="mt-2 text-muted">{mission.hint}</p>
-          </details>
-        )}
+        <p className="mt-3 text-foreground/85 text-sm">{mission.summary}</p>
+
+        {/* Step progress */}
+        <div className="mt-4 flex flex-wrap items-center gap-1.5">
+          {mission.steps.map((s, i) => (
+            <span
+              key={s.id}
+              className={cn(
+                "step-chip",
+                i < stepIndex && "step-chip-done",
+                i === stepIndex && "step-chip-active"
+              )}
+              title={`${s.kind} · step ${i + 1}/${totalSteps}`}
+            >
+              {i + 1}.{" "}
+              {s.kind === "dialogue"
+                ? "대화"
+                : s.kind === "terminal"
+                ? "주문"
+                : s.kind === "vim"
+                ? "검술"
+                : "룬어"}
+            </span>
+          ))}
+        </div>
+
         <div className="mt-4 flex items-center gap-3 text-xs text-muted">
-          <span>+{mission.xpReward} XP</span>
+          <span>+{mission.xpReward} XP (완료 시)</span>
           <span>·</span>
           <span>시도 {attempts}회</span>
           {previousResult && (
@@ -212,18 +244,36 @@ export default function MissionPage() {
         </div>
       </header>
 
-      <section>
-        {mission.evaluator.kind === "terminal" && (
-          <TerminalPanel mission={mission} onSuccess={() => handleSuccess()} />
+      {/* 현재 step 의 briefing/hint (dialogue 가 아닐 때만) */}
+      {currentStep.kind !== "dialogue" && (
+        <section className="parchment p-5">
+          <div className="text-xs uppercase tracking-widest text-muted">
+            Step {stepIndex + 1} / {totalSteps} — {currentStep.kind === "terminal" ? "주문 시전" : currentStep.kind === "vim" ? "검술 수련" : "룬어 봉인"}
+          </div>
+          <p className="mt-2 text-foreground/90">{currentStep.briefing}</p>
+          {currentStep.hint && (
+            <details className="mt-2 text-sm">
+              <summary className="cursor-pointer text-accent hover:text-accent-strong">
+                힌트 보기
+              </summary>
+              <p className="mt-2 text-muted">{currentStep.hint}</p>
+            </details>
+          )}
+        </section>
+      )}
+
+      <section key={currentStep.id}>
+        {currentStep.kind === "dialogue" && (
+          <DialoguePanel step={currentStep} onAdvance={() => advance()} />
         )}
-        {mission.evaluator.kind === "vim" && (
-          <VimEditor
-            mission={mission}
-            onSuccess={(info) => handleSuccess(info)}
-          />
+        {currentStep.kind === "terminal" && (
+          <TerminalPanel step={currentStep} onSuccess={() => advance()} />
         )}
-        {mission.evaluator.kind === "language" && (
-          <CodeEditor mission={mission} onSuccess={() => handleSuccess()} />
+        {currentStep.kind === "vim" && (
+          <VimEditor step={currentStep} onSuccess={(info) => advance(info)} />
+        )}
+        {currentStep.kind === "language" && (
+          <CodeEditor step={currentStep} onSuccess={() => advance()} />
         )}
       </section>
 
@@ -232,7 +282,7 @@ export default function MissionPage() {
           onClick={handleRetry}
           className="text-xs text-muted hover:text-foreground underline"
         >
-          처음부터 다시
+          미션 처음부터 다시
         </button>
       </div>
 
