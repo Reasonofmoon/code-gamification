@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { Hud } from "@/components/game/Hud";
+import { DeployBadge } from "@/components/game/DeployBadge";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,9 +37,14 @@ export default function RootLayout({
         <main className="flex-1 mx-auto max-w-6xl w-full px-4 sm:px-6 py-8">
           {children}
         </main>
-        <footer className="border-t border-border py-4 text-center text-xs text-muted">
-          CodeQuest · localStorage 진행도 · 가상 셸 학습 환경
+        <footer className="border-t border-border py-4 text-xs text-muted">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div>CodeQuest · localStorage 진행도 · 가상 셸 학습 환경</div>
+            <DeployBadge />
+          </div>
         </footer>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
