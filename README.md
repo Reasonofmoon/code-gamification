@@ -1,7 +1,19 @@
-# CodeQuest
+<div align="right">
+
+[English](README.en.md) · [**한국어**](README.md)
+
+</div>
+
+# 👑 CodeQuest
 
 > 터미널 · vim · 프로그래밍 언어를 **고전 판타지 RPG**로 익히는 게이미피케이션 학습 앱.
 > Next.js 16 · TypeScript · Tailwind 4 · Monaco · XTerm.js · Zustand.
+
+[![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?style=flat&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS 4](https://img.shields.io/badge/Tailwind%20CSS-4-38BDF8?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000000?style=flat&logo=vercel&logoColor=white)](https://vercel.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-FFCE58?style=flat)](LICENSE)
 
 [참고 영감](https://terminal-playground.netlify.app/) 사이트의 컨셉을 **세 대륙의 RPG 모험**으로 발전시켰다.
 세 트랙(터미널 8 + vim 18 + 언어 9 = **35 미션 완성**)에 XP·레벨·뱃지·스트릭·엔딩 크레딧이 얹혀 있다.
@@ -95,6 +107,11 @@ src/
 - 터미널 트랙은 *가상 셸* — 실제 OS 학습 효과는 제한, 학습 흐름·자신감 형성에 충분.
 - `monaco-vim`은 진짜 vim의 80~90% — 일부 매크로·ex 명령 제한.
 
----
+## 📸 스크린샷
 
-MIT (예정) · 1인 EdTech 프로젝트.
+브라우저에서 직접 캡처해 `screenshots/` 폴더에 두면 README 에 자동 노출됩니다.
+캡처 가이드는 [`screenshots/README.md`](screenshots/README.md) 를 참조.
+
+## 📄 라이선스
+
+[MIT](LICENSE) © 2026 Reasonofmoon
