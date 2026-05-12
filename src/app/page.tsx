@@ -29,7 +29,8 @@ export default function HomePage() {
               alt="아카식의 지도"
               fill
               className="object-cover"
-              priority
+              loading="eager"
+              fetchPriority="high"
               sizes="(max-width: 768px) 100vw, 1200px"
               onError={() => setMapFailed(true)}
             />
