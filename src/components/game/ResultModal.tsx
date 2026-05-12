@@ -1,11 +1,13 @@
 "use client";
 
+import { useEffect } from "react";
 import { Star, X } from "lucide-react";
 import Link from "next/link";
 import type { Mission } from "@/types/mission";
 import { BADGES } from "@/lib/badges";
 import type { BadgeId } from "@/types/player";
 import { cn } from "@/lib/utils";
+import { playSound } from "@/lib/sound";
 
 type Props = {
   open: boolean;
@@ -39,6 +41,15 @@ export function ResultModal({
   newBadges,
   nextMissionId,
 }: Props) {
+  // 모달이 열릴 때 효과음 — 보스 격파는 success + level-up, 일반은 success
+  useEffect(() => {
+    if (!open) return;
+    playSound("success");
+    if (leveledUp) {
+      setTimeout(() => playSound("level-up"), 500);
+    }
+  }, [open, leveledUp]);
+
   if (!open) return null;
 
   const headerLabel = mission.isBoss ? "[ 보스 격파 ]" : "[ 퀘스트 완료 ]";

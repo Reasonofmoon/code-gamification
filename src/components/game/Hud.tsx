@@ -4,6 +4,7 @@ import Link from "next/link";
 import { XPBar } from "./XPBar";
 import { StreakIndicator } from "./StreakIndicator";
 import { BadgeStrip } from "./BadgeStrip";
+import { SoundToggle } from "./SoundToggle";
 import { Crown } from "lucide-react";
 
 export function Hud() {
@@ -21,6 +22,7 @@ export function Hud() {
         <div className="hidden md:block">
           <BadgeStrip />
         </div>
+        <SoundToggle />
       </div>
       <div className="sm:hidden mx-auto max-w-6xl px-4 pb-3">
         <XPBar />

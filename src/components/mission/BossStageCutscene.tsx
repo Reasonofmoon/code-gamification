@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Skull } from "lucide-react";
 import type { Mission, DialogueStep } from "@/types/mission";
 import { npcImageFor } from "@/lib/npc-images";
+import { playSound } from "@/lib/sound";
 
 type Props = {
   mission: Mission;
@@ -30,6 +31,8 @@ export function BossStageCutscene({ mission, step, onContinue }: Props) {
   const imgSrc = npcImageFor(step.speaker);
 
   useEffect(() => {
+    // 보스 등장 효과음
+    playSound("boss-encounter");
     const t = setTimeout(() => setShowActions(true), 1500);
     return () => clearTimeout(t);
   }, []);

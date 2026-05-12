@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ChevronRight } from "lucide-react";
 import type { DialogueStep } from "@/types/mission";
 import { npcImageFor } from "@/lib/npc-images";
+import { playSound } from "@/lib/sound";
 
 type Props = {
   step: DialogueStep;
@@ -27,6 +28,7 @@ export function DialoguePanel({ step, onAdvance }: Props) {
   const imgSrc = npcImageFor(step.speaker);
 
   const handleNext = () => {
+    playSound("click");
     if (isLastLine) {
       onAdvance();
     } else {

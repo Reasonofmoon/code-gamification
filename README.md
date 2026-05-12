@@ -9,10 +9,13 @@
 > 터미널 · vim · 프로그래밍 언어를 **고전 판타지 RPG**로 익히는 게이미피케이션 학습 앱.
 > Next.js 16 · TypeScript · Tailwind 4 · Monaco · XTerm.js · Zustand.
 
+**🎮 라이브 데모**: <https://code-gamification.vercel.app>
+
+[![Live Demo](https://img.shields.io/badge/▲%20Live%20Demo-code--gamification.vercel.app-000000?style=flat&logo=vercel&logoColor=white)](https://code-gamification.vercel.app)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?style=flat&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS 4](https://img.shields.io/badge/Tailwind%20CSS-4-38BDF8?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000000?style=flat&logo=vercel&logoColor=white)](https://vercel.com)
+[![GitHub last commit](https://img.shields.io/github/last-commit/Reasonofmoon/code-gamification?style=flat)](https://github.com/Reasonofmoon/code-gamification/commits/main)
 [![License: MIT](https://img.shields.io/badge/License-MIT-FFCE58?style=flat)](LICENSE)
 
 [참고 영감](https://terminal-playground.netlify.app/) 사이트의 컨셉을 **세 대륙의 RPG 모험**으로 발전시켰다.
@@ -33,10 +36,12 @@ Judge0 키 없이도 **셸홀름(터미널)** 과 **빔킵(vim)** 미션은 전�
 
 | 대륙 | 트랙 | 미션 수 | 잠금 해제 |
 |---|---|---|---|
-| 🔮 셸홀름 항구 | 터미널 명령어 (가상 셸) | 8 (보스 1) | Lv.0 (즉시) |
+| 🌫️ 잿빛 황무지 (Greywhell) | 프롤로그 · 도입 튜토리얼 | 3 (보스 1) | Lv.0 (즉시) |
+| 🔮 셸홀름 항구 | 터미널 명령어 (가상 셸) | 8 (보스 1) | Lv.0 |
 | ⚔️ 빔킵 검의 도시 | vim 모션·명령 (5개 챕터) | 18 (보스 1) | Lv.4 |
 | 📜 룬스카 원형도서관 | JS/Python (Judge0) | 9 (보스 1) | Lv.12 |
-| **합계** | — | **35 / 35** | — |
+| 🪄 기계 신탁의 탑 | AI 시대 도구 (gh · git · npx · AI SDK · 스트리밍) | 9 (보스 1) | Lv.18 |
+| **합계** | — | **47 / 47** | — |
 
 ## 게이미피케이션
 

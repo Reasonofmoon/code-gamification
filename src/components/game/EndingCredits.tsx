@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { Crown, X } from "lucide-react";
+import { playSound } from "@/lib/sound";
 
 const VERSES: readonly string[] = [
   "세 대륙의 안개가 걷힌다.",
@@ -35,6 +37,10 @@ export function EndingCredits({
   open: boolean;
   onClose: () => void;
 }) {
+  useEffect(() => {
+    if (open) playSound("chime");
+  }, [open]);
+
   if (!open) return null;
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md ending-bg">

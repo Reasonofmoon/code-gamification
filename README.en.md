@@ -9,25 +9,23 @@
 > Learn **terminal · vim · programming languages** as a **classical fantasy RPG**.
 > Three realms. Thirty-five missions. Twelve badges. One cursor to rule them all.
 
+**🎮 Live Demo**: <https://code-gamification.vercel.app>
+
+[![Live Demo](https://img.shields.io/badge/▲%20Live%20Demo-code--gamification.vercel.app-000000?style=flat&logo=vercel&logoColor=white)](https://code-gamification.vercel.app)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?style=flat&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS 4](https://img.shields.io/badge/Tailwind%20CSS-4-38BDF8?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Monaco Editor](https://img.shields.io/badge/Monaco-Editor-007ACC?style=flat&logo=visualstudiocode&logoColor=white)](https://microsoft.github.io/monaco-editor/)
 [![XTerm.js](https://img.shields.io/badge/XTerm.js-Terminal-1A1A1A?style=flat&logo=gnubash&logoColor=white)](https://xtermjs.org/)
 [![Judge0 API](https://img.shields.io/badge/Judge0-Code%20Execution-9333EA?style=flat)](https://judge0.com/)
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000000?style=flat&logo=vercel&logoColor=white)](https://vercel.com)
+[![GitHub last commit](https://img.shields.io/github/last-commit/Reasonofmoon/code-gamification?style=flat)](https://github.com/Reasonofmoon/code-gamification/commits/main)
+[![GitHub stars](https://img.shields.io/github/stars/Reasonofmoon/code-gamification?style=social)](https://github.com/Reasonofmoon/code-gamification/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-FFCE58?style=flat)](LICENSE)
 
-<!-- Optional dynamic badges (uncomment after pushing public):
-[![Vercel Deploy](https://vercelbadge.vercel.app/api/Reasonofmoon/code-gamification)](https://code-gamification.vercel.app)
-[![GitHub last commit](https://img.shields.io/github/last-commit/Reasonofmoon/code-gamification)](https://github.com/Reasonofmoon/code-gamification/commits/main)
-[![GitHub stars](https://img.shields.io/github/stars/Reasonofmoon/code-gamification?style=social)](https://github.com/Reasonofmoon/code-gamification/stargazers)
--->
-
 Inspired by [terminal-playground.netlify.app](https://terminal-playground.netlify.app/),
-expanded into a full **fantasy-RPG learning journey**: terminal commands as
-*apprentice spells*, vim motions as *sword forms*, and programming languages as
-*ancient runes*.
+expanded into a full **fantasy-RPG learning journey** across **5 realms with 47 missions**.
+Terminal commands as *apprentice spells*, vim motions as *sword forms*, programming languages
+as *ancient runes*, and modern AI-era tools (gh · git · AI SDK · streaming) as *machine oracles*.
 
 > 🖼️ Screenshots: see [`screenshots/`](screenshots/) (capture guide included).
 
@@ -47,11 +45,15 @@ expanded into a full **fantasy-RPG learning journey**: terminal commands as
 
 ## ✨ Highlights
 
-- **Three realms, one quest**
+- **Five realms, one quest**
+  - 🌫️ **Greywhell Wastes** — prologue onboarding (Ella the elder, Lionel the inspector)
   - 🔮 **Shellholm Harbor** — terminal commands on a virtual filesystem
   - ⚔️ **Vimkeep, City of Blades** — Monaco + monaco-vim (5 chapters, real vim modes)
   - 📜 **Runescar Grand Archive** — JS / Python executed via Judge0
-- **35 missions, 12 badges, 3 dragon bosses**
+  - 🪄 **Tower of Machine Oracles** — AI-era CLI & SDK (gh · git · npx · curl/jq · Anthropic SDK · streaming)
+- **47 missions, 18 badges, 5 dragon bosses, full-screen boss cutscenes**
+- **Borrowed Aethoria worldview** — Akashic Map, Void Seed, the Akashic Examiner
+- **Diegetic system window UI** — `[퀘스트 완료]` `*띠링!*` style ResultModal
 - **Gamification stack** — XP, levels (1‑20), 1‑3 star rating, daily streak,
   badge cascade, ending credits poem on completion
 - **No login** — progress lives in `localStorage`, exportable / importable as JSON

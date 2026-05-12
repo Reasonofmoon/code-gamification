@@ -4,20 +4,24 @@
 
 ## 📋 필요한 캡처 목록 (Capture Checklist)
 
-아래 9개를 차례로 캡처해 이 폴더에 저장하면 한국어·영문 README에 그대로 임베드 가능합니다.
+아래 13개를 차례로 캡처해 이 폴더에 저장하면 한국어·영문 README에 그대로 임베드 가능합니다.
 파일명은 정확히 맞춰 주세요 (README 임베드 경로가 고정되어 있어).
 
 | # | 파일명 | 무엇을 캡처 | 권장 사이즈 |
 |---|---|---|---|
-| 1 | `worldmap.png` | 월드맵 (세 Realm 카드, Lv.0 상태에서 빔킵·룬스카는 잠금) | 1440×900 |
-| 2 | `shellholm-list.png` | 셸홀름 대륙 진입 — 미션 8개 카드 (1번만 해제) | 1440×900 |
-| 3 | `mission-terminal.png` | 셸홀름 미션 1 화면 — XTerm 가상 셸 + 브리핑 카드 | 1440×900 |
-| 4 | `result-modal.png` | 미션 클리어 결과 모달 (★3 + XP + `First Spell` 뱃지) | 1440×900 |
+| 1 | `worldmap.png` | 월드맵 (**5 Realm 카드** — 잿빛 황무지·셸홀름·빔킵·룬스카·기계 신탁의 탑) | 1440×900 |
+| 2 | `wasteland-prologue.png` | 잿빛 황무지 미션 1 — 엘라 할머니 초상화 + 대화 | 1440×900 |
+| 3 | `shellholm-list.png` | 셸홀름 대륙 진입 — 미션 8개 카드 | 1440×900 |
+| 4 | `mission-terminal.png` | 셸홀름 미션 1 화면 — XTerm 가상 셸 + 모르간 NPC | 1440×900 |
 | 5 | `mission-vim.gif` | 빔킵 미션 — Monaco 에디터 + `--NORMAL--` 모드 + 키 입력 애니메이션 | 1200×700, ≤8MB |
-| 6 | `mission-code.png` | 룬스카 미션 — Monaco 코드 에디터 + Judge0 실행 결과 | 1440×900 |
-| 7 | `hud.png` | 상단 HUD 클로즈업 — 레벨·XP 바·스트릭·뱃지 스트립 | 1440×120 |
-| 8 | `ending-credits.png` | `The Cursor Emperor` 획득 후 엔딩 크레딧 모달 (시 일부) | 1440×900 |
-| 9 | `mobile.png` | 모바일 뷰포트 (375×812) — 월드맵 | 750×1624 (Retina) |
+| 6 | `mission-code.png` | 룬스카 미션 — Monaco 코드 에디터 + Judge0 실행 결과 + 세렌 NPC | 1440×900 |
+| 7 | `oracle-tower.png` | 기계 신탁의 탑 — `gh auth status` 등 AI 시대 도구 미션 | 1440×900 |
+| 8 | `boss-cutscene.png` | **풀스크린 보스 컷씬** — cyan glow + 보스 초상화 + "응전한다" | 1440×900 |
+| 9 | `result-modal.png` | 미션 클리어 결과 모달 — 시스템 창 스타일 + ★ + 공허력 + 뱃지 | 1440×900 |
+| 10 | `hud.png` | 상단 HUD 클로즈업 — 레벨·XP 바·스트릭·뱃지·**사운드 토글** | 1440×120 |
+| 11 | `ending-credits.png` | `The Cursor Emperor` 획득 후 엔딩 크레딧 모달 (판타지 시) | 1440×900 |
+| 12 | `mobile.png` | 모바일 뷰포트 (375×812) — 월드맵 | 750×1624 (Retina) |
+| 13 | `realm-cards-hover.png` | Realm 카드 호버 상태 — 일러스트 배경 + 호버 lift | 1440×600 |
 
 ## 🎬 캡처 방법
 
@@ -49,13 +53,33 @@
 ```md
 ## 📸 미리보기
 
-| 월드맵 | 미션 화면 (터미널) | 엔딩 크레딧 |
+| 월드맵 (5 Realms) | 보스 컷씬 | 엔딩 크레딧 |
 |---|---|---|
-| ![](screenshots/worldmap.png) | ![](screenshots/mission-terminal.png) | ![](screenshots/ending-credits.png) |
+| ![](screenshots/worldmap.png) | ![](screenshots/boss-cutscene.png) | ![](screenshots/ending-credits.png) |
+
+| 잿빛 황무지 | 룬스카 (AI 코드) | 기계 신탁의 탑 |
+|---|---|---|
+| ![](screenshots/wasteland-prologue.png) | ![](screenshots/mission-code.png) | ![](screenshots/oracle-tower.png) |
 
 ### Vim 미션 (실시간 키 입력)
 ![](screenshots/mission-vim.gif)
 ```
+
+## 🔊 사운드 / 효과음 캡처
+
+사운드는 GIF로 캡처 안 되므로 *동영상*이 필요. 옵션:
+
+- **OBS Studio** (무료, Windows/macOS/Linux) — 화면 + 시스템 사운드 동시 녹화
+- **macOS QuickTime** — Cmd+Shift+5 → 시스템 사운드 옵션 활성
+- **Windows Xbox Game Bar** — Win+G → 마이크 OFF + 시스템 사운드 ON
+
+녹화 시 추천 시나리오 (각 30초~1분):
+
+| 파일명 | 시나리오 | 사운드 |
+|---|---|---|
+| `demo-sound-on.mp4` | HUD에서 🔈 켜기 → 보스 미션 진입 → 컷씬 → 격파 → 결과 모달 | boss-encounter · success · level-up |
+| `demo-dialogue.mp4` | 셸홀름 1 진입 → 모르간 대화 4줄 클릭 진행 | click 6회 |
+| `demo-ending.mp4` | 마지막 보스 격파 → 엔딩 크레딧 등장 | chime |
 
 ## 🎨 스크린샷 캡처 시 팁
 
