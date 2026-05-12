@@ -22,6 +22,14 @@ export const badgeIdSchema = z.enum([
   "vimkeep-champion",
   "runescar-champion",
   "the-cursor-emperor",
+  // 잿빛 황무지 (튜토리얼)
+  "wasteland-survivor",
+  // Oracle Tower (AI 시대 트랙)
+  "oracle-novice",
+  "oracle-tower-champion",
+  "mirror-vanquished",
+  // 보스 전부 격파
+  "dragon-slayer",
 ]);
 export type BadgeId = z.infer<typeof badgeIdSchema>;
 

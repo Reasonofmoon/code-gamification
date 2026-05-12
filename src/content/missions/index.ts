@@ -1,10 +1,12 @@
 import type { Mission, RealmId } from "@/types/mission";
+import { WASTELAND_MISSIONS } from "./wasteland";
 import { TERMINAL_MISSIONS } from "./terminal";
 import { VIM_MISSIONS } from "./vim";
 import { LANGUAGE_MISSIONS } from "./language";
 import { ORACLE_MISSIONS } from "./oracle";
 
 export const ALL_MISSIONS: readonly Mission[] = [
+  ...WASTELAND_MISSIONS,
   ...TERMINAL_MISSIONS,
   ...VIM_MISSIONS,
   ...LANGUAGE_MISSIONS,

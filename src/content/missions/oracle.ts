@@ -332,4 +332,143 @@ export const ORACLE_MISSIONS: readonly Mission[] = [
       },
     ],
   },
+
+  // ─── Post-Boss 심화 도구 (보스 격파 후 메모리아가 *세 가지 더* 보여준다) ───
+  {
+    id: "oracle-07",
+    realmId: "oracle-tower",
+    order: 7,
+    title: "심화 ─ 현대 패키지 매니저 pnpm",
+    fantasyTitle: "심화 1장 — 「더 빠른 정령 부르기」",
+    summary: "npm 보다 빠르고 디스크를 아끼는 현대 패키지 매니저.",
+    isBoss: false,
+    xpReward: 150,
+    steps: [
+      {
+        id: "intro",
+        kind: "dialogue",
+        ...MEMORIA,
+        lines: [
+          "거울을 깨뜨린 그대에게 — *세 가지 심화 도구* 를 더 보여드리지요.",
+          "첫째는 `pnpm` — npm 의 *더 빠른 사촌*. 디스크 공간을 *공유* 해 수십 GB 를 절약합니다.",
+          "AI 시대 코드베이스가 점점 거대해지면서, 패키지 매니저의 *속도* 가 곧 *집중력* 이 되었지요.",
+        ],
+      },
+      {
+        id: "challenge",
+        kind: "terminal",
+        briefing:
+          "`npx shadcn@latest` 로 shadcn/ui 를 초기화하라. (npm 흉내로 학습용)",
+        hint: "`npx shadcn@latest`.",
+        initialFs: { "/quest": null },
+        initialCwd: "/quest",
+        successWhen: {
+          type: "lastOutputMatches",
+          pattern: "shadcn/ui initialized",
+        },
+      },
+      {
+        id: "outro",
+        kind: "dialogue",
+        ...MEMORIA,
+        lines: [
+          "한 호흡에 새 도구 한 묶음이 들어왔지요.",
+          "이게 *현대 패키지 관리* 의 미덕입니다.",
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "oracle-08",
+    realmId: "oracle-tower",
+    order: 8,
+    title: "심화 ─ 코드 검색의 신탁 git log",
+    fantasyTitle: "심화 2장 — 「과거를 거슬러 단서를 찾아라」",
+    summary: "버그를 만났을 때 가장 먼저 묻는 곳은 — 커밋 히스토리.",
+    isBoss: false,
+    xpReward: 150,
+    steps: [
+      {
+        id: "intro",
+        kind: "dialogue",
+        ...MEMORIA,
+        lines: [
+          "버그를 만났을 때 — *AI 에게 묻기 전에* 먼저 해야 할 것이 있지요.",
+          "`git log` — 과거의 커밋 메시지에서 *단서* 를 찾는 것입니다.",
+          "이 한 줄이 종종 LLM 호출 100번보다 빠릅니다.",
+        ],
+      },
+      {
+        id: "challenge",
+        kind: "terminal",
+        briefing:
+          "`git log` 를 시전해 최근 커밋 히스토리를 확인하라.",
+        hint: "`git log` 한 줄.",
+        initialFs: { "/quest": null },
+        initialCwd: "/quest",
+        successWhen: {
+          type: "lastOutputMatches",
+          pattern: "feat\\(assets\\)",
+        },
+      },
+      {
+        id: "outro",
+        kind: "dialogue",
+        ...MEMORIA,
+        lines: [
+          "과거의 *그대 자신* 이 종종 가장 좋은 멘토입니다.",
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "oracle-09",
+    realmId: "oracle-tower",
+    order: 9,
+    title: "심화 ─ 스트리밍 응답 패턴",
+    fantasyTitle: "심화 3장 — 「신탁의 응답을 흐름으로 받아라」",
+    summary: "응답을 한 번에 받지 말고 — 글자가 흐르듯 받는 패턴.",
+    isBoss: false,
+    xpReward: 180,
+    steps: [
+      {
+        id: "intro",
+        kind: "dialogue",
+        ...MEMORIA,
+        lines: [
+          "마지막 도구는 — *스트리밍* 입니다.",
+          "신탁의 응답을 *한 번에* 받지 않고 *글자 단위로 흘러나오게* 받는 패턴이지요.",
+          "사용자는 응답을 *기다리지 않고 읽기 시작* 합니다 — 체감 속도가 10배 빨라집니다.",
+          "흉내 단계입니다. 응답 청크 세 개의 텍스트를 *합쳐서* 출력하세요.",
+        ],
+      },
+      {
+        id: "challenge",
+        kind: "language",
+        briefing:
+          "응답 청크 `['Hello', ', ', 'Oracle']` 을 *합쳐서* 한 번에 출력하라. 기대 출력: `Hello, Oracle`.",
+        hint:
+          "`const chunks = ['Hello', ', ', 'Oracle']; console.log(chunks.join(''));`",
+        languageId: "javascript",
+        starterCode: [
+          "// 스트리밍 흉내: 청크 배열을 합쳐서 출력",
+          "const chunks = ['Hello', ', ', 'Oracle'];",
+          "// TODO",
+        ].join("\n"),
+        testCases: [{ stdin: "", expectedStdout: "Hello, Oracle" }],
+      },
+      {
+        id: "outro",
+        kind: "dialogue",
+        ...MEMORIA,
+        lines: [
+          "이 패턴이 ChatGPT·Claude·Cursor 가 모두 쓰는 *체감 속도의 비법* 입니다.",
+          "그대의 여정은 *진짜로* 끝났습니다, 조율자여.",
+          "도구는 끊임없이 새로 태어납니다 — 늘 깨어 있어라.",
+        ],
+      },
+    ],
+  },
 ];

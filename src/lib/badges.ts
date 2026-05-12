@@ -77,8 +77,38 @@ export const BADGES: Record<BadgeId, BadgeDef> = {
   "the-cursor-emperor": {
     id: "the-cursor-emperor",
     name: "커서의 황제",
-    description: "세 대륙을 모두 정복했다.",
+    description: "모든 대륙을 정복했다.",
     emoji: "👑",
+  },
+  "wasteland-survivor": {
+    id: "wasteland-survivor",
+    name: "잿빛의 생존자",
+    description: "잿빛 황무지를 살아 도망쳤다.",
+    emoji: "🌫️",
+  },
+  "oracle-novice": {
+    id: "oracle-novice",
+    name: "신탁 견습",
+    description: "기계 신탁의 탑에서 첫 도구를 익혔다.",
+    emoji: "🪄",
+  },
+  "oracle-tower-champion": {
+    id: "oracle-tower-champion",
+    name: "신탁의 챔피언",
+    description: "기계 신탁의 탑의 모든 미션을 클리어했다.",
+    emoji: "🏆",
+  },
+  "mirror-vanquished": {
+    id: "mirror-vanquished",
+    name: "거울을 깬 자",
+    description: "거울 속 또 다른 자신을 마주하고 이겼다.",
+    emoji: "🪞",
+  },
+  "dragon-slayer": {
+    id: "dragon-slayer",
+    name: "용 사냥꾼",
+    description: "네 보스를 모두 격파했다.",
+    emoji: "🐉",
   },
 };
 

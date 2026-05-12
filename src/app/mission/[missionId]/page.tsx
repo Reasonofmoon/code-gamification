@@ -16,6 +16,7 @@ import { TerminalPanel } from "@/components/mission/TerminalPanel";
 import { VimEditor } from "@/components/mission/VimEditor";
 import { CodeEditor } from "@/components/mission/CodeEditor";
 import { DialoguePanel } from "@/components/mission/DialoguePanel";
+import { BossStageCutscene } from "@/components/mission/BossStageCutscene";
 import { ResultModal } from "@/components/game/ResultModal";
 import { EndingCredits } from "@/components/game/EndingCredits";
 import { useGameStore } from "@/lib/store/game-store";
@@ -41,6 +42,12 @@ export default function MissionPage() {
   const [stepIndex, setStepIndex] = useState(0);
   const [attempts, setAttempts] = useState(1);
   const [totalKeystrokes, setTotalKeystrokes] = useState(0);
+  const [cutscenePassed, setCutscenePassed] = useState(false);
+
+  // step 전환 시 컷씬 표시 상태 리셋
+  useEffect(() => {
+    setCutscenePassed(false);
+  }, [stepIndex]);
 
   const [modal, setModal] = useState<{
     open: boolean;
@@ -116,18 +123,36 @@ export default function MissionPage() {
     }
 
     const realmsCleared: Record<RealmId, boolean> = {
+      wasteland: missionsByRealm("wasteland").every((m) => clearedAfter.has(m.id)),
       shellholm: missionsByRealm("shellholm").every((m) => clearedAfter.has(m.id)),
       vimkeep: missionsByRealm("vimkeep").every((m) => clearedAfter.has(m.id)),
       runescar: missionsByRealm("runescar").every((m) => clearedAfter.has(m.id)),
       "oracle-tower": missionsByRealm("oracle-tower").every((m) => clearedAfter.has(m.id)),
     };
+    if (realmsCleared.wasteland) earnedBadges.push("wasteland-survivor");
     if (realmsCleared.shellholm) earnedBadges.push("shellholm-champion");
     if (realmsCleared.vimkeep) {
       earnedBadges.push("vimkeep-champion");
       earnedBadges.push("vim-sage");
     }
     if (realmsCleared.runescar) earnedBadges.push("runescar-champion");
-    // oracle-tower 챔피언 뱃지는 v2 — 일단 the-cursor-emperor 로 흡수
+    if (realmsCleared["oracle-tower"]) {
+      earnedBadges.push("oracle-tower-champion");
+      earnedBadges.push("mirror-vanquished");
+    }
+
+    // Oracle 첫 미션 클리어 시 oracle-novice
+    if (isFirstClear && mission.realmId === "oracle-tower") {
+      const oracleMissions = missionsByRealm("oracle-tower");
+      const oracleCleared = oracleMissions.filter((m) => clearedAfter.has(m.id)).length;
+      if (oracleCleared === 1) earnedBadges.push("oracle-novice");
+    }
+
+    // 네 보스 모두 격파 시 dragon-slayer
+    const allBossesCleared = ALL_MISSIONS.filter((m) => m.isBoss).every((m) =>
+      clearedAfter.has(m.id)
+    );
+    if (allBossesCleared) earnedBadges.push("dragon-slayer");
 
     const allCleared = ALL_MISSIONS.every((m) => clearedAfter.has(m.id));
     if (allCleared) earnedBadges.push("the-cursor-emperor");
@@ -265,9 +290,25 @@ export default function MissionPage() {
       )}
 
       <section key={currentStep.id}>
-        {currentStep.kind === "dialogue" && (
-          <DialoguePanel step={currentStep} onAdvance={() => advance()} />
-        )}
+        {currentStep.kind === "dialogue" && (() => {
+          const BOSS_ENTRANCE_IDS = new Set([
+            "boss-enter",
+            "mirror-enter",
+            "lionel-enter",
+          ]);
+          const isBossEntrance =
+            mission.isBoss && BOSS_ENTRANCE_IDS.has(currentStep.id);
+          if (isBossEntrance && !cutscenePassed) {
+            return (
+              <BossStageCutscene
+                mission={mission}
+                step={currentStep}
+                onContinue={() => setCutscenePassed(true)}
+              />
+            );
+          }
+          return <DialoguePanel step={currentStep} onAdvance={() => advance()} />;
+        })()}
         {currentStep.kind === "terminal" && (
           <TerminalPanel step={currentStep} onSuccess={() => advance()} />
         )}

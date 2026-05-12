@@ -2,6 +2,17 @@ import type { Realm, RealmId } from "@/types/mission";
 
 export const REALMS: readonly Realm[] = [
   {
+    id: "wasteland",
+    order: 0,
+    name: "잿빛 황무지",
+    subtitle: "Greywhell — The Origin",
+    emoji: "🌫️",
+    flavor:
+      "에테르가 고갈된 죽음의 변경. 엘라 할머니가 그대에게 마지막 지도를 건넨다. — 살아남아야 한다.",
+    requiredLevel: 0,
+    trackKind: "prologue",
+  },
+  {
     id: "shellholm",
     order: 1,
     name: "셸홀름 항구",

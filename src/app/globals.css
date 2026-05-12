@@ -173,6 +173,37 @@ body {
   color: rgb(74, 222, 128);
 }
 
+/* ────────────────────────────────────────────────
+ * Boss stage cutscene
+ * ──────────────────────────────────────────────── */
+.cutscene-bg {
+  background-image:
+    radial-gradient(1200px 700px at 50% 40%, rgba(239, 68, 68, 0.15), transparent 60%),
+    radial-gradient(800px 500px at 50% 100%, rgba(139, 92, 246, 0.12), transparent 70%);
+  animation: cutscene-fade-in 0.55s ease-out;
+}
+@keyframes cutscene-fade-in {
+  from { opacity: 0; backdrop-filter: blur(0); }
+  to   { opacity: 1; backdrop-filter: blur(12px); }
+}
+
+.boss-portrait-enter {
+  animation: boss-portrait-pop 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes boss-portrait-pop {
+  0%   { opacity: 0; transform: scale(0.6) translateY(20px); }
+  60%  { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.action-fade-in {
+  animation: action-fade-up 0.6s ease-out both;
+}
+@keyframes action-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* Ending credits */
 .ending-bg {
   background-image:
