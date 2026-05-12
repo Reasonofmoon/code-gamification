@@ -24,9 +24,12 @@ export default function HomePage() {
         <h1 className="fantasy-title text-4xl sm:text-5xl glow-accent text-accent">
           CodeQuest
         </h1>
+        <p className="fantasy-title text-rune text-sm tracking-[0.25em]">
+          ◆ 아카식의 지도 ◆
+        </p>
         <p className="text-muted max-w-2xl mx-auto">
-          세 개의 대륙을 여행하라. 셸홀름의 주문, 빔킵의 검술, 룬스카의 룬어 —
-          진짜 개발자가 쓰는 도구가 그대의 무기다.
+          세 대륙이 그대 앞에 펼쳐진다 — 셸홀름의 주문, 빔킵의 검술, 룬스카의 룬어.
+          잿빛 황무지에서 도망친 견습생만이 이 지도를 손에 쥔다.
         </p>
         <div className="text-xs text-muted font-mono">
           진행도 {clearedCount} / {totalCount} 미션 · 뱃지 {badges.length} / {Object.keys(BADGES).length}

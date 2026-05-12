@@ -61,6 +61,87 @@ body {
   text-shadow: 0 0 12px rgba(247, 185, 85, 0.45);
 }
 
+/* ────────────────────────────────────────────────
+ * 공허 조율 시스템 (Aethoria-flavored system window)
+ * 푸른빛 반투명 카드 + scanline + ping 텍스트
+ * ──────────────────────────────────────────────── */
+.system-window {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(34, 211, 238, 0.08), rgba(34, 211, 238, 0.02)),
+    rgba(10, 10, 26, 0.92);
+  border: 1px solid rgba(34, 211, 238, 0.55);
+  border-radius: 0.875rem;
+  box-shadow:
+    0 0 0 1px rgba(34, 211, 238, 0.15) inset,
+    0 0 32px -4px rgba(34, 211, 238, 0.35),
+    0 24px 60px -16px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+.system-window::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0,
+    transparent 2px,
+    rgba(34, 211, 238, 0.04) 2px,
+    rgba(34, 211, 238, 0.04) 3px
+  );
+  mix-blend-mode: screen;
+  opacity: 0.6;
+}
+.system-window > * {
+  position: relative;
+  z-index: 1;
+}
+
+.system-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  background: rgba(34, 211, 238, 0.12);
+  border: 1px solid rgba(34, 211, 238, 0.45);
+  color: rgb(165, 243, 252);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.system-ping {
+  font-family: var(--font-mono);
+  color: rgb(125, 211, 252);
+  letter-spacing: 0.1em;
+  animation: system-ping-in 0.9s ease-out;
+}
+@keyframes system-ping-in {
+  0%   { opacity: 0; transform: translateY(-4px) scale(0.95); }
+  40%  { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0.85; }
+}
+
+.system-line {
+  font-family: var(--font-mono);
+  color: rgb(207, 250, 254);
+  font-size: 0.85rem;
+}
+
+.system-tag {
+  display: inline-block;
+  padding: 0.05rem 0.35rem;
+  border-radius: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  background: rgba(34, 211, 238, 0.18);
+  color: rgb(165, 243, 252);
+  border: 1px solid rgba(34, 211, 238, 0.4);
+}
+
 /* Dialogue line — gentle fade in for new lines */
 .dialogue-line {
   animation: dialogue-fade-in 0.45s ease-out;
