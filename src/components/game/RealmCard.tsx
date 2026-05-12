@@ -29,7 +29,9 @@ export function RealmCard({
       ? "from-magic/20 to-magic/0"
       : realm.trackKind === "vim"
       ? "from-blade/20 to-blade/0"
-      : "from-rune/20 to-rune/0";
+      : realm.trackKind === "language"
+      ? "from-rune/20 to-rune/0"
+      : "from-accent/25 to-accent/0"; // oracle: amber accent
 
   const Inner = (
     <div

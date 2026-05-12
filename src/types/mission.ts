@@ -1,6 +1,11 @@
 import { z } from "zod";
 
-export const realmIdSchema = z.enum(["shellholm", "vimkeep", "runescar"]);
+export const realmIdSchema = z.enum([
+  "shellholm",
+  "vimkeep",
+  "runescar",
+  "oracle-tower",
+]);
 export type RealmId = z.infer<typeof realmIdSchema>;
 
 export const realmSchema = z.object({
@@ -11,7 +16,8 @@ export const realmSchema = z.object({
   emoji: z.string(),
   flavor: z.string(),
   requiredLevel: z.number().int().nonnegative(),
-  trackKind: z.enum(["terminal", "vim", "language"]),
+  /** `oracle` = AI 시대 도구 (gh, git, npx, AI SDK 등). 평가기는 terminal/language 재사용. */
+  trackKind: z.enum(["terminal", "vim", "language", "oracle"]),
 });
 export type Realm = z.infer<typeof realmSchema>;
 

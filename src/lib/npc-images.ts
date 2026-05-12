@@ -13,6 +13,13 @@ const NPC_NAME_TO_ID: Record<string, string> = {
   "글자드래곤 알파베타스": "alphabetas",
   "사서장 세렌": "seren",
   "아카식의 시험관 코덱스": "codex",
+  // Wave 2 — 스토리 확장 (잿빛 황무지 + 도입 인물)
+  "견습생 카이": "kai",
+  "엘라 할머니": "ella",
+  "감찰관 리오넬": "lionel",
+  // Wave 3 — Oracle Tower (AI 시대 트랙)
+  "기계 신탁 사서 메모리아": "memoria",
+  "거울의 카이": "mirror-kai",
 };
 
 export function npcImageFor(speaker: string): string | null {
@@ -26,3 +33,7 @@ export function realmImageFor(realmId: string): string {
 }
 
 export const WORLDMAP_IMAGE = "/worldmap/akashic-map.png";
+
+/** Wave 2 — 풍경 자산. 부재해도 안전 (onError fallback 패턴). */
+export const WASTELAND_IMAGE = "/realm/wasteland.png";
+export const VOID_ALTAR_IMAGE = "/realm/void-altar.png";

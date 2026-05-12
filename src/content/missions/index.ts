@@ -2,11 +2,13 @@ import type { Mission, RealmId } from "@/types/mission";
 import { TERMINAL_MISSIONS } from "./terminal";
 import { VIM_MISSIONS } from "./vim";
 import { LANGUAGE_MISSIONS } from "./language";
+import { ORACLE_MISSIONS } from "./oracle";
 
 export const ALL_MISSIONS: readonly Mission[] = [
   ...TERMINAL_MISSIONS,
   ...VIM_MISSIONS,
   ...LANGUAGE_MISSIONS,
+  ...ORACLE_MISSIONS,
 ];
 
 export function getMission(id: string): Mission | undefined {

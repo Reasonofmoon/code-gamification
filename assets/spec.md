@@ -117,6 +117,83 @@
 
 ---
 
+## 5b. Wave 2 — 스토리 확장 자산 (5장)
+
+Wave 1 (10장) 의 모르간 portrait 톤을 *스타일 앵커* 로 유지. 동일 다크 판타지 유화·
+동일 팔레트·동일 라이팅 방향.
+
+### 5b.1 `public/realm/wasteland.png` — 잿빛 황무지 (Greywhell)
+
+게임 *시작 이전 세계* — 도입/엔딩 회상 또는 잠재 튜토리얼 미션 배경.
+
+**프롬프트** (1536×1024):
+> Wide landscape illustration of a desolate gray wasteland named Greywhell at twilight, dark fantasy style. Endless cracked dry earth fading into ashen mist. Twisted dead trees lean in the wind. Far in the distance, a sheer cliff drops into a chasm where Shellholm harbor barely glimmers below. Faint violet aurora threads pulse in the sky, hinting at residual ether. No people. Mood: melancholy origin, the world before the journey. Color palette: ash grey, dust beige, faint violet aurora, deep shadow. No text. 1536x1024.
+
+### 5b.2 `public/npc/kai.png` — 주인공 카이 (자아·분신·엔딩용)
+
+플레이어의 *서사적 대리자*. 18세 견습생. 공허의 낙인이 가슴에 빛남.
+
+**프롬프트** (1024×1024):
+> Oil painting portrait of a young apprentice named Kai, 18 years old, head and shoulders, dark fantasy style. Wind-tousled black hair, dust-streaked face, alert dark eyes carrying both fear and resolve. Wears a torn travel cloak the color of ash, hood drawn back. On his chest a violet rune-mark glows softly through his tunic — the Void Seed. Behind him: blurred fog and the silhouette of cliffs. Mood: vulnerable but determined, the marked apprentice. Color palette: ash grey, soot black, violet glow, dim amber rim light. No text. 1024x1024.
+
+### 5b.3 `public/npc/ella.png` — 엘라 할머니 (도입 멘토)
+
+카이의 첫 후견인. 잿빛 황무지 마을의 원로. 모르간보다 *더 늙고 더 약함*, 하지만 의지는 강함.
+
+**프롬프트** (1024×1024):
+> Oil painting portrait of an elderly village elder named Ella, head and shoulders, dark fantasy style. Deep wrinkles, sparse white hair pulled back, thin shoulders bowed but spine straight. She wears a faded grey shawl over a homespun tunic, clutching a small dim ether crystal close to her heart. Soft tear-trail catches faint light. Behind her: a humble hut interior with sparse herbs hanging from beams. Mood: dignified frailty, fierce protective love. Color palette: dust grey, faded indigo shawl, gentle amber crystal glow. No text. 1024x1024.
+
+### 5b.4 `public/npc/lionel.png` — 감찰관 리오넬 (도입 적대자)
+
+중앙에서 파견된 차가운 감찰관. 카이를 *불결한 존재* 로 멸시.
+
+**프롬프트** (1024×1024):
+> Oil painting portrait of a cold imperial inspector named Lionel, head and shoulders, dark fantasy style. Sharp aquiline features, contemptuous half-smile, pale steel-blue eyes. Wears a tall-collared lacquered black uniform with silver epaulettes and a violet-and-gold sash of office. A polished badge at his throat catches harsh light. Behind him: armored cavalry silhouettes blur into ashen sky. Mood: aristocratic cruelty, disdain. Color palette: lacquer black, silver, blood-red sash threads, cold steel highlights. No text. 1024x1024.
+
+### 5b.5 `public/realm/void-altar.png` — 공허의 제단 (룬스카 보스 무대)
+
+룬스카 가장 깊은 자리. 보스 코덱스의 시험이 벌어지는 곳. 풀스크린 보스 컷씬 배경용.
+
+**프롬프트** (1536×1024):
+> Wide landscape illustration of an ancient void altar deep within the Runescar archive, dark fantasy style. A circular obsidian platform floats in cyan-lit abyss, ringed by tall pillars of stacked floating books. From the platform's center rises a black stone altar etched with glowing rune circles, behind which an enormous void-eye floats, lid half-closed. Streams of glowing parchment drift like incense. No people. Mood: sacred trial, cosmic stillness before judgment. Color palette: obsidian black, deep void blue, rune cyan, amber motes. No text. 1536x1024.
+
+---
+
+## 5d. Wave 3 — Oracle Tower (AI 시대 트랙) 자산 (3장)
+
+새 4번째 대륙의 풍경 + NPC + 보스. 동일 스타일 앵커 유지.
+
+### 5d.1 `public/realm/oracle-tower.png` — 기계 신탁의 탑
+
+**프롬프트** (1536×1024):
+> Wide landscape illustration of a tall cylindrical tower of polished obsidian called The Tower of Machine Oracles, dark fantasy meets retro-future. Concentric platforms rise into starless sky; each level shows faint cyan holographic glyphs floating in mid-air. At the top a vast eye-shaped lens stares down. Below the tower, ancient cables of woven silver thread snake into the ground. No people. Mood: sacred technology, oracle architecture from a forgotten future. Color palette: obsidian black, neon cyan glyphs, soft amber accent lamps, deep void. No text. 1536x1024.
+
+### 5d.2 `public/npc/memoria.png` — 사서 메모리아 (Oracle Tower 멘토)
+
+**프롬프트** (1024×1024):
+> Oil painting portrait of a serene mid-30s scribe named Memoria, head and shoulders, dark fantasy meets retro-future. Short ink-black hair, calm grey-cyan eyes, faint constellation tattoos at her temples. Wears a high-collared midnight-navy robe with cyan circuit embroidery along the shoulders. Holds a small floating prism of light over her open palm. Behind her: holographic glyphs drift through dim air. Mood: precise, gentle, futurist librarian. Color palette: midnight navy, neon cyan circuit lines, parchment skin, ember pin-lights. No text. 1024x1024.
+
+### 5d.3 `public/npc/mirror-kai.png` — 거울의 카이 (Oracle Tower 보스)
+
+Wave 2의 `kai.png` 와 *대칭 변주* — 같은 인물의 *거울 자아*.
+
+**프롬프트** (1024×1024):
+> Oil painting portrait of a mirror-image apprentice — visually similar to Kai but with key inversions — head and shoulders, dark fantasy style. Same youthful face but with cyan-glowing eyes instead of dark, a thin cracked-glass texture flickers across the skin. Wears the same torn cloak but with cyan rune-circuit threads woven through where Kai's was plain ash. The Void Seed on his chest shines reversed — cyan instead of violet. Behind him: a fractured mirror frame, shards floating mid-air. Mood: uncanny doppelgänger, neutral judging gaze. Color palette: cold cyan, fractured mirror silver, ash undertone, violet residue. No text. 1024x1024.
+
+---
+
+## 5c. Wave 2 사용 위치 (계획)
+
+| 자산 | 사용처 |
+|---|---|
+| `realm/wasteland.png` | 엔딩 크레딧 첫 verse 배경 / 메타 스토리 회상 / (선택) 튜토리얼 미션 배경 |
+| `npc/kai.png` | 엔딩 크레딧 마지막 verse / 시스템 메시지 자기 자신 대화 |
+| `npc/ella.png` | 도입 튜토리얼 미션 NPC (현재 없음, v2 컨텐츠) / 또는 셸홀름 미션 1 인트로 회상 |
+| `npc/lionel.png` | 셸홀름 미션 6 (소멸 주문) 또는 보스 시퀀스의 잿빛 황무지 회상 |
+| `realm/void-altar.png` | `runescar-09` boss-enter step 풀스크린 배경 |
+
+---
+
 ## 6. Codex CLI 호출 예시
 
 ```bash

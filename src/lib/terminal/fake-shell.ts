@@ -288,11 +288,189 @@ const COMMANDS: Record<
     return { output: "", ok: true };
   },
   clear: () => ({ output: "__CLEAR__", ok: true }),
+
+  // ─── AI 시대 도구 (Oracle Tower 미션용 가짜 평가기) ───
+  gh: (_state, args) => {
+    if (args.length === 0) {
+      return { output: "gh: GitHub CLI. 사용법: gh <command> [args]", ok: false };
+    }
+    const [sub, ...rest] = args;
+    if (sub === "auth" && rest[0] === "status") {
+      return {
+        output: [
+          "github.com",
+          "  ✓ Logged in to github.com account Reasonofmoon",
+          "  - Active account: true",
+          "  - Token scopes: repo, workflow",
+        ].join("\n"),
+        ok: true,
+      };
+    }
+    if (sub === "repo" && rest[0] === "view") {
+      return {
+        output: [
+          "Reasonofmoon/code-gamification",
+          "Description: 터미널·vim·언어를 RPG로 익히는 게이미피케이션 학습 앱.",
+          "URL: https://github.com/Reasonofmoon/code-gamification",
+        ].join("\n"),
+        ok: true,
+      };
+    }
+    if (sub === "pr" && rest[0] === "list") {
+      return {
+        output: [
+          "#12  feat: add ai era missions          oracle-tower",
+          "#11  feat: vimkeep scenarios            main",
+          "Showing 2 of 2 open pull requests",
+        ].join("\n"),
+        ok: true,
+      };
+    }
+    if (sub === "pr" && rest[0] === "create") {
+      return {
+        output: "https://github.com/Reasonofmoon/code-gamification/pull/13",
+        ok: true,
+      };
+    }
+    if (sub === "issue" && rest[0] === "list") {
+      return {
+        output: "no open issues",
+        ok: true,
+      };
+    }
+    return { output: `gh: 알 수 없는 서브커맨드 '${sub}'`, ok: false };
+  },
+
+  npx: (_state, args) => {
+    if (args.length === 0) {
+      return { output: "npx: 사용법: npx <package> [args]", ok: false };
+    }
+    const pkg = args[0];
+    if (pkg === "create-next-app") {
+      return {
+        output: [
+          "Creating a new Next.js app...",
+          "✓ Initialized in current directory.",
+          "✓ Installed 359 packages.",
+        ].join("\n"),
+        ok: true,
+      };
+    }
+    if (pkg === "shadcn@latest" || pkg === "shadcn") {
+      return {
+        output: "✓ shadcn/ui initialized. components.json created.",
+        ok: true,
+      };
+    }
+    if (pkg.startsWith("@anthropic-ai")) {
+      return {
+        output: "✓ Anthropic SDK installed via npx.",
+        ok: true,
+      };
+    }
+    return {
+      output: `Running one-time package: ${pkg}\n✓ done.`,
+      ok: true,
+    };
+  },
+
+  git: (_state, args) => {
+    if (args.length === 0) {
+      return { output: "git: 사용법: git <command> [args]", ok: false };
+    }
+    const [sub, ...rest] = args;
+    if (sub === "status") {
+      return {
+        output: [
+          "On branch main",
+          "Your branch is up to date with 'origin/main'.",
+          "",
+          "nothing to commit, working tree clean",
+        ].join("\n"),
+        ok: true,
+      };
+    }
+    if (sub === "log") {
+      return {
+        output: [
+          "270bef1 feat(assets): codex generates 9 remaining portraits",
+          "e1ff7ab feat(assets): introduce image asset pipeline",
+          "36d6719 feat(ui): apply Aethoria visual treatment",
+        ].join("\n"),
+        ok: true,
+      };
+    }
+    if (sub === "rebase") {
+      if (rest.includes("-i") || rest.includes("--interactive")) {
+        return {
+          output: [
+            "Successfully rebased and updated refs/heads/main.",
+            "(squash · reword · drop 으로 커밋 정리 완료)",
+          ].join("\n"),
+          ok: true,
+        };
+      }
+      return {
+        output: `Successfully rebased onto ${rest[0] ?? "main"}.`,
+        ok: true,
+      };
+    }
+    if (sub === "cherry-pick") {
+      return {
+        output: `[main abc1234] cherry-picked: ${rest[0] ?? "commit"}`,
+        ok: true,
+      };
+    }
+    if (sub === "bisect" && rest[0] === "start") {
+      return { output: "Bisecting started. git bisect good|bad 으로 좁혀가시오.", ok: true };
+    }
+    if (sub === "switch" || sub === "checkout") {
+      return { output: `Switched to branch '${rest[0] ?? "main"}'`, ok: true };
+    }
+    return { output: `git: 알 수 없는 서브커맨드 '${sub}'`, ok: false };
+  },
+
+  curl: (_state, args) => {
+    if (args.length === 0) {
+      return { output: "curl: URL이 필요합니다", ok: false };
+    }
+    const url = args.find((a) => a.startsWith("http"));
+    if (!url) {
+      return { output: "curl: 유효한 URL이 필요합니다", ok: false };
+    }
+    // 학습용 가짜 JSON 응답
+    return {
+      output: '{"id":1,"name":"Oracle","message":"Hello from the machine."}',
+      ok: true,
+    };
+  },
+
+  jq: (_state, args) => {
+    if (args.length === 0) {
+      return { output: "jq: 필터가 필요합니다", ok: false };
+    }
+    const filter = args.join(" ");
+    if (filter.includes(".name")) {
+      return { output: '"Oracle"', ok: true };
+    }
+    if (filter.includes(".id")) {
+      return { output: "1", ok: true };
+    }
+    if (filter === "." || filter === "'.'") {
+      return {
+        output: '{\n  "id": 1,\n  "name": "Oracle",\n  "message": "Hello from the machine."\n}',
+        ok: true,
+      };
+    }
+    return { output: "(jq: 학습용 단순 필터만 지원. 예: .name, .id, .)", ok: false };
+  },
+
   help: () => ({
     output: [
       "사용 가능한 주문:",
       "  pwd  ls  cd  mkdir  touch  echo  cat",
       "  mv  cp  rm  clear  help",
+      "  gh  npx  git  curl  jq    (AI 시대 도구)",
     ].join("\n"),
     ok: true,
   }),

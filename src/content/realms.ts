@@ -34,6 +34,17 @@ export const REALMS: readonly Realm[] = [
     requiredLevel: 12,
     trackKind: "language",
   },
+  {
+    id: "oracle-tower",
+    order: 4,
+    name: "기계 신탁의 탑",
+    subtitle: "The Tower of Machine Oracles",
+    emoji: "🪄",
+    flavor:
+      "공허의 조율자가 된 자에게만 열리는 새 시대의 탑. 옛 마법 너머에서 *기계 신탁* 과 대화하는 법을 배운다.",
+    requiredLevel: 18,
+    trackKind: "oracle",
+  },
 ] as const;
 
 export function getRealm(id: RealmId): Realm {

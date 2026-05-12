@@ -119,6 +119,7 @@ export default function MissionPage() {
       shellholm: missionsByRealm("shellholm").every((m) => clearedAfter.has(m.id)),
       vimkeep: missionsByRealm("vimkeep").every((m) => clearedAfter.has(m.id)),
       runescar: missionsByRealm("runescar").every((m) => clearedAfter.has(m.id)),
+      "oracle-tower": missionsByRealm("oracle-tower").every((m) => clearedAfter.has(m.id)),
     };
     if (realmsCleared.shellholm) earnedBadges.push("shellholm-champion");
     if (realmsCleared.vimkeep) {
@@ -126,6 +127,7 @@ export default function MissionPage() {
       earnedBadges.push("vim-sage");
     }
     if (realmsCleared.runescar) earnedBadges.push("runescar-champion");
+    // oracle-tower 챔피언 뱃지는 v2 — 일단 the-cursor-emperor 로 흡수
 
     const allCleared = ALL_MISSIONS.every((m) => clearedAfter.has(m.id));
     if (allCleared) earnedBadges.push("the-cursor-emperor");
