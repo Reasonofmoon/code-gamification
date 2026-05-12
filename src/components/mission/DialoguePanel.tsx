@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { ChevronRight } from "lucide-react";
 import type { DialogueStep } from "@/types/mission";
+import { npcImageFor } from "@/lib/npc-images";
 
 type Props = {
   step: DialogueStep;
@@ -15,11 +17,14 @@ type Props = {
  * 한 번에 한 줄씩 보여주고, 사용자가 클릭(또는 Space/Enter)으로 다음 줄.
  * 마지막 줄에서 한 번 더 클릭 → onAdvance() 호출 → 다음 step.
  *
- * 학습 페이싱의 핵심 — 보상이나 격려의 *호흡*을 만든다.
+ * NPC 초상화 (public/npc/<id>.png) 가 있으면 원형 슬롯에 표시하고,
+ * 없으면 step.speakerEmoji 이모지로 fallback.
  */
 export function DialoguePanel({ step, onAdvance }: Props) {
   const [lineIndex, setLineIndex] = useState(0);
+  const [imgFailed, setImgFailed] = useState(false);
   const isLastLine = lineIndex >= step.lines.length - 1;
+  const imgSrc = npcImageFor(step.speaker);
 
   const handleNext = () => {
     if (isLastLine) {
@@ -44,8 +49,20 @@ export function DialoguePanel({ step, onAdvance }: Props) {
       aria-label="다음 대사로 진행"
     >
       <div className="flex items-start gap-4">
-        <div className="flex-shrink-0 size-14 rounded-full bg-surface-strong border border-border flex items-center justify-center text-3xl">
-          {step.speakerEmoji ?? "🗣️"}
+        <div className="flex-shrink-0 size-16 rounded-full bg-surface-strong border border-border overflow-hidden flex items-center justify-center text-3xl ring-1 ring-accent/20">
+          {imgSrc && !imgFailed ? (
+            <Image
+              src={imgSrc}
+              alt={step.speaker}
+              width={64}
+              height={64}
+              className="size-full object-cover"
+              onError={() => setImgFailed(true)}
+              priority={false}
+            />
+          ) : (
+            <span>{step.speakerEmoji ?? "🗣️"}</span>
+          )}
         </div>
         <div className="flex-1 min-w-0">
           <div className="fantasy-title text-accent text-sm">

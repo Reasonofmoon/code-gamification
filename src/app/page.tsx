@@ -1,23 +1,41 @@
 "use client";
 
+import { useState } from "react";
+import Image from "next/image";
 import { REALMS } from "@/content/realms";
 import { ALL_MISSIONS, missionsByRealm } from "@/content/missions";
 import { RealmCard } from "@/components/game/RealmCard";
 import { useGameStore } from "@/lib/store/game-store";
 import { BADGES } from "@/lib/badges";
 import { ExportImportControls } from "@/components/game/ExportImportControls";
+import { WORLDMAP_IMAGE } from "@/lib/npc-images";
 
 export default function HomePage() {
   const level = useGameStore((s) => s.level);
   const missionResults = useGameStore((s) => s.missionResults);
   const badges = useGameStore((s) => s.badges);
+  const [mapFailed, setMapFailed] = useState(false);
 
   const clearedCount = Object.keys(missionResults).length;
   const totalCount = ALL_MISSIONS.length;
 
   return (
     <div className="space-y-10">
-      <section className="text-center space-y-3">
+      <section className="text-center space-y-3 relative">
+        {!mapFailed && (
+          <div className="relative h-44 sm:h-56 -mx-4 sm:-mx-6 mb-4 rounded-2xl overflow-hidden border border-border">
+            <Image
+              src={WORLDMAP_IMAGE}
+              alt="아카식의 지도"
+              fill
+              className="object-cover"
+              priority
+              sizes="(max-width: 768px) 100vw, 1200px"
+              onError={() => setMapFailed(true)}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
+          </div>
+        )}
         <p className="text-xs uppercase tracking-[0.3em] text-muted">
           A Quest of the Cursor
         </p>
