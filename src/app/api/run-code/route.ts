@@ -28,6 +28,19 @@ type Judge0Submission = {
   status: { id: number; description: string };
 };
 
+function encodeBase64(value: string): string {
+  return Buffer.from(value, "utf8").toString("base64");
+}
+
+function decodeBase64(value: string | null): string | null {
+  if (!value) return value;
+  try {
+    return Buffer.from(value, "base64").toString("utf8");
+  } catch {
+    return value;
+  }
+}
+
 async function runOnce(
   languageId: number,
   code: string,
@@ -42,7 +55,7 @@ async function runOnce(
     };
   }
   const res = await fetch(
-    `https://${apiHost}/submissions?base64_encoded=false&wait=true`,
+    `https://${apiHost}/submissions?base64_encoded=true&wait=true`,
     {
       method: "POST",
       headers: {
@@ -51,9 +64,9 @@ async function runOnce(
         "X-RapidAPI-Host": apiHost,
       },
       body: JSON.stringify({
-        source_code: code,
+        source_code: encodeBase64(code),
         language_id: languageId,
-        stdin,
+        stdin: encodeBase64(stdin),
         cpu_time_limit: 3,
         wall_time_limit: 5,
       }),
@@ -62,7 +75,14 @@ async function runOnce(
   if (!res.ok) {
     return { error: `Judge0 응답 오류: ${res.status}` };
   }
-  return (await res.json()) as Judge0Submission;
+  const result = (await res.json()) as Judge0Submission;
+  return {
+    ...result,
+    stdout: decodeBase64(result.stdout),
+    stderr: decodeBase64(result.stderr),
+    compile_output: decodeBase64(result.compile_output),
+    message: decodeBase64(result.message),
+  };
 }
 
 function normalize(s: string): string {
