@@ -21,6 +21,8 @@ export const badgeIdSchema = z.enum([
   "shellholm-champion",
   "vimkeep-champion",
   "runescar-champion",
+  "storybook-novice",
+  "storybook-champion",
   "the-cursor-emperor",
   // 잿빛 황무지 (튜토리얼)
   "wasteland-survivor",

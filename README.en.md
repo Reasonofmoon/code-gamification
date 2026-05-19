@@ -6,8 +6,8 @@
 
 # 👑 CodeQuest
 
-> Learn **terminal · vim · programming languages** as a **classical fantasy RPG**.
-> Three realms. Thirty-five missions. Twelve badges. One cursor to rule them all.
+> Learn **terminal · vim · programming languages · coding stories** as a **classical fantasy RPG**.
+> Six realms. Fifty-eight missions. Nineteen badges. One cursor to rule them all.
 
 **🎮 Live Demo**: <https://code-gamification.vercel.app>
 
@@ -23,9 +23,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-FFCE58?style=flat)](LICENSE)
 
 Inspired by [terminal-playground.netlify.app](https://terminal-playground.netlify.app/),
-expanded into a full **fantasy-RPG learning journey** across **5 realms with 47 missions**.
+expanded into a full **fantasy-RPG learning journey** across **6 realms with 58 missions**.
 Terminal commands as *apprentice spells*, vim motions as *sword forms*, programming languages
-as *ancient runes*, and modern AI-era tools (gh · git · AI SDK · streaming) as *machine oracles*.
+as *ancient runes*, coding stories as *storybook quests*, and modern AI-era tools
+(gh · git · AI SDK · streaming) as *machine oracles*.
 
 > 🖼️ Screenshots: see [`screenshots/`](screenshots/) (capture guide included).
 
@@ -45,13 +46,14 @@ as *ancient runes*, and modern AI-era tools (gh · git · AI SDK · streaming) a
 
 ## ✨ Highlights
 
-- **Five realms, one quest**
+- **Six realms, one quest**
   - 🌫️ **Greywhell Wastes** — prologue onboarding (Ella the elder, Lionel the inspector)
   - 🔮 **Shellholm Harbor** — terminal commands on a virtual filesystem
   - ⚔️ **Vimkeep, City of Blades** — Monaco + monaco-vim (5 chapters, real vim modes)
   - 📜 **Runescar Grand Archive** — JS / Python executed via Judge0
+  - 📚 **Storybook Grove** — time-book Python missions about the heroes' childhoods
   - 🪄 **Tower of Machine Oracles** — AI-era CLI & SDK (gh · git · npx · curl/jq · Anthropic SDK · streaming)
-- **47 missions, 18 badges, 5 dragon bosses, full-screen boss cutscenes**
+- **58 missions, 19 badges, 7 dragon bosses, full-screen boss cutscenes**
 - **Borrowed Aethoria worldview** — Akashic Map, Void Seed, the Akashic Examiner
 - **Diegetic system window UI** — `[퀘스트 완료]` `*띠링!*` style ResultModal
 - **Gamification stack** — XP, levels (1‑20), 1‑3 star rating, daily streak,
@@ -83,8 +85,8 @@ npm run dev
 # open http://localhost:3000
 ```
 
-The terminal and vim tracks work **without any keys**. The language track
-(Runescar) needs a Judge0 RapidAPI key — free tier covers 50 runs / day.
+The terminal and vim tracks work **without any keys**. The language tracks
+(Runescar and Storybook Grove) need a Judge0 RapidAPI key — free tier covers 50 runs / day.
 
 ## 🌐 Deploy
 
@@ -107,7 +109,7 @@ vercel --prod
 ```
 src/
 ├─ app/
-│  ├─ page.tsx                     # World map (3 realm cards)
+│  ├─ page.tsx                     # World map
 │  ├─ realm/[realmId]/page.tsx     # Dungeon list (missions)
 │  ├─ mission/[missionId]/page.tsx # Mission runner + lock guard
 │  └─ api/run-code/route.ts        # Judge0 proxy (maxDuration=10)
@@ -117,8 +119,8 @@ src/
 │  │           # ExportImportControls, DeployBadge
 │  └─ mission/ # TerminalPanel (XTerm), VimEditor (monaco-vim), CodeEditor (Judge0)
 ├─ content/
-│  ├─ realms.ts                    # Three Realm definitions
-│  └─ missions/                    # 35 missions split by track
+│  ├─ realms.ts                    # Realm definitions
+│  └─ missions/                    # missions split by track
 ├─ lib/
 │  ├─ store/game-store.ts          # Zustand + persist + hydration flag
 │  ├─ terminal/                    # fake-shell.ts + check.ts
@@ -135,7 +137,7 @@ src/
 3. **Server‑side Judge0 proxy** — The API key never reaches the browser.
    Vercel Functions wrap the call with Zod input validation and a 10‑second
    `maxDuration` cap.
-4. **TS objects as content store** — At 35 missions, a database is overkill.
+4. **TS objects as content store** — At this content scale, a database is overkill.
    Mission definitions live in `src/content/missions/*.ts`, fully typed and
    greppable.
 5. **Level‑up = realm unlock** — Not just a number. Progression is a gate that
@@ -152,17 +154,19 @@ src/
 4. Refresh → progress survives (localStorage).
 5. Clear all of Shellholm → level rises → Vimkeep unlocks at Lv.4.
 6. Finish Vimkeep 18 → `Vimkeep Champion` + `Vim Sage` simultaneously.
-7. Add Judge0 key → Runescar 1: `console.log('Hello, Runescar')` → PASS.
-8. Clear Runescar 9 (boss) → `The Cursor Emperor` → **ending credits** modal.
-9. World map footer → "Export" → JSON → another browser → "Import" → restored.
+7. Add Judge0 key → Storybook Grove 1: print `안녕, 아리아!` → PASS.
+8. Clear Storybook Grove 10 (advanced boss) → `Storybook Champion`.
+9. Clear every realm → `The Cursor Emperor` → **ending credits** modal.
+10. World map footer → "Export" → JSON → another browser → "Import" → restored.
 
-## 📜 The Twelve Badges
+## 📜 Badge Examples
 
 | Type | Badge | Trigger |
 |---|---|---|
 | Onboarding | ✨ First Spell | First mission cleared |
 | Onboarding | 🗡️ Vim Novice | First Vimkeep mission |
 | Onboarding | 🔯 Rune Reader | First Runescar mission |
+| Onboarding | 📖 Storybook Novice | First Storybook Grove mission |
 | Skill | ⚡ Speedrunner | Three‑star clear |
 | Skill | 🛡️ No‑Death Run | Cleared on first attempt |
 | Streak | 🔥 Streak 7 | 7 consecutive learning days |
@@ -170,8 +174,9 @@ src/
 | Champion | 🏆 Shellholm Champion | All Shellholm missions cleared |
 | Champion | 🏆 Vimkeep Champion | All Vimkeep missions cleared |
 | Champion | 🏆 Runescar Champion | All Runescar missions cleared |
+| Champion | 📚 Storybook Champion | All Storybook Grove missions cleared |
 | Mastery | 🧙 Vim Sage | All Vimkeep chapters mastered |
-| Finale | 👑 The Cursor Emperor | All 35 missions cleared → ending credits |
+| Finale | 👑 The Cursor Emperor | All 58 missions cleared → ending credits |
 
 ## 🚧 Trade‑offs (acknowledged)
 

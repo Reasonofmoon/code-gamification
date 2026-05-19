@@ -1,4 +1,5 @@
 import type { Mission } from "@/types/mission";
+import { PROMPT_FORGE_EXPECTED_STDOUT } from "@/content/prompt-forge";
 
 const MEMORIA = { speaker: "기계 신탁 사서 메모리아", emoji: "🪄" };
 const MIRROR = { speaker: "거울의 카이", emoji: "🪞" };
@@ -467,6 +468,67 @@ export const ORACLE_MISSIONS: readonly Mission[] = [
           "이 패턴이 ChatGPT·Claude·Cursor 가 모두 쓰는 *체감 속도의 비법* 입니다.",
           "그대의 여정은 *진짜로* 끝났습니다, 조율자여.",
           "도구는 끊임없이 새로 태어납니다 — 늘 깨어 있어라.",
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "oracle-10",
+    realmId: "oracle-tower",
+    order: 10,
+    title: "심화 ─ 동화 프롬프트 공방",
+    fantasyTitle: "심화 4장 — 「숨은 생각 대신 설계도를 새겨라」",
+    summary:
+      "오리지널 히어로 세계관으로 코딩 동화를 만드는 메타 프롬프트를 설계한다.",
+    isBoss: false,
+    xpReward: 220,
+    steps: [
+      {
+        id: "intro",
+        kind: "dialogue",
+        ...MEMORIA,
+        lines: [
+          "마지막으로 보여드릴 도구는 — *프롬프트 공방* 입니다.",
+          "좋은 신탁 주문은 숨은 생각을 요구하지 않습니다. 대신 독자가 볼 수 있는 *설계도* 를 남기지요.",
+          "`thinking_tag` 대신 `story_blueprint` 를 쓰세요. 이야기의 재료, 갈등, 반전, 코드 목표를 안전하게 드러내는 방식입니다.",
+          "또한 오래 살아남는 이야기는 빌린 이름보다 *자기만의 세계* 를 가집니다. 블록 히어로 팀은 오리지널이어야 합니다.",
+        ],
+      },
+      {
+        id: "challenge",
+        kind: "language",
+        briefing:
+          "게임 미션형 코딩 동화 메타 프롬프트에 필요한 7개 섹션을 한 줄씩 출력하라.",
+        hint:
+          "`sections` 배열을 만들고 `console.log(sections.join('\\n'))` 로 출력하세요.",
+        languageId: "javascript",
+        starterCode: [
+          "// 프롬프트 공방의 7개 설계 섹션을 순서대로 새겨라.",
+          "const sections = [",
+          "  'system',",
+          "  'persona',",
+          "  'context',",
+          "  // TODO: story_blueprint, output_style, quality_rules, mission_output",
+          "];",
+          "",
+          "console.log(sections.join('\\n'));",
+        ].join("\n"),
+        testCases: [
+          {
+            stdin: "",
+            expectedStdout: PROMPT_FORGE_EXPECTED_STDOUT,
+          },
+        ],
+      },
+      {
+        id: "outro",
+        kind: "dialogue",
+        ...MEMORIA,
+        lines: [
+          "좋습니다. 이제 그대는 단순히 코드를 쓰는 사람이 아니라, *배움을 생성하는 주문* 을 설계할 수 있습니다.",
+          "월드맵 위의 프롬프트 공방에서 완성된 메타 프롬프트를 확인하세요.",
+          "다음 시대의 미션은 — 그대가 직접 만든 이야기에서 시작될 것입니다.",
         ],
       },
     ],

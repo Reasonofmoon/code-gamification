@@ -74,6 +74,18 @@ export const BADGES: Record<BadgeId, BadgeDef> = {
     description: "룬스카의 모든 미션을 클리어했다.",
     emoji: "🏆",
   },
+  "storybook-novice": {
+    id: "storybook-novice",
+    name: "동화숲 첫 독자",
+    description: "코딩동화숲에서 첫 파이썬 이야기를 완주했다.",
+    emoji: "📖",
+  },
+  "storybook-champion": {
+    id: "storybook-champion",
+    name: "코딩동화 작가",
+    description: "코딩동화숲의 모든 파이썬 미션을 클리어했다.",
+    emoji: "📚",
+  },
   "the-cursor-emperor": {
     id: "the-cursor-emperor",
     name: "커서의 황제",

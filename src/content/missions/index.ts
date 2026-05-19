@@ -3,6 +3,7 @@ import { WASTELAND_MISSIONS } from "./wasteland";
 import { TERMINAL_MISSIONS } from "./terminal";
 import { VIM_MISSIONS } from "./vim";
 import { LANGUAGE_MISSIONS } from "./language";
+import { STORYBOOK_MISSIONS } from "./storybook";
 import { ORACLE_MISSIONS } from "./oracle";
 
 export const ALL_MISSIONS: readonly Mission[] = [
@@ -10,6 +11,7 @@ export const ALL_MISSIONS: readonly Mission[] = [
   ...TERMINAL_MISSIONS,
   ...VIM_MISSIONS,
   ...LANGUAGE_MISSIONS,
+  ...STORYBOOK_MISSIONS,
   ...ORACLE_MISSIONS,
 ];
 

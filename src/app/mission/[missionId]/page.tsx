@@ -23,12 +23,17 @@ import { useGameStore } from "@/lib/store/game-store";
 import { computeStars, xpForStars } from "@/lib/scoring";
 import type { BadgeId } from "@/types/player";
 import { cn } from "@/lib/utils";
+import type { Mission } from "@/types/mission";
 
 export default function MissionPage() {
   const params = useParams<{ missionId: string }>();
-  const router = useRouter();
   const mission = getMission(params.missionId);
   if (!mission) return notFound();
+  return <MissionRunner mission={mission} />;
+}
+
+function MissionRunner({ mission }: { mission: Mission }) {
+  const router = useRouter();
   const realm = getRealm(mission.realmId);
 
   const applyMissionClear = useGameStore((s) => s.applyMissionClear);
@@ -43,11 +48,6 @@ export default function MissionPage() {
   const [attempts, setAttempts] = useState(1);
   const [totalKeystrokes, setTotalKeystrokes] = useState(0);
   const [cutscenePassed, setCutscenePassed] = useState(false);
-
-  // step 전환 시 컷씬 표시 상태 리셋
-  useEffect(() => {
-    setCutscenePassed(false);
-  }, [stepIndex]);
 
   const [modal, setModal] = useState<{
     open: boolean;
@@ -121,12 +121,18 @@ export default function MissionPage() {
       const runeCleared = runeMissions.filter((m) => clearedAfter.has(m.id)).length;
       if (runeCleared === 1) earnedBadges.push("rune-reader");
     }
+    if (isFirstClear && mission.realmId === "storybook") {
+      const storyMissions = missionsByRealm("storybook");
+      const storyCleared = storyMissions.filter((m) => clearedAfter.has(m.id)).length;
+      if (storyCleared === 1) earnedBadges.push("storybook-novice");
+    }
 
     const realmsCleared: Record<RealmId, boolean> = {
       wasteland: missionsByRealm("wasteland").every((m) => clearedAfter.has(m.id)),
       shellholm: missionsByRealm("shellholm").every((m) => clearedAfter.has(m.id)),
       vimkeep: missionsByRealm("vimkeep").every((m) => clearedAfter.has(m.id)),
       runescar: missionsByRealm("runescar").every((m) => clearedAfter.has(m.id)),
+      storybook: missionsByRealm("storybook").every((m) => clearedAfter.has(m.id)),
       "oracle-tower": missionsByRealm("oracle-tower").every((m) => clearedAfter.has(m.id)),
     };
     if (realmsCleared.wasteland) earnedBadges.push("wasteland-survivor");
@@ -136,6 +142,7 @@ export default function MissionPage() {
       earnedBadges.push("vim-sage");
     }
     if (realmsCleared.runescar) earnedBadges.push("runescar-champion");
+    if (realmsCleared.storybook) earnedBadges.push("storybook-champion");
     if (realmsCleared["oracle-tower"]) {
       earnedBadges.push("oracle-tower-champion");
       earnedBadges.push("mirror-vanquished");
@@ -148,7 +155,7 @@ export default function MissionPage() {
       if (oracleCleared === 1) earnedBadges.push("oracle-novice");
     }
 
-    // 네 보스 모두 격파 시 dragon-slayer
+    // 모든 보스 격파 시 dragon-slayer
     const allBossesCleared = ALL_MISSIONS.filter((m) => m.isBoss).every((m) =>
       clearedAfter.has(m.id)
     );
@@ -189,6 +196,7 @@ export default function MissionPage() {
     if (isLastStep) {
       completeMission(newKeystrokes);
     } else {
+      setCutscenePassed(false);
       setStepIndex((i) => i + 1);
     }
   };
@@ -197,6 +205,7 @@ export default function MissionPage() {
     setAttempts((a) => a + 1);
     setStepIndex(0);
     setTotalKeystrokes(0);
+    setCutscenePassed(false);
     router.refresh();
   };
 
@@ -295,6 +304,7 @@ export default function MissionPage() {
             "boss-enter",
             "mirror-enter",
             "lionel-enter",
+            "glitch-return",
           ]);
           const isBossEntrance =
             mission.isBoss && BOSS_ENTRANCE_IDS.has(currentStep.id);

@@ -18,8 +18,8 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/Reasonofmoon/code-gamification?style=flat)](https://github.com/Reasonofmoon/code-gamification/commits/main)
 [![License: MIT](https://img.shields.io/badge/License-MIT-FFCE58?style=flat)](LICENSE)
 
-[참고 영감](https://terminal-playground.netlify.app/) 사이트의 컨셉을 **세 대륙의 RPG 모험**으로 발전시켰다.
-세 트랙(터미널 8 + vim 18 + 언어 9 = **35 미션 완성**)에 XP·레벨·뱃지·스트릭·엔딩 크레딧이 얹혀 있다.
+[참고 영감](https://terminal-playground.netlify.app/) 사이트의 컨셉을 **여섯 대륙의 RPG 모험**으로 발전시켰다.
+터미널·vim·언어·코딩동화·AI 도구·프롬프트 공방까지 **58 미션**에 XP·레벨·뱃지·스트릭·엔딩 크레딧이 얹혀 있다.
 
 ## 빠르게 시작
 
@@ -30,9 +30,9 @@ npm run dev
 # http://localhost:3000
 ```
 
-Judge0 키 없이도 **셸홀름(터미널)** 과 **빔킵(vim)** 미션은 전부 동작한다. **룬스카(언어)** 미션은 키가 필요하다.
+Judge0 키 없이도 **셸홀름(터미널)** 과 **빔킵(vim)** 미션은 전부 동작한다. **룬스카(언어)** 와 **코딩동화숲(Python)** 미션은 키가 필요하다.
 
-## 세 대륙 (Realms)
+## 여섯 대륙 (Realms)
 
 | 대륙 | 트랙 | 미션 수 | 잠금 해제 |
 |---|---|---|---|
@@ -40,16 +40,17 @@ Judge0 키 없이도 **셸홀름(터미널)** 과 **빔킵(vim)** 미션은 전�
 | 🔮 셸홀름 항구 | 터미널 명령어 (가상 셸) | 8 (보스 1) | Lv.0 |
 | ⚔️ 빔킵 검의 도시 | vim 모션·명령 (5개 챕터) | 18 (보스 1) | Lv.4 |
 | 📜 룬스카 원형도서관 | JS/Python (Judge0) | 9 (보스 1) | Lv.12 |
-| 🪄 기계 신탁의 탑 | AI 시대 도구 (gh · git · npx · AI SDK · 스트리밍) | 9 (보스 1) | Lv.18 |
-| **합계** | — | **47 / 47** | — |
+| 📚 코딩동화숲 | 기존 인물의 어린 시절을 다루는 Python 동화 미션 | 10 (보스 2) | Lv.0 |
+| 🪄 기계 신탁의 탑 | AI 시대 도구 (gh · git · npx · AI SDK · 스트리밍 · 프롬프트 공방) | 10 (보스 1) | Lv.18 |
+| **합계** | — | **58 / 58** | — |
 
 ## 게이미피케이션
 
 - **XP & 레벨** (Lv.1~20, 100 XP/level, Realm 해금 조건)
 - **별점 평가** (1~3성: 속도·정확도·키스트로크)
-- **뱃지 12종** — 진척(`First Spell`, `Vim Novice`, `Rune Reader`), 챔피언(`Shellholm/Vimkeep/Runescar Champion`, `Vim Sage`), 평가(`Speedrunner`, `No-Death Run`), 스트릭(`Streak 7/30`), 최종(`The Cursor Emperor`)
+- **뱃지 19종** — 진척(`First Spell`, `Vim Novice`, `Rune Reader`, `Storybook Novice`), 챔피언(`Shellholm/Vimkeep/Runescar/Storybook Champion`, `Vim Sage`), 평가(`Speedrunner`, `No-Death Run`), 스트릭(`Streak 7/30`), 최종(`The Cursor Emperor`)
 - **일일 스트릭**
-- **엔딩 크레딧** — 35 미션 모두 완주 시 등장하는 짧은 판타지 시
+- **엔딩 크레딧** — 58 미션 모두 완주 시 등장하는 짧은 판타지 시
 - **URL 직접 접근 잠금 검사** — 이전 미션 미클리어 시 Realm 페이지로 자동 리다이렉트
 - **JSON export/import** (기기 변경 안전망)
 - **로그인 없음** (localStorage 단일 저장)
@@ -61,6 +62,7 @@ Judge0 키 없이도 **셸홀름(터미널)** 과 **빔킵(vim)** 미션은 전�
 - **CodeEditor**: Monaco + `/api/run-code` Judge0 프록시. API 키는 서버 사이드에만 (클라이언트 비노출).
 - **상태**: Zustand + `persist` → localStorage.
 - **컨텐츠**: 미션 정의를 TS 객체로 (`src/content/missions/*.ts`).
+- **프롬프트 공방**: `/prompt-forge` 에서 코딩 동화 메타 프롬프트 템플릿을 제공.
 
 ## 디렉터리
 
@@ -75,7 +77,7 @@ src/
 │  ├─ game/                     XPBar·RealmCard·MissionCard·ResultModal·Hud·...
 │  └─ mission/                  TerminalPanel·VimEditor·CodeEditor
 ├─ content/
-│  ├─ realms.ts                 3 Realm 정의
+│  ├─ realms.ts                 6 Realm 정의
 │  └─ missions/                 트랙별 미션 데이터
 ├─ lib/
 │  ├─ store/game-store.ts       Zustand + persist
@@ -86,7 +88,7 @@ src/
 
 ## E2E 스모크 시나리오
 
-1. `npm run dev` → http://localhost:3000 → 세 Realm 카드 표시 (빔킵·룬스카는 잠금).
+1. `npm run dev` → http://localhost:3000 → 여섯 Realm 카드 표시 (빔킵·룬스카·기계 신탁의 탑은 잠금).
 2. 셸홀름 카드 클릭 → 미션 8개 카드. 1번만 잠금 해제, 나머지는 이전 미션 클리어가 필요.
 3. 1번 미션 진입 → 가상 셸에서 `pwd` Enter → 평가 통과 → ResultModal에서 ★·XP·뱃지(`First Spell`).
 4. **URL 직접 접근 차단 검증**: `/mission/shellholm-05` 로 직접 이동 → 이전 미션 미클리어 상태면 `/realm/shellholm` 으로 자동 리다이렉트.
@@ -94,8 +96,9 @@ src/
 6. 8개 미션 모두 클리어 → 레벨이 충분히 차면 빔킵 해금 → vim 미션 진입 → Monaco + `--NORMAL--` 인디케이터.
 7. 빔킵 18 미션 완주 → `Vimkeep Champion` + `Vim Sage` 동시 발급.
 8. 룬스카 첫 미션은 `.env.local` 의 Judge0 키가 필요. `console.log('Hello, Runescar')` 작성 → 실행 → PASS.
-9. 룬스카 9 미션(보스 포함) 완주 → `Runescar Champion` + `The Cursor Emperor` → **엔딩 크레딧 모달** 등장 (판타지 시 + 흐릿한 글로우).
-10. 월드맵 하단의 "내보내기" → JSON 다운로드 → 다른 브라우저에서 "가져오기" → 진행도 복원.
+9. 코딩동화숲 첫 미션 진입 → Python 변수 미션 `안녕, 아리아!` 출력 → `Storybook Novice`.
+10. 모든 Realm 완주 → `The Cursor Emperor` → **엔딩 크레딧 모달** 등장 (판타지 시 + 흐릿한 글로우).
+11. 월드맵 하단의 "내보내기" → JSON 다운로드 → 다른 브라우저에서 "가져오기" → 진행도 복원.
 
 ## v2 예정
 

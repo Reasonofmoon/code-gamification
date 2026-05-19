@@ -46,8 +46,19 @@ export const REALMS: readonly Realm[] = [
     trackKind: "language",
   },
   {
-    id: "oracle-tower",
+    id: "storybook",
     order: 4,
+    name: "코딩동화숲",
+    subtitle: "Storybook Grove",
+    emoji: "📚",
+    flavor:
+      "아카식의 지도가 펼쳐 보인 시간책의 숲. 카이와 엘라, 세렌, 리오넬의 어린 날이 파이썬 동화로 다시 빛난다.",
+    requiredLevel: 0,
+    trackKind: "language",
+  },
+  {
+    id: "oracle-tower",
+    order: 5,
     name: "기계 신탁의 탑",
     subtitle: "The Tower of Machine Oracles",
     emoji: "🪄",

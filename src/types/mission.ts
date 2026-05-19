@@ -5,6 +5,7 @@ export const realmIdSchema = z.enum([
   "shellholm",
   "vimkeep",
   "runescar",
+  "storybook",
   "oracle-tower",
 ]);
 export type RealmId = z.infer<typeof realmIdSchema>;

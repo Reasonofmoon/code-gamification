@@ -20,6 +20,13 @@ const NPC_NAME_TO_ID: Record<string, string> = {
   // Wave 3 — Oracle Tower (AI 시대 트랙)
   "기계 신탁 사서 메모리아": "memoria",
   "거울의 카이": "mirror-kai",
+  // Wave 4 — Storybook Grove (아카식 시간책)
+  "어린 엘라 아리아": "young-ella-aria",
+  "어린 리오넬 녹스": "young-lionel-nox",
+  "어린 카엘 볼트": "young-kael-bolt",
+  "어린 세렌 루미": "young-seren-lumi",
+  "어린 카이 픽스": "young-kai-pix",
+  "시간 낙서꾼 글리치": "glitch",
 };
 
 export function npcImageFor(speaker: string): string | null {
