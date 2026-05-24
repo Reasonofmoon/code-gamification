@@ -1,10 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Star, Lock, CheckCircle2, Skull } from "lucide-react";
 import type { Mission } from "@/types/mission";
 import type { MissionResult } from "@/types/player";
 import { cn } from "@/lib/utils";
+import { missionImageFor } from "@/lib/npc-images";
 
 export function MissionCard({
   mission,
@@ -17,13 +19,28 @@ export function MissionCard({
 }) {
   const cleared = Boolean(result);
   const stars = result?.stars ?? 0;
+  const imageSrc = missionImageFor(mission.id);
   const cardClass = cn(
-    "parchment relative p-5 transition-transform",
+    "parchment relative overflow-hidden p-5 transition-transform",
     locked && "opacity-50",
     !locked && "hover:-translate-y-0.5 cursor-pointer"
   );
   const content = (
     <div className={cardClass}>
+      {imageSrc && (
+        <>
+          <Image
+            src={imageSrc}
+            alt=""
+            fill
+            className="object-cover opacity-35 pointer-events-none"
+            sizes="(max-width: 640px) 100vw, 360px"
+            loading={mission.order <= 6 ? "eager" : "lazy"}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/55 to-black/25 pointer-events-none" />
+        </>
+      )}
+      <div className="relative">
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
           <div className="flex items-center gap-2 text-xs text-muted font-mono">
@@ -77,6 +94,7 @@ export function MissionCard({
         ) : (
           "도전 →"
         )}
+      </div>
       </div>
     </div>
   );

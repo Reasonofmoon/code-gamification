@@ -7,6 +7,7 @@ export const realmIdSchema = z.enum([
   "runescar",
   "storybook",
   "oracle-tower",
+  "forge-of-origin",
 ]);
 export type RealmId = z.infer<typeof realmIdSchema>;
 
@@ -23,7 +24,7 @@ export const realmSchema = z.object({
    * `oracle` = AI 시대 도구 (gh, git, npx, AI SDK 등).
    * 평가기는 terminal/language 재사용.
    */
-  trackKind: z.enum(["prologue", "terminal", "vim", "language", "oracle"]),
+  trackKind: z.enum(["prologue", "terminal", "vim", "language", "oracle", "forge"]),
 });
 export type Realm = z.infer<typeof realmSchema>;
 
@@ -37,6 +38,16 @@ const baseTerminalCheckSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("fsHasDir"), path: z.string() }),
   z.object({ type: z.literal("fsMissingPath"), path: z.string() }),
   z.object({ type: z.literal("commandUsed"), command: z.string() }),
+  z.object({ type: z.literal("gitRepoInitialized"), at: z.string() }),
+  z.object({ type: z.literal("gitNoRepoAt"), at: z.string() }),
+  z.object({ type: z.literal("gitStagedFile"), file: z.string() }),
+  z.object({ type: z.literal("gitCommitCount"), min: z.number().int().nonnegative() }),
+  z.object({ type: z.literal("gitCurrentBranch"), name: z.string() }),
+  z.object({ type: z.literal("gitRemoteExists"), name: z.string() }),
+  z.object({ type: z.literal("ghAuthScopeIncludes"), scope: z.string() }),
+  z.object({ type: z.literal("gitMergeResolved"), file: z.string().optional() }),
+  z.object({ type: z.literal("gitLastPush"), remote: z.string(), branch: z.string() }),
+  z.object({ type: z.literal("ghPrMerged"), number: z.number().int().positive().optional() }),
 ]);
 
 const terminalCheckSchema = z.union([
@@ -71,6 +82,26 @@ const terminalStepSchema = z.object({
   successWhen: terminalCheckSchema,
 });
 
+const terminalChainStepSchema = z.object({
+  id: z.string(),
+  kind: z.literal("terminal-chain"),
+  briefing: z.string(),
+  hint: z.string().optional(),
+  initialFs: z.record(z.string(), z.union([z.string(), z.null()])),
+  initialCwd: z.string().default("/"),
+  objectives: z
+    .array(
+      z.object({
+        id: z.string(),
+        label: z.string(),
+        commandPattern: z.string().optional(),
+        successWhen: terminalCheckSchema,
+        hint: z.string().optional(),
+      })
+    )
+    .min(1),
+});
+
 const vimStepSchema = z.object({
   id: z.string(),
   kind: z.literal("vim"),
@@ -102,12 +133,14 @@ const languageStepSchema = z.object({
 export const missionStepSchema = z.discriminatedUnion("kind", [
   dialogueStepSchema,
   terminalStepSchema,
+  terminalChainStepSchema,
   vimStepSchema,
   languageStepSchema,
 ]);
 export type MissionStep = z.infer<typeof missionStepSchema>;
 export type DialogueStep = z.infer<typeof dialogueStepSchema>;
 export type TerminalStep = z.infer<typeof terminalStepSchema>;
+export type TerminalChainStep = z.infer<typeof terminalChainStepSchema>;
 export type VimStep = z.infer<typeof vimStepSchema>;
 export type LanguageStep = z.infer<typeof languageStepSchema>;
 
@@ -134,6 +167,7 @@ export function detectMissionTrackKind(
   mission: Mission
 ): "terminal" | "vim" | "language" | "story" {
   for (const s of mission.steps) {
+    if (s.kind === "terminal-chain") return "terminal";
     if (s.kind !== "dialogue") return s.kind;
   }
   return "story";

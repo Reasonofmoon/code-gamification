@@ -13,25 +13,11 @@ import { isSoundEnabled, toggleSound, playSound } from "@/lib/sound";
  */
 export function SoundToggle() {
   const [enabled, setEnabled] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    setEnabled(isSoundEnabled());
+    const id = window.setTimeout(() => setEnabled(isSoundEnabled()), 0);
+    return () => window.clearTimeout(id);
   }, []);
-
-  if (!mounted) {
-    // 첫 렌더는 OFF 모양으로 통일 (hydration mismatch 회피)
-    return (
-      <button
-        aria-label="사운드 토글"
-        className="size-8 grid place-items-center rounded-lg text-muted/60"
-        disabled
-      >
-        <VolumeX className="size-4" />
-      </button>
-    );
-  }
 
   const handleClick = () => {
     const next = toggleSound();

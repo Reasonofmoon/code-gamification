@@ -57,7 +57,7 @@ export function EndingCredits({
             <Crown className="size-8" />
           </div>
           <p className="mt-4 text-xs uppercase tracking-[0.4em] text-muted">
-            Finale · The Cursor's Tale
+            Finale · The Cursor&apos;s Tale
           </p>
           <h2 className="mt-1 fantasy-title text-3xl glow-accent text-accent">
             커서의 황제

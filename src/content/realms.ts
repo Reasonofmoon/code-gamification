@@ -67,6 +67,17 @@ export const REALMS: readonly Realm[] = [
     requiredLevel: 18,
     trackKind: "oracle",
   },
+  {
+    id: "forge-of-origin",
+    order: 6,
+    name: "기원의 대장간",
+    subtitle: "Forge of Origin",
+    emoji: "🔨",
+    flavor:
+      "시간을 단조하는 대장장이 에버의 화로. 모든 모험가의 첫 작품(commit)이 이곳에서 벼려진다.",
+    requiredLevel: 0,
+    trackKind: "forge",
+  },
 ] as const;
 
 export function getRealm(id: RealmId): Realm {

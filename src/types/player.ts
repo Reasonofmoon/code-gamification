@@ -30,6 +30,12 @@ export const badgeIdSchema = z.enum([
   "oracle-novice",
   "oracle-tower-champion",
   "mirror-vanquished",
+  // Forge of Origin (Git/GitHub beginner track)
+  "first-repo",
+  "reset-survivor",
+  "branch-weaver",
+  "pr-master",
+  "origin-keeper",
   // 보스 전부 격파
   "dragon-slayer",
 ]);

@@ -1,3 +1,14 @@
+import {
+  createFakeGhState,
+  createFakeGitState,
+  dispatchGh,
+  dispatchGit,
+  removeGitDirAt,
+  seedGitFromFs,
+  type FakeGhState,
+  type FakeGitState,
+} from "./fake-git";
+
 export type FsSnapshot = Record<string, string | null>;
 
 export type ShellState = {
@@ -5,6 +16,8 @@ export type ShellState = {
   dirs: Set<string>;
   cwd: string;
   history: { command: string; output: string; ok: boolean }[];
+  git: FakeGitState;
+  gh: FakeGhState;
 };
 
 export function createShell(
@@ -22,12 +35,16 @@ export function createShell(
       files.set(path, value);
     }
   }
-  return {
+  const state: ShellState = {
     files,
     dirs,
     cwd: normalizeAbs(initialCwd),
     history: [],
+    git: createFakeGitState(),
+    gh: createFakeGhState(),
   };
+  seedGitFromFs(state);
+  return state;
 }
 
 function ensureDirChain(dirs: Set<string>, path: string) {
@@ -274,6 +291,7 @@ const COMMANDS: Record<
       }
       if (state.dirs.has(path)) {
         if (!flagR) return { output: `rm: ${path}: 디렉토리. -r 필요`, ok: false };
+        removeGitDirAt(state, path);
         const prefix = path + "/";
         for (const d of [...state.dirs]) {
           if (d === path || d.startsWith(prefix)) state.dirs.delete(d);
@@ -283,6 +301,7 @@ const COMMANDS: Record<
         }
         continue;
       }
+      removeGitDirAt(state, path);
       if (!flagF) return { output: `rm: ${path}: 경로가 없습니다`, ok: false };
     }
     return { output: "", ok: true };
@@ -290,56 +309,7 @@ const COMMANDS: Record<
   clear: () => ({ output: "__CLEAR__", ok: true }),
 
   // ─── AI 시대 도구 (Oracle Tower 미션용 가짜 평가기) ───
-  gh: (_state, args) => {
-    if (args.length === 0) {
-      return { output: "gh: GitHub CLI. 사용법: gh <command> [args]", ok: false };
-    }
-    const [sub, ...rest] = args;
-    if (sub === "auth" && rest[0] === "status") {
-      return {
-        output: [
-          "github.com",
-          "  ✓ Logged in to github.com account Reasonofmoon",
-          "  - Active account: true",
-          "  - Token scopes: repo, workflow",
-        ].join("\n"),
-        ok: true,
-      };
-    }
-    if (sub === "repo" && rest[0] === "view") {
-      return {
-        output: [
-          "Reasonofmoon/code-gamification",
-          "Description: 터미널·vim·언어를 RPG로 익히는 게이미피케이션 학습 앱.",
-          "URL: https://github.com/Reasonofmoon/code-gamification",
-        ].join("\n"),
-        ok: true,
-      };
-    }
-    if (sub === "pr" && rest[0] === "list") {
-      return {
-        output: [
-          "#12  feat: add ai era missions          oracle-tower",
-          "#11  feat: vimkeep scenarios            main",
-          "Showing 2 of 2 open pull requests",
-        ].join("\n"),
-        ok: true,
-      };
-    }
-    if (sub === "pr" && rest[0] === "create") {
-      return {
-        output: "https://github.com/Reasonofmoon/code-gamification/pull/13",
-        ok: true,
-      };
-    }
-    if (sub === "issue" && rest[0] === "list") {
-      return {
-        output: "no open issues",
-        ok: true,
-      };
-    }
-    return { output: `gh: 알 수 없는 서브커맨드 '${sub}'`, ok: false };
-  },
+  gh: (state, args) => dispatchGh(state, args),
 
   npx: (_state, args) => {
     if (args.length === 0) {
@@ -374,61 +344,7 @@ const COMMANDS: Record<
     };
   },
 
-  git: (_state, args) => {
-    if (args.length === 0) {
-      return { output: "git: 사용법: git <command> [args]", ok: false };
-    }
-    const [sub, ...rest] = args;
-    if (sub === "status") {
-      return {
-        output: [
-          "On branch main",
-          "Your branch is up to date with 'origin/main'.",
-          "",
-          "nothing to commit, working tree clean",
-        ].join("\n"),
-        ok: true,
-      };
-    }
-    if (sub === "log") {
-      return {
-        output: [
-          "270bef1 feat(assets): codex generates 9 remaining portraits",
-          "e1ff7ab feat(assets): introduce image asset pipeline",
-          "36d6719 feat(ui): apply Aethoria visual treatment",
-        ].join("\n"),
-        ok: true,
-      };
-    }
-    if (sub === "rebase") {
-      if (rest.includes("-i") || rest.includes("--interactive")) {
-        return {
-          output: [
-            "Successfully rebased and updated refs/heads/main.",
-            "(squash · reword · drop 으로 커밋 정리 완료)",
-          ].join("\n"),
-          ok: true,
-        };
-      }
-      return {
-        output: `Successfully rebased onto ${rest[0] ?? "main"}.`,
-        ok: true,
-      };
-    }
-    if (sub === "cherry-pick") {
-      return {
-        output: `[main abc1234] cherry-picked: ${rest[0] ?? "commit"}`,
-        ok: true,
-      };
-    }
-    if (sub === "bisect" && rest[0] === "start") {
-      return { output: "Bisecting started. git bisect good|bad 으로 좁혀가시오.", ok: true };
-    }
-    if (sub === "switch" || sub === "checkout") {
-      return { output: `Switched to branch '${rest[0] ?? "main"}'`, ok: true };
-    }
-    return { output: `git: 알 수 없는 서브커맨드 '${sub}'`, ok: false };
-  },
+  git: (state, args) => dispatchGit(state, args),
 
   curl: (_state, args) => {
     if (args.length === 0) {
@@ -479,6 +395,31 @@ const COMMANDS: Record<
 export function runCommand(state: ShellState, line: string): CommandResult {
   const trimmed = line.trim();
   if (trimmed === "") return { output: "", ok: true };
+  const segments = splitCompound(trimmed);
+  if (segments.length > 1) {
+    const outputs: string[] = [];
+    let ok = true;
+    for (const segment of segments) {
+      const result = runSingleCommand(state, segment.command, true);
+      if (result.output) outputs.push(result.output);
+      ok = result.ok;
+      if (!result.ok && segment.nextOperator === "&&") break;
+    }
+    return { output: outputs.join("\n"), ok };
+  }
+  return runSingleCommand(state, trimmed, true);
+}
+
+function runSingleCommand(
+  state: ShellState,
+  trimmed: string,
+  recordHistory: boolean
+): CommandResult {
+  const redirected = applyEchoRedirect(state, trimmed);
+  if (redirected) {
+    if (recordHistory) state.history.push({ command: trimmed, output: redirected.output, ok: redirected.ok });
+    return redirected;
+  }
   const tokens = tokenize(trimmed);
   const [cmd, ...args] = tokens;
   const handler = COMMANDS[cmd];
@@ -495,8 +436,46 @@ export function runCommand(state: ShellState, line: string): CommandResult {
       };
     }
   }
-  state.history.push({ command: trimmed, output: result.output, ok: result.ok });
+  if (recordHistory) state.history.push({ command: trimmed, output: result.output, ok: result.ok });
   return result;
+}
+
+function applyEchoRedirect(state: ShellState, line: string): CommandResult | null {
+  const match = line.match(/^echo\s+(.+?)\s*(>>|>)\s*(\S+)$/);
+  if (!match) return null;
+  const [, rawText, op, rawPath] = match;
+  const path = resolvePath(state, rawPath);
+  const parent = parentOf(path);
+  if (!state.dirs.has(parent)) return { output: `echo: ${parent}: 상위 경로가 없습니다`, ok: false };
+  const text = rawText.replace(/^['"]|['"]$/g, "");
+  const prev = state.files.get(path) ?? "";
+  state.files.set(path, op === ">>" && prev ? `${prev}\n${text}` : text);
+  return { output: "", ok: true };
+}
+
+function splitCompound(line: string): { command: string; nextOperator: "&&" | ";" | null }[] {
+  const parts: { command: string; nextOperator: "&&" | ";" | null }[] = [];
+  let buf = "";
+  let quote: string | null = null;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if ((ch === '"' || ch === "'") && quote === null) quote = ch;
+    else if (ch === quote) quote = null;
+    if (!quote && ch === "&" && line[i + 1] === "&") {
+      parts.push({ command: buf.trim(), nextOperator: "&&" });
+      buf = "";
+      i++;
+      continue;
+    }
+    if (!quote && ch === ";") {
+      parts.push({ command: buf.trim(), nextOperator: ";" });
+      buf = "";
+      continue;
+    }
+    buf += ch;
+  }
+  if (buf.trim()) parts.push({ command: buf.trim(), nextOperator: null });
+  return parts.filter((p) => p.command.length > 0);
 }
 
 export function commandsUsed(state: ShellState): string[] {

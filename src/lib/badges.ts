@@ -116,6 +116,36 @@ export const BADGES: Record<BadgeId, BadgeDef> = {
     description: "거울 속 또 다른 자신을 마주하고 이겼다.",
     emoji: "🪞",
   },
+  "first-repo": {
+    id: "first-repo",
+    name: "첫 저장소",
+    description: "기원의 대장간에서 첫 Git 저장소를 열었다.",
+    emoji: "🪙",
+  },
+  "reset-survivor": {
+    id: "reset-survivor",
+    name: "복구 생존자",
+    description: "잘못 붙인 Git 화로를 안전하게 철거하고 복구했다.",
+    emoji: "🔄",
+  },
+  "branch-weaver": {
+    id: "branch-weaver",
+    name: "가지 직조자",
+    description: "브랜치와 병합의 평행우주를 3성으로 통과했다.",
+    emoji: "🌿",
+  },
+  "pr-master": {
+    id: "pr-master",
+    name: "PR 장인",
+    description: "Pull Request를 만들고 병합까지 완료했다.",
+    emoji: "🌉",
+  },
+  "origin-keeper": {
+    id: "origin-keeper",
+    name: "기원의 수호자",
+    description: "기원의 대장간의 모든 Git/GitHub 미션을 마쳤다.",
+    emoji: "👑",
+  },
   "dragon-slayer": {
     id: "dragon-slayer",
     name: "용 사냥꾼",

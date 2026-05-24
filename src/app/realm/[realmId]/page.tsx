@@ -11,12 +11,12 @@ import { realmIdSchema } from "@/types/mission";
 
 export default function RealmPage() {
   const params = useParams<{ realmId: string }>();
+  const level = useGameStore((s) => s.level);
+  const missionResults = useGameStore((s) => s.missionResults);
   const parsed = realmIdSchema.safeParse(params.realmId);
   if (!parsed.success) return notFound();
   const realm = getRealm(parsed.data);
 
-  const level = useGameStore((s) => s.level);
-  const missionResults = useGameStore((s) => s.missionResults);
   const missions = missionsByRealm(realm.id);
 
   if (level < realm.requiredLevel) {

@@ -25,6 +25,10 @@ export function VimEditor({ step, onSuccess }: Props) {
   const successFiredRef = useRef(false);
   const [mode, setMode] = useState<string>("--NORMAL--");
   const [keystrokes, setKeystrokes] = useState(0);
+  const [assist, setAssist] = useState<{
+    kind: "hint" | "answer";
+    text: string;
+  } | null>(null);
 
   useEffect(() => {
     return () => {
@@ -37,15 +41,44 @@ export function VimEditor({ step, onSuccess }: Props) {
     const editorVal = editorRef.current?.getValue() ?? "";
     if (editorVal === step.targetText) {
       successFiredRef.current = true;
+      setAssist(null);
       onSuccess({ keystrokes });
     }
+  };
+
+  const updateAssist = (nextKeystrokes: number) => {
+    if (successFiredRef.current) return;
+    const editorVal = editorRef.current?.getValue() ?? step.initialText;
+    if (editorVal === step.targetText) return;
+    if (nextKeystrokes > step.parTwoStars) {
+      setAssist({ kind: "answer", text: step.targetText });
+    } else if (nextKeystrokes > step.parThreeStars && step.hint) {
+      setAssist({ kind: "hint", text: step.hint });
+    }
+  };
+
+  const resetForPractice = () => {
+    successFiredRef.current = false;
+    editorRef.current?.setValue(step.initialText);
+    setKeystrokes(0);
+    setAssist(null);
+    editorRef.current?.focus();
   };
 
   const handleMount = async (e: editor.IStandaloneCodeEditor) => {
     editorRef.current = e;
 
-    e.onKeyDown(() => setKeystrokes((k) => k + 1));
-    e.onDidChangeModelContent(() => checkSuccess());
+    e.onKeyDown(() =>
+      setKeystrokes((k) => {
+        const next = k + 1;
+        window.setTimeout(() => updateAssist(next), 0);
+        return next;
+      })
+    );
+    e.onDidChangeModelContent(() => {
+      checkSuccess();
+      window.setTimeout(() => updateAssist(keystrokes), 0);
+    });
 
     try {
       const monacoVim = await import("monaco-vim");
@@ -99,6 +132,35 @@ export function VimEditor({ step, onSuccess }: Props) {
           목표 키스트로크: ★★★ ≤ {step.parThreeStars} / ★★ ≤ {step.parTwoStars}
         </div>
       </div>
+      {assist && (
+        <div
+          className={
+            assist.kind === "answer"
+              ? "rounded-lg border border-amber-400/40 bg-amber-500/10 px-3 py-2 text-sm text-amber-100"
+              : "rounded-lg border border-cyan-400/30 bg-cyan-500/10 px-3 py-2 text-sm text-cyan-100"
+          }
+        >
+          <div className="font-semibold">
+            {assist.kind === "answer" ? "정답" : "힌트"}
+          </div>
+          {assist.kind === "answer" ? (
+            <>
+              <pre className="mt-2 whitespace-pre-wrap rounded bg-black/25 p-3 font-mono text-xs">
+                {assist.text}
+              </pre>
+              <button
+                type="button"
+                onClick={resetForPractice}
+                className="mt-2 rounded-md border border-amber-300/40 px-3 py-1 text-xs text-amber-100 hover:bg-amber-300/10"
+              >
+                처음 상태로 다시 연습
+              </button>
+            </>
+          ) : (
+            <code className="mt-1 block font-mono">{assist.text}</code>
+          )}
+        </div>
+      )}
     </div>
   );
 }

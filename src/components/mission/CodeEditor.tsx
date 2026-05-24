@@ -32,6 +32,32 @@ export function CodeEditor({ step, onSuccess }: Props) {
   const [code, setCode] = useState(step.starterCode);
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<RunResponse | null>(null);
+  const [failures, setFailures] = useState(0);
+  const [assist, setAssist] = useState<{
+    kind: "hint" | "answer";
+    text: string;
+  } | null>(null);
+
+  const answerFromHint = () => {
+    if (!step.hint) return null;
+    const codeBlock = step.hint.match(/```(?:\w+)?\n([\s\S]+?)```/);
+    if (codeBlock) return codeBlock[1].trim();
+    const inline = step.hint.match(/`([^`]+)`/);
+    return inline?.[1] ?? null;
+  };
+
+  const showAssistAfterFailure = () => {
+    const nextFailures = failures + 1;
+    setFailures(nextFailures);
+    if (nextFailures === 1 && step.hint) {
+      setAssist({ kind: "hint", text: step.hint });
+      return;
+    }
+    if (nextFailures >= 2) {
+      const answer = answerFromHint();
+      if (answer) setAssist({ kind: "answer", text: answer });
+    }
+  };
 
   const run = async () => {
     setBusy(true);
@@ -49,13 +75,17 @@ export function CodeEditor({ step, onSuccess }: Props) {
       const json: RunResponse = await res.json();
       setResult(json);
       if (json.passed) {
+        setAssist(null);
         onSuccess();
+      } else {
+        showAssistAfterFailure();
       }
     } catch (err) {
       setResult({
         ok: false,
         error: (err as Error).message || "네트워크 오류",
       });
+      showAssistAfterFailure();
     } finally {
       setBusy(false);
     }
@@ -130,6 +160,42 @@ export function CodeEditor({ step, onSuccess }: Props) {
             <div className="text-emerald-400 fantasy-title">
               ✓ 모든 시험 통과! 룬이 빛난다…
             </div>
+          )}
+        </div>
+      )}
+      {assist && (
+        <div
+          className={
+            assist.kind === "answer"
+              ? "rounded-lg border border-amber-400/40 bg-amber-500/10 px-3 py-2 text-sm text-amber-100"
+              : "rounded-lg border border-cyan-400/30 bg-cyan-500/10 px-3 py-2 text-sm text-cyan-100"
+          }
+        >
+          <div className="font-semibold">
+            {assist.kind === "answer" ? "정답" : "힌트"}
+          </div>
+          {assist.kind === "answer" ? (
+            <>
+              <pre className="mt-2 whitespace-pre-wrap rounded bg-black/25 p-3 font-mono text-xs">
+                {assist.text}
+              </pre>
+              <button
+                type="button"
+                onClick={() => {
+                  setCode(assist.text);
+                  setFailures(0);
+                  setAssist(null);
+                  setResult(null);
+                }}
+                className="mt-2 rounded-md border border-amber-300/40 px-3 py-1 text-xs text-amber-100 hover:bg-amber-300/10"
+              >
+                정답으로 채우고 다시 실행
+              </button>
+            </>
+          ) : (
+            <code className="mt-1 block whitespace-pre-wrap font-mono">
+              {assist.text}
+            </code>
           )}
         </div>
       )}

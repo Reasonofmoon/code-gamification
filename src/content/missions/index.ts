@@ -5,6 +5,7 @@ import { VIM_MISSIONS } from "./vim";
 import { LANGUAGE_MISSIONS } from "./language";
 import { STORYBOOK_MISSIONS } from "./storybook";
 import { ORACLE_MISSIONS } from "./oracle";
+import { FORGE_MISSIONS } from "./forge";
 
 export const ALL_MISSIONS: readonly Mission[] = [
   ...WASTELAND_MISSIONS,
@@ -13,6 +14,7 @@ export const ALL_MISSIONS: readonly Mission[] = [
   ...LANGUAGE_MISSIONS,
   ...STORYBOOK_MISSIONS,
   ...ORACLE_MISSIONS,
+  ...FORGE_MISSIONS,
 ];
 
 export function getMission(id: string): Mission | undefined {

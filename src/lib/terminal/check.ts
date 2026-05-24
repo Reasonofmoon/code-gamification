@@ -29,5 +29,43 @@ function evalBase(state: ShellState, check: BaseTerminalCheck): boolean {
       return !state.files.has(check.path) && !state.dirs.has(check.path);
     case "commandUsed":
       return commandsUsed(state).includes(check.command);
+    case "gitRepoInitialized":
+      return state.git.repos.has(check.at);
+    case "gitNoRepoAt":
+      return !state.git.repos.has(check.at);
+    case "gitStagedFile": {
+      return [...state.git.repos.values()].some((repo) =>
+        repo.staged.has(check.file)
+      );
+    }
+    case "gitCommitCount": {
+      return [...state.git.repos.values()].some(
+        (repo) => repo.commits.length >= check.min
+      );
+    }
+    case "gitCurrentBranch": {
+      return [...state.git.repos.values()].some((repo) => repo.head === check.name);
+    }
+    case "gitRemoteExists": {
+      return [...state.git.repos.values()].some((repo) =>
+        repo.remotes.has(check.name)
+      );
+    }
+    case "ghAuthScopeIncludes":
+      return state.gh.scopes.has(check.scope);
+    case "gitMergeResolved": {
+      return [...state.git.conflicts.values()].every((conflict) =>
+        check.file ? conflict.file !== check.file || conflict.resolved : conflict.resolved
+      );
+    }
+    case "gitLastPush":
+      return (
+        state.git.lastPushed?.remote === check.remote &&
+        state.git.lastPushed.branch === check.branch
+      );
+    case "ghPrMerged":
+      return state.gh.prs.some(
+        (pr) => pr.merged && (check.number === undefined || pr.number === check.number)
+      );
   }
 }

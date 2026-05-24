@@ -127,13 +127,14 @@ function MissionRunner({ mission }: { mission: Mission }) {
       if (storyCleared === 1) earnedBadges.push("storybook-novice");
     }
 
-    const realmsCleared: Record<RealmId, boolean> = {
+  const realmsCleared: Record<RealmId, boolean> = {
       wasteland: missionsByRealm("wasteland").every((m) => clearedAfter.has(m.id)),
       shellholm: missionsByRealm("shellholm").every((m) => clearedAfter.has(m.id)),
       vimkeep: missionsByRealm("vimkeep").every((m) => clearedAfter.has(m.id)),
       runescar: missionsByRealm("runescar").every((m) => clearedAfter.has(m.id)),
       storybook: missionsByRealm("storybook").every((m) => clearedAfter.has(m.id)),
       "oracle-tower": missionsByRealm("oracle-tower").every((m) => clearedAfter.has(m.id)),
+      "forge-of-origin": missionsByRealm("forge-of-origin").every((m) => clearedAfter.has(m.id)),
     };
     if (realmsCleared.wasteland) earnedBadges.push("wasteland-survivor");
     if (realmsCleared.shellholm) earnedBadges.push("shellholm-champion");
@@ -147,12 +148,28 @@ function MissionRunner({ mission }: { mission: Mission }) {
       earnedBadges.push("oracle-tower-champion");
       earnedBadges.push("mirror-vanquished");
     }
+    if (realmsCleared["forge-of-origin"]) earnedBadges.push("origin-keeper");
 
     // Oracle 첫 미션 클리어 시 oracle-novice
     if (isFirstClear && mission.realmId === "oracle-tower") {
       const oracleMissions = missionsByRealm("oracle-tower");
       const oracleCleared = oracleMissions.filter((m) => clearedAfter.has(m.id)).length;
       if (oracleCleared === 1) earnedBadges.push("oracle-novice");
+    }
+    if (isFirstClear && mission.id === "forge-04") earnedBadges.push("first-repo");
+    if (isFirstClear && mission.id === "forge-boss-3") earnedBadges.push("reset-survivor");
+    if (isFirstClear && (mission.id === "forge-14" || mission.id === "forge-15")) {
+      if (["forge-14", "forge-15"].every((id) => clearedAfter.has(id))) {
+        earnedBadges.push("pr-master");
+      }
+    }
+    if (
+      ["forge-11", "forge-12", "forge-boss-2"].every((id) => {
+        const result = missionResults[id];
+        return id === mission.id ? stars === 3 : result?.stars === 3;
+      })
+    ) {
+      earnedBadges.push("branch-weaver");
     }
 
     // 모든 보스 격파 시 dragon-slayer
@@ -258,7 +275,7 @@ function MissionRunner({ mission }: { mission: Mission }) {
               {i + 1}.{" "}
               {s.kind === "dialogue"
                 ? "대화"
-                : s.kind === "terminal"
+                : s.kind === "terminal" || s.kind === "terminal-chain"
                 ? "주문"
                 : s.kind === "vim"
                 ? "검술"
@@ -284,7 +301,7 @@ function MissionRunner({ mission }: { mission: Mission }) {
       {currentStep.kind !== "dialogue" && (
         <section className="parchment p-5">
           <div className="text-xs uppercase tracking-widest text-muted">
-            Step {stepIndex + 1} / {totalSteps} — {currentStep.kind === "terminal" ? "주문 시전" : currentStep.kind === "vim" ? "검술 수련" : "룬어 봉인"}
+            Step {stepIndex + 1} / {totalSteps} — {currentStep.kind === "terminal" || currentStep.kind === "terminal-chain" ? "주문 시전" : currentStep.kind === "vim" ? "검술 수련" : "룬어 봉인"}
           </div>
           <p className="mt-2 text-foreground/90">{currentStep.briefing}</p>
           {currentStep.hint && (
@@ -319,7 +336,7 @@ function MissionRunner({ mission }: { mission: Mission }) {
           }
           return <DialoguePanel step={currentStep} onAdvance={() => advance()} />;
         })()}
-        {currentStep.kind === "terminal" && (
+        {(currentStep.kind === "terminal" || currentStep.kind === "terminal-chain") && (
           <TerminalPanel step={currentStep} onSuccess={() => advance()} />
         )}
         {currentStep.kind === "vim" && (

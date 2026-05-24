@@ -37,8 +37,6 @@ export function BossStageCutscene({ mission, step, onContinue }: Props) {
     return () => clearTimeout(t);
   }, []);
 
-  const _ = mission; // mission 메타데이터는 v2에서 활용
-
   return (
     <div className="fixed inset-0 z-40 flex flex-col items-center justify-center p-6 bg-black/90 backdrop-blur-md cutscene-bg">
       {/* 시스템 메시지 띠링 */}
