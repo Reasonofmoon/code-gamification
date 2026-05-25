@@ -5,7 +5,7 @@ import { XPBar } from "./XPBar";
 import { StreakIndicator } from "./StreakIndicator";
 import { BadgeStrip } from "./BadgeStrip";
 import { SoundToggle } from "./SoundToggle";
-import { Crown, WandSparkles } from "lucide-react";
+import { BookOpen, Crown } from "lucide-react";
 
 export function Hud() {
   return (
@@ -16,12 +16,12 @@ export function Hud() {
           <span className="fantasy-title text-xl glow-accent">CodeQuest</span>
         </Link>
         <Link
-          href="/prompt-forge"
+          href="/glossary"
           className="hidden lg:inline-flex items-center gap-1.5 text-xs text-muted hover:text-foreground"
-          aria-label="프롬프트 공방으로 이동"
+          aria-label="용어 사전으로 이동"
         >
-          <WandSparkles className="size-3.5" />
-          프롬프트 공방
+          <BookOpen className="size-3.5" />
+          용어 사전
         </Link>
         <div className="ml-auto hidden sm:block">
           <XPBar />
