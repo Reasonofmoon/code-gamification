@@ -69,6 +69,7 @@ export function seedGitFromFs(state: ShellState) {
         root?: string;
         branch?: string;
         commits?: string[];
+        trackedFiles?: string[];
         remotes?: Record<string, string>;
         scopes?: string[];
         prs?: { title?: string; body?: string; branch?: string; merged?: boolean }[];
@@ -80,13 +81,16 @@ export function seedGitFromFs(state: ShellState) {
       for (const [name, url] of Object.entries(seed.remotes ?? {})) repo.remotes.set(name, url);
       for (const scope of seed.scopes ?? []) state.gh.scopes.add(scope);
       const commits = seed.commits ?? [];
+      const worktreeFiles = listWorktreeFiles(state, repo).filter((file) => !file.endsWith(".forge-git.json"));
       for (let i = commits.length - 1; i >= 0; i--) {
         const message = commits[i];
         const hash = fakeHash(repo.commits.length + 1, message);
-        repo.commits.unshift({ hash, message, branch: repo.head, files: listWorktreeFiles(state, repo) });
+        repo.commits.unshift({ hash, message, branch: repo.head, files: worktreeFiles });
       }
       if (repo.commits[0]) repo.branches.set(repo.head, repo.commits[0].hash);
-      for (const file of listWorktreeFiles(state, repo)) {
+      repo.trackedFiles.clear();
+      const filesToTrack = seed.trackedFiles ?? (commits.length > 0 ? worktreeFiles : []);
+      for (const file of filesToTrack) {
         repo.trackedFiles.set(file, state.files.get(join(root, file)) ?? "");
       }
       for (const pr of seed.prs ?? []) {
