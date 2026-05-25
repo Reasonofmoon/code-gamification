@@ -17,6 +17,7 @@ import { VimEditor } from "@/components/mission/VimEditor";
 import { CodeEditor } from "@/components/mission/CodeEditor";
 import { ReactLabPanel } from "@/components/mission/ReactLabPanel";
 import { DialoguePanel } from "@/components/mission/DialoguePanel";
+import { NpcCoachPanel } from "@/components/mission/NpcCoachPanel";
 import { BossStageCutscene } from "@/components/mission/BossStageCutscene";
 import { ResultModal } from "@/components/game/ResultModal";
 import { EndingCredits } from "@/components/game/EndingCredits";
@@ -302,20 +303,23 @@ function MissionRunner({ mission }: { mission: Mission }) {
 
       {/* 현재 step 의 briefing/hint (dialogue 가 아닐 때만) */}
       {currentStep.kind !== "dialogue" && (
-        <section className="parchment p-5">
-          <div className="text-xs uppercase tracking-widest text-muted">
-            Step {stepIndex + 1} / {totalSteps} — {currentStep.kind === "terminal" || currentStep.kind === "terminal-chain" ? "주문 시전" : currentStep.kind === "vim" ? "검술 수련" : currentStep.kind === "react-lab" ? "React 실습" : "룬어 봉인"}
-          </div>
-          <p className="mt-2 text-foreground/90">{currentStep.briefing}</p>
-          {currentStep.hint && (
-            <details className="mt-2 text-sm">
-              <summary className="cursor-pointer text-accent hover:text-accent-strong">
-                힌트 보기
-              </summary>
-              <p className="mt-2 text-muted">{currentStep.hint}</p>
-            </details>
-          )}
-        </section>
+        <div className="space-y-4">
+          <section className="parchment p-5">
+            <div className="text-xs uppercase tracking-widest text-muted">
+              Step {stepIndex + 1} / {totalSteps} — {currentStep.kind === "terminal" || currentStep.kind === "terminal-chain" ? "주문 시전" : currentStep.kind === "vim" ? "검술 수련" : currentStep.kind === "react-lab" ? "React 실습" : "룬어 봉인"}
+            </div>
+            <p className="mt-2 text-foreground/90">{currentStep.briefing}</p>
+            {currentStep.hint && (
+              <details className="mt-2 text-sm">
+                <summary className="cursor-pointer text-accent hover:text-accent-strong">
+                  힌트 보기
+                </summary>
+                <p className="mt-2 text-muted">{currentStep.hint}</p>
+              </details>
+            )}
+          </section>
+          <NpcCoachPanel mission={mission} step={currentStep} />
+        </div>
       )}
 
       <section key={currentStep.id}>
