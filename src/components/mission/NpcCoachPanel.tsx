@@ -237,6 +237,213 @@ const COMMAND_NOTES: {
   },
 ];
 
+const LANGUAGE_CONCEPT_NOTES: {
+  match: RegExp;
+  command: string;
+  analogy: string;
+  useful: string;
+  caution: string;
+}[] = [
+  {
+    match: /console\.log|print\(/i,
+    command: "출력",
+    analogy: "컴퓨터에게 생각한 답을 칠판에 적어 보라고 시키는 일이다.",
+    useful: "값이 제대로 만들어졌는지 확인하고, 프로그램의 결과를 사용자나 테스트에 보여준다.",
+    caution: "정답을 출력할 때는 공백, 줄바꿈, 철자가 하나만 달라도 테스트가 실패할 수 있다.",
+  },
+  {
+    match: /변수|hero_name|const |let | = /i,
+    command: "변수",
+    analogy: "이름표가 붙은 작은 상자다. 상자에 값을 넣어 두면 이름으로 다시 꺼낼 수 있다.",
+    useful: "같은 값을 여러 번 쓰거나, 계산 중간 결과에 의미 있는 이름을 붙일 때 쓴다.",
+    caution: "이름은 내용이 보이게 짓고, JavaScript의 `const`처럼 바꿀 수 없는 상자와 `let`처럼 바꿀 수 있는 상자를 구분하라.",
+  },
+  {
+    match: /if |elif|else|조건|validation|validate|locked|CLEAR_MISSION/i,
+    command: "조건문",
+    analogy: "갈림길 앞의 신호등이다. 상황을 보고 왼쪽 길, 오른쪽 길, 멈춤을 고른다.",
+    useful: "입력값, 잠금 상태, 점수, 행동 종류에 따라 프로그램이 다른 선택을 하게 만든다.",
+    caution: "조건은 위에서 아래로 검사된다. 더 좁고 중요한 조건을 먼저 확인해야 엉뚱한 길로 빠지지 않는다.",
+  },
+  {
+    match: /for |while|반복|FizzBuzz|range|forEach/i,
+    command: "반복문",
+    analogy: "우편배달부가 집집마다 같은 규칙으로 편지를 넣는 것과 같다.",
+    useful: "목록의 모든 값, 1부터 10까지의 숫자, 여러 기록을 하나씩 처리할 때 쓴다.",
+    caution: "시작과 끝 조건을 잘못 잡으면 하나를 빼먹거나 너무 많이 돌 수 있다.",
+  },
+  {
+    match: /function |def |함수|return|make_reply|greet|square|recommend/i,
+    command: "함수",
+    analogy: "이름을 붙인 자동판매기다. 재료를 넣으면 정해 둔 방식으로 결과를 돌려준다.",
+    useful: "같은 일을 여러 번 재사용하고, 복잡한 코드를 작은 약속으로 나눌 수 있다.",
+    caution: "`return`은 결과를 돌려주는 것이고, `print/console.log`는 화면에 보여주는 것이다. 둘을 섞어 생각하지 말라.",
+  },
+  {
+    match: /list|리스트|array|배열|scenes|scores|records|nums|arr|\[.*\]/i,
+    command: "리스트/배열",
+    analogy: "번호가 붙은 기차 칸이다. 첫 칸부터 차례대로 값을 싣고 꺼낼 수 있다.",
+    useful: "여러 이름, 점수, 기록, 미션을 순서 있게 묶어 다룰 때 쓴다.",
+    caution: "대부분의 언어에서 첫 번째 칸은 1번이 아니라 0번이다.",
+  },
+  {
+    match: /dict|dictionary|딕셔너리|snacks|gifts|get\(|객체|object|JSON\.parse/i,
+    command: "객체/딕셔너리",
+    analogy: "열쇠와 보물이 짝지어진 보관함이다. 이름이라는 열쇠로 값을 바로 찾는다.",
+    useful: "사용자 정보, API 응답, 설정값처럼 여러 속성을 이름으로 읽어야 할 때 쓴다.",
+    caution: "없는 열쇠를 바로 열면 오류가 날 수 있다. Python의 `.get()`처럼 기본값을 준비하면 안전하다.",
+  },
+  {
+    match: /filter|map|join|컴프리헨션|comprehension/i,
+    command: "고르기와 바꾸기",
+    analogy: "체로 필요한 것만 거르고, 도장으로 같은 모양의 이름표를 찍는 과정이다.",
+    useful: "많은 기록 중 조건에 맞는 항목만 남기고 화면에 필요한 형태로 바꿀 때 쓴다.",
+    caution: "원본을 고르는 단계와 결과 모양을 바꾸는 단계를 분리해서 읽으면 실수가 줄어든다.",
+  },
+  {
+    match: /async|await|Promise/i,
+    command: "async/await",
+    analogy: "음식을 주문하고 번호표를 들고 기다리는 일이다. 음식이 나오면 다음 행동을 이어 간다.",
+    useful: "API, 파일, AI 응답처럼 시간이 걸리는 값을 기다렸다가 자연스러운 순서로 처리한다.",
+    caution: "`await`는 `async` 함수 안에서 써야 하며, 기다리는 동안 실패할 가능성도 생각해야 한다.",
+  },
+  {
+    match: /reducer|state|selector|props|component|renderMissionCard/i,
+    command: "UI 상태",
+    analogy: "게임판의 말 위치와 점수판이다. 행동이 들어오면 규칙에 따라 다음 판으로 바뀐다.",
+    useful: "React 앱에서 사용자의 클릭, 미션 완료, 잠금 상태를 화면으로 바꾸는 핵심 감각이다.",
+    caution: "상태를 직접 망가뜨리기보다 새 상태를 만들어 돌려주는 습관이 예측 가능한 UI를 만든다.",
+  },
+  {
+    match: /yield|generator|제너레이터/i,
+    command: "제너레이터",
+    analogy: "책을 통째로 들지 않고 한 장씩 넘겨 주는 도서관 창구다.",
+    useful: "큰 데이터나 스트리밍처럼 한 번에 전부 담기 부담스러운 흐름을 조금씩 처리한다.",
+    caution: "제너레이터는 필요할 때 다음 값을 만든다. 한 번 소비한 흐름은 다시 처음부터 읽을 수 없을 수 있다.",
+  },
+  {
+    match: /decorator|@|wrapper|데코레이터/i,
+    command: "데코레이터",
+    analogy: "원래 함수에게 망토를 입혀 입장 검사나 기록 남기기 같은 행동을 덧붙이는 것이다.",
+    useful: "로그, 권한 검사, 캐시처럼 여러 함수 앞뒤에 반복되는 일을 깔끔하게 붙인다.",
+    caution: "망토가 너무 두꺼우면 원래 함수가 무슨 일을 하는지 읽기 어려워진다.",
+  },
+  {
+    match: /with open|context|컨텍스트|파일/i,
+    command: "컨텍스트 매니저",
+    analogy: "방에 들어갈 때 열쇠를 받고, 나올 때 자동으로 반납하는 관리자다.",
+    useful: "파일처럼 열고 닫아야 하는 자원을 안전하게 정리한다.",
+    caution: "파일 경로와 인코딩을 확인하라. 실제 앱에서는 읽기/쓰기 권한도 실패할 수 있다.",
+  },
+  {
+    match: /dataclass|sorted|sort|정렬|slice|reduce/i,
+    command: "정렬과 누적",
+    analogy: "카드를 점수순으로 줄 세운 뒤 앞에서 몇 장만 골라 합계를 내는 일이다.",
+    useful: "추천, 순위, 우선순위, 통계처럼 많은 후보를 비교하고 요약할 때 쓴다.",
+    caution: "정렬은 원본 순서를 바꿀 수 있다. JavaScript `sort`는 숫자 비교 함수를 넣어야 안전하다.",
+  },
+  {
+    match: /slice|s\[::-1\]|문자열|reverse/i,
+    command: "문자열/슬라이싱",
+    analogy: "긴 리본에서 원하는 구간만 자르거나 뒤집어 보는 기술이다.",
+    useful: "텍스트의 일부를 꺼내거나 순서를 바꾸고, 로그나 이름을 가공할 때 쓴다.",
+    caution: "시작, 끝, 간격의 의미를 작게 예시로 확인하면 헷갈리지 않는다.",
+  },
+];
+
+const VIM_CONCEPT_NOTES: {
+  match: RegExp;
+  command: string;
+  analogy: string;
+  useful: string;
+  caution: string;
+}[] = [
+  {
+    match: /h j k l|hjkl|\$|0|gg|G|:\{n\}|:5|이동|점프|보법/i,
+    command: "Vim 이동",
+    analogy: "마우스를 쓰지 않고 검 끝을 원하는 칸으로 옮기는 발놀림이다.",
+    useful: "커서를 빠르게 옮겨 수정할 위치에 정확히 도착한다.",
+    caution: "Vim은 모드가 중요하다. 이동하려면 먼저 `Esc`로 Normal 모드에 있어야 한다.",
+  },
+  {
+    match: /dd|dw|x|삭제|베기|잘라/i,
+    command: "Vim 삭제",
+    analogy: "가위의 크기를 고르는 일이다. `x`는 한 글자, `dw`는 단어, `dd`는 한 줄이다.",
+    useful: "필요 없는 글자, 단어, 줄을 빠르게 제거한다.",
+    caution: "대상을 먼저 확인하라. 그래도 실수했다면 `u`로 되돌리는 습관을 들여라.",
+  },
+  {
+    match: /i · a · o|Insert|입력|I |A | o | O /i,
+    command: "Vim 입력",
+    analogy: "검을 내려놓고 붓을 드는 순간이다. 이제 움직임이 아니라 글자가 들어간다.",
+    useful: "현재 위치 앞뒤나 새 줄에 텍스트를 추가한다.",
+    caution: "입력이 끝나면 `Esc`로 다시 Normal 모드에 돌아와야 다음 명령을 쓸 수 있다.",
+  },
+  {
+    match: /cw|변경|갈아/i,
+    command: "Vim 변경",
+    analogy: "낡은 표지판을 떼어내자마자 새 표지판을 쓰는 한 동작이다.",
+    useful: "단어를 지우고 바로 새 단어를 입력할 때 키 입력을 줄인다.",
+    caution: "변경 범위를 잘못 잡으면 예상보다 많이 지워질 수 있다.",
+  },
+  {
+    match: /yy|붙여넣기|복사| p|yank/i,
+    command: "Vim 복사/붙여넣기",
+    analogy: "도장을 찍기 위해 원본 무늬를 한 번 떠 두는 것이다.",
+    useful: "반복되는 줄이나 문장을 빠르게 복제한다.",
+    caution: "`p`는 현재 위치 뒤에 붙는다. 붙을 위치를 먼저 확인하라.",
+  },
+  {
+    match: /u · \.|되돌리기|반복|직전/i,
+    command: "Vim 되돌리기/반복",
+    analogy: "`u`는 시간을 한 칸 되감는 버튼이고, `.`은 방금 한 동작을 다시 누르는 버튼이다.",
+    useful: "실수를 복구하고 같은 편집을 빠르게 반복한다.",
+    caution: "반복은 강력하지만, 현재 커서 위치가 달라지면 결과도 달라진다.",
+  },
+  {
+    match: /Visual|비주얼|V |v |선택/i,
+    command: "Vim 선택",
+    analogy: "형광펜으로 범위를 칠한 뒤 한 번에 자르는 방식이다.",
+    useful: "여러 줄이나 특정 범위를 눈으로 확인하며 편집한다.",
+    caution: "선택 범위가 어디까지인지 보고 `d`, `>` 같은 동작을 실행하라.",
+  },
+  {
+    match: /f\{|f |t\{|문자 점프|표적/i,
+    command: "Vim 문자 점프",
+    analogy: "멀리 있는 표적 글자를 보고 그 자리로 단숨에 뛰는 기술이다.",
+    useful: "긴 줄 안에서 원하는 문자 근처로 빠르게 이동한다.",
+    caution: "찾을 문자가 현재 줄에 없으면 움직이지 않는다.",
+  },
+  {
+    match: /%|괄호|쌍/i,
+    command: "Vim 괄호 매칭",
+    analogy: "열린 문과 닫힌 문을 한 쌍으로 찾아 순간이동하는 것이다.",
+    useful: "함수, 조건문, 객체처럼 괄호로 묶인 코드 구조를 빠르게 파악한다.",
+    caution: "괄호가 깨져 있으면 짝을 찾지 못한다. 구조 오류를 의심하라.",
+  },
+  {
+    match: />|들여쓰기|자세/i,
+    command: "Vim 들여쓰기",
+    analogy: "문장들을 줄 맞춰 세우는 정렬 훈련이다.",
+    useful: "코드 블록의 구조를 읽기 쉽게 만든다.",
+    caution: "선택 범위를 잘못 잡으면 원하지 않는 줄까지 밀릴 수 있다.",
+  },
+  {
+    match: /qa|@a|매크로/i,
+    command: "Vim 매크로",
+    analogy: "내 손동작을 녹음해 작은 조수에게 반복 재생시키는 것이다.",
+    useful: "비슷한 수정이 여러 줄에 반복될 때 시간을 크게 줄인다.",
+    caution: "첫 동작이 틀리면 틀린 행동도 그대로 반복된다. 한 줄에서 먼저 검증하라.",
+  },
+  {
+    match: /:%s|검색치환|치환|STATUS/i,
+    command: "Vim 검색치환",
+    analogy: "문서 전체에 같은 오타 스티커를 찾아 새 스티커로 한 번에 갈아 붙이는 일이다.",
+    useful: "반복되는 단어, 접두사, 패턴을 파일 전체에서 빠르게 바꾼다.",
+    caution: "범위와 패턴을 너무 넓게 잡으면 바꾸면 안 되는 글자까지 바뀐다.",
+  },
+];
+
 function codeFromHint(hint?: string): string | null {
   if (!hint) return null;
   return hint.match(/`([^`]+)`/)?.[1] ?? null;
@@ -274,6 +481,30 @@ function noteForCommand(command: string, fallbackSpeaker: string): CoachNote {
   };
 }
 
+function textForStep(step: MissionStep): string {
+  if (step.kind === "terminal-chain") {
+    return [step.briefing, step.hint, ...step.objectives.flatMap((o) => [o.label, o.hint])].join("\n");
+  }
+  if (step.kind === "terminal") return [step.briefing, step.hint].join("\n");
+  if (step.kind === "language") {
+    return [step.briefing, step.hint, step.starterCode, step.languageId].join("\n");
+  }
+  if (step.kind === "vim") return [step.briefing, step.hint, step.initialText].join("\n");
+  if (step.kind === "react-lab") return [step.briefing, step.hint, step.labKind].join("\n");
+  return "";
+}
+
+function conceptNoteForStep(
+  step: MissionStep,
+  speaker: string,
+  entries: typeof LANGUAGE_CONCEPT_NOTES
+): CoachNote | null {
+  const text = textForStep(step);
+  const note = entries.find((entry) => entry.match.test(text));
+  if (!note) return null;
+  return { speaker, ...note };
+}
+
 function notesForStep(mission: Mission, step: MissionStep): CoachNote[] {
   const fallbackSpeaker = FALLBACK_BY_REALM[mission.realmId] ?? "기계 신탁 사서 메모리아";
   if (step.kind === "terminal" || step.kind === "terminal-chain") {
@@ -290,9 +521,12 @@ function notesForStep(mission: Mission, step: MissionStep): CoachNote[] {
   }
 
   if (step.kind === "language") {
+    const speaker = mission.realmId === "storybook" ? "사서장 세렌" : "글자드래곤 알파베타스";
+    const conceptNote = conceptNoteForStep(step, speaker, LANGUAGE_CONCEPT_NOTES);
+    if (conceptNote) return [conceptNote];
     return [
       {
-        speaker: mission.realmId === "storybook" ? "사서장 세렌" : "글자드래곤 알파베타스",
+        speaker,
         command: step.languageId === "javascript" ? "JavaScript 연습" : "Python 연습",
         analogy: step.languageId === "javascript"
           ? "JavaScript는 무대 뒤 조명 기사 같다. 버튼을 누르면 화면과 데이터가 바로 반응하게 만든다."
@@ -304,6 +538,8 @@ function notesForStep(mission: Mission, step: MissionStep): CoachNote[] {
   }
 
   if (step.kind === "vim") {
+    const conceptNote = conceptNoteForStep(step, "검사부 카엘", VIM_CONCEPT_NOTES);
+    if (conceptNote) return [conceptNote];
     return [
       {
         speaker: "검사부 카엘",
@@ -316,15 +552,37 @@ function notesForStep(mission: Mission, step: MissionStep): CoachNote[] {
   }
 
   if (step.kind === "react-lab") {
-    return [
-      {
+    const noteByKind: Record<typeof step.labKind, CoachNote> = {
+      "component-props": {
         speaker: "글자드래곤 알파베타스",
-        command: "React 실습",
-        analogy: "React 컴포넌트는 레고 블록이고 state는 블록 안의 작은 스위치다. 스위치가 바뀌면 화면 모양도 바뀐다.",
-        useful: "컴포넌트, props, state를 이용해 화면이 데이터와 이벤트에 반응하는 방식을 익힌다.",
-        caution: "화면만 맞추지 말고 상태가 어디서 시작해 어떤 이벤트로 바뀌는지 추적하라.",
+        command: "React props",
+        analogy: "컴포넌트는 와플 기계이고 props는 반죽과 토핑이다. 같은 기계도 재료가 다르면 다른 와플이 나온다.",
+        useful: "같은 화면 조각을 여러 데이터로 재사용할 수 있게 만든다.",
+        caution: "props는 부모가 건네준 값이다. 자식이 마음대로 바꾸기보다 받은 값으로 그리는 데 집중하라.",
       },
-    ];
+      "state-event": {
+        speaker: "글자드래곤 알파베타스",
+        command: "React state/event",
+        analogy: "state는 방의 전등 스위치이고 event는 손가락이다. 클릭하면 스위치가 바뀌고 방의 모습이 달라진다.",
+        useful: "버튼 클릭, 입력, 완료 같은 사용자 행동에 화면이 반응하게 만든다.",
+        caution: "상태 변경은 이전 값을 기준으로 일어날 수 있다. 여러 번 누르는 경우를 생각하라.",
+      },
+      "conditional-render": {
+        speaker: "글자드래곤 알파베타스",
+        command: "조건부 렌더링",
+        analogy: "무대 감독이 장면에 맞는 배우만 무대 위로 올리는 일이다.",
+        useful: "잠금, 로딩, 오류, 힌트처럼 상태에 따라 다른 화면을 보여준다.",
+        caution: "조건이 false일 때 무엇이 보이지 않아야 하는지도 함께 확인하라.",
+      },
+      "import-export": {
+        speaker: "글자드래곤 알파베타스",
+        command: "import/export",
+        analogy: "도서관에서 책을 분류해 꽂고, 필요한 방에서 정확한 책을 빌려 오는 규칙이다.",
+        useful: "컴포넌트를 파일별로 나누고 필요한 곳에서 재사용하게 한다.",
+        caution: "이름 내보내기와 기본 내보내기를 섞으면 import 문이 쉽게 틀린다.",
+      },
+    };
+    return [noteByKind[step.labKind]];
   }
 
   return [];
