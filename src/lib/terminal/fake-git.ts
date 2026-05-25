@@ -337,15 +337,11 @@ function gitCommit(state: ShellState, args: string[]): CommandResult {
 
 function gitLog(state: ShellState): CommandResult {
   const repo = findRepo(state);
-  if (!repo || repo.commits.length === 0) {
-    return {
-      output: [
-        "270bef1 feat(assets): codex generates 9 remaining portraits",
-        "e1ff7ab feat(assets): introduce image asset pipeline",
-        "36d6719 feat(ui): apply Aethoria visual treatment",
-      ].join("\n"),
-      ok: true,
-    };
+  if (!repo) {
+    return { output: "fatal: not a git repository", ok: false };
+  }
+  if (repo.commits.length === 0) {
+    return { output: `fatal: your current branch '${repo.head}' does not have any commits yet`, ok: false };
   }
   return { output: repo.commits.map((c) => `${c.hash} ${c.message}`).join("\n"), ok: true };
 }
