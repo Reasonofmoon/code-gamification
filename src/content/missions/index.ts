@@ -6,6 +6,7 @@ import { LANGUAGE_MISSIONS } from "./language";
 import { STORYBOOK_MISSIONS } from "./storybook";
 import { ORACLE_MISSIONS } from "./oracle";
 import { FORGE_MISSIONS } from "./forge";
+import { REACT_WORKSHOP_MISSIONS } from "./react-workshop";
 
 export const ALL_MISSIONS: readonly Mission[] = [
   ...WASTELAND_MISSIONS,
@@ -15,6 +16,7 @@ export const ALL_MISSIONS: readonly Mission[] = [
   ...STORYBOOK_MISSIONS,
   ...ORACLE_MISSIONS,
   ...FORGE_MISSIONS,
+  ...REACT_WORKSHOP_MISSIONS,
 ];
 
 export function getMission(id: string): Mission | undefined {

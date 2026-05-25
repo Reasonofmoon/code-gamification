@@ -9,6 +9,9 @@ import { useGameStore } from "@/lib/store/game-store";
 import { BADGES } from "@/lib/badges";
 import { ExportImportControls } from "@/components/game/ExportImportControls";
 import { WORLDMAP_IMAGE } from "@/lib/npc-images";
+import { ProgressOverview } from "@/components/game/ProgressOverview";
+import { ProductionReadinessPanel } from "@/components/game/ProductionReadinessPanel";
+import { WorldStoryPanel } from "@/components/game/WorldStoryPanel";
 
 export default function HomePage() {
   const level = useGameStore((s) => s.level);
@@ -54,6 +57,12 @@ export default function HomePage() {
           진행도 {clearedCount} / {totalCount} 미션 · 뱃지 {badges.length} / {Object.keys(BADGES).length}
         </div>
       </section>
+
+      <WorldStoryPanel />
+
+      <ProgressOverview />
+
+      <ProductionReadinessPanel />
 
       <section className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {REALMS.map((realm) => {

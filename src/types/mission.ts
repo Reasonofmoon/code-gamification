@@ -130,12 +130,26 @@ const languageStepSchema = z.object({
     .min(1),
 });
 
+const reactLabStepSchema = z.object({
+  id: z.string(),
+  kind: z.literal("react-lab"),
+  briefing: z.string(),
+  hint: z.string().optional(),
+  labKind: z.enum([
+    "component-props",
+    "state-event",
+    "conditional-render",
+    "import-export",
+  ]),
+});
+
 export const missionStepSchema = z.discriminatedUnion("kind", [
   dialogueStepSchema,
   terminalStepSchema,
   terminalChainStepSchema,
   vimStepSchema,
   languageStepSchema,
+  reactLabStepSchema,
 ]);
 export type MissionStep = z.infer<typeof missionStepSchema>;
 export type DialogueStep = z.infer<typeof dialogueStepSchema>;
@@ -143,6 +157,7 @@ export type TerminalStep = z.infer<typeof terminalStepSchema>;
 export type TerminalChainStep = z.infer<typeof terminalChainStepSchema>;
 export type VimStep = z.infer<typeof vimStepSchema>;
 export type LanguageStep = z.infer<typeof languageStepSchema>;
+export type ReactLabStep = z.infer<typeof reactLabStepSchema>;
 
 // ──────────────────────────────────────────────────────────
 // Mission
@@ -165,7 +180,7 @@ export type MissionId = Mission["id"];
 /** 미션이 어떤 트랙(검증 종류)인지 — 첫 challenge step 기준 */
 export function detectMissionTrackKind(
   mission: Mission
-): "terminal" | "vim" | "language" | "story" {
+): "terminal" | "vim" | "language" | "react-lab" | "story" {
   for (const s of mission.steps) {
     if (s.kind === "terminal-chain") return "terminal";
     if (s.kind !== "dialogue") return s.kind;

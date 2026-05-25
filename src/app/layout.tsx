@@ -5,6 +5,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { Hud } from "@/components/game/Hud";
 import { DeployBadge } from "@/components/game/DeployBadge";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,14 +34,25 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <a href="#main-content" className="skip-link">
+          본문으로 건너뛰기
+        </a>
         <Hud />
-        <main className="flex-1 mx-auto max-w-6xl w-full px-4 sm:px-6 py-8">
+        <main
+          id="main-content"
+          className="flex-1 mx-auto max-w-6xl w-full px-4 sm:px-6 py-8"
+        >
           {children}
         </main>
         <footer className="border-t border-border py-4 text-xs text-muted">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-2">
             <div>CodeQuest · localStorage 진행도 · 가상 셸 학습 환경</div>
-            <DeployBadge />
+            <div className="flex items-center gap-3">
+              <Link href="/privacy" className="hover:text-foreground">
+                개인정보
+              </Link>
+              <DeployBadge />
+            </div>
           </div>
         </footer>
         <Analytics />

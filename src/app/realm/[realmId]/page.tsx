@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { getRealm } from "@/content/realms";
 import { missionsByRealm } from "@/content/missions";
 import { MissionCard } from "@/components/game/MissionCard";
+import { RealmStoryBridge } from "@/components/game/RealmStoryBridge";
 import { useGameStore } from "@/lib/store/game-store";
 import { realmIdSchema } from "@/types/mission";
 
@@ -58,6 +59,8 @@ export default function RealmPage() {
           </div>
         </div>
       </section>
+
+      <RealmStoryBridge realmId={realm.id} />
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {missions.map((m, idx) => {

@@ -40,6 +40,9 @@ yarn-error.log*
 # codex CLI artifacts
 .codex-*.log
 .codex-*.err.log
+.factory_inspect.json
+.factory_atlas/
+.factory_run/
 
 # typescript
 *.tsbuildinfo

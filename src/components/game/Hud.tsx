@@ -11,13 +11,14 @@ export function Hud() {
   return (
     <header className="sticky top-0 z-20 backdrop-blur-md bg-background/70 border-b border-border">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 py-3 flex items-center gap-6">
-        <Link href="/" className="flex items-center gap-2 group">
+        <Link href="/" className="flex items-center gap-2 group" aria-label="CodeQuest 홈">
           <Crown className="size-5 text-accent group-hover:text-accent-strong" />
           <span className="fantasy-title text-xl glow-accent">CodeQuest</span>
         </Link>
         <Link
           href="/prompt-forge"
           className="hidden lg:inline-flex items-center gap-1.5 text-xs text-muted hover:text-foreground"
+          aria-label="프롬프트 공방으로 이동"
         >
           <WandSparkles className="size-3.5" />
           프롬프트 공방

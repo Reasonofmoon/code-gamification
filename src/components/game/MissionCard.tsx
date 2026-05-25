@@ -20,6 +20,10 @@ export function MissionCard({
   const cleared = Boolean(result);
   const stars = result?.stars ?? 0;
   const imageSrc = missionImageFor(mission.id);
+  const isBridge =
+    mission.id.includes("bridge") ||
+    mission.id.includes("review") ||
+    mission.id.includes("remote-check");
   const cardClass = cn(
     "parchment relative overflow-hidden p-5 transition-transform",
     locked && "opacity-50",
@@ -48,6 +52,11 @@ export function MissionCard({
             {mission.isBoss && (
               <span className="inline-flex items-center gap-1 text-danger">
                 <Skull className="size-3" /> BOSS
+              </span>
+            )}
+            {isBridge && !mission.isBoss && (
+              <span className="inline-flex items-center rounded-full border border-accent/40 px-1.5 py-0.5 text-[10px] text-accent">
+                BRIDGE
               </span>
             )}
             {cleared && (

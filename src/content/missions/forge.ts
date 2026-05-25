@@ -180,9 +180,62 @@ export const FORGE_MISSIONS: readonly Mission[] = [
     ],
   },
   {
-    id: "forge-boss-1",
+    id: "forge-07-review",
     realmId: "forge-of-origin",
     order: 8,
+    title: "단조 흔적 읽기",
+    fantasyTitle: "기원의 대장간 7.5장 — 「깨끗한 작업대」",
+    summary: "커밋 뒤 작업 트리가 깨끗한지 확인하고 로그로 되돌아갈 지점을 읽는다.",
+    isBoss: false,
+    xpReward: 60,
+    steps: [
+      {
+        id: "intro",
+        kind: "dialogue",
+        ...EVER,
+        lines: [
+          "첫 커밋을 했다고 바로 전장에 나가면 안 된다.",
+          "장인은 단조 뒤 작업대가 깨끗한지 보고, 시간 일지에 못이 제대로 박혔는지 확인한다.",
+          "이 습관이 있어야 그렘의 장난도 실수와 기록으로 나누어 볼 수 있다.",
+        ],
+      },
+      chain(
+        "challenge",
+        "`git status`로 작업 트리가 깨끗한지 확인하고, `git log`로 첫 커밋을 다시 읽어라.",
+        repoSeed("/quest/git-quest", {}, { commits: ["first"] }),
+        "/quest/git-quest",
+        [
+          {
+            id: "status-clean",
+            label: "깨끗한 작업대 확인",
+            commandPattern: "^git\\s+status$",
+            successWhen: { type: "lastOutputMatches", pattern: "working tree clean" },
+            hint: "`git status`",
+          },
+          {
+            id: "log-read",
+            label: "첫 기록 읽기",
+            commandPattern: "^git\\s+log$",
+            successWhen: { type: "lastOutputMatches", pattern: "first" },
+            hint: "`git log`",
+          },
+        ],
+        "`git status`는 지금 할 일이 남았는지, `git log`는 돌아갈 시간 지점을 보여준다."
+      ),
+      {
+        id: "outro",
+        kind: "dialogue",
+        ...EVER,
+        lines: [
+          "좋다. 작업대와 일지를 함께 보는 손이면 다음 시험을 버틸 수 있다.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "forge-boss-1",
+    realmId: "forge-of-origin",
+    order: 9,
     title: "그렘의 첫 시험",
     fantasyTitle: "보스 1 — 「망각의 add」",
     summary: "파일 하나만 add한 실수를 확인하고, 누락 파일을 별도 커밋으로 복구한다.",
@@ -202,7 +255,7 @@ export const FORGE_MISSIONS: readonly Mission[] = [
   {
     id: "forge-08",
     realmId: "forge-of-origin",
-    order: 9,
+    order: 10,
     title: "신탁과 악수",
     fantasyTitle: "기원의 대장간 8장 — 「repo 권한」",
     summary: "GitHub CLI 인증 scope 문제를 확인하고 repo 권한을 추가한다.",
@@ -219,7 +272,7 @@ export const FORGE_MISSIONS: readonly Mission[] = [
   {
     id: "forge-09",
     realmId: "forge-of-origin",
-    order: 10,
+    order: 11,
     title: "하늘다리 놓기",
     fantasyTitle: "기원의 대장간 9장 — 「origin 생성」",
     summary: "GitHub 원격 저장소를 만들고 origin remote를 연결한다.",
@@ -239,9 +292,48 @@ export const FORGE_MISSIONS: readonly Mission[] = [
     ],
   },
   {
+    id: "forge-09-remote-check",
+    realmId: "forge-of-origin",
+    order: 12,
+    title: "하늘다리 점검",
+    fantasyTitle: "기원의 대장간 9.5장 — 「origin의 주소」",
+    summary: "push 전에 origin remote가 올바르게 연결됐는지 확인한다.",
+    isBoss: false,
+    xpReward: 65,
+    steps: [
+      {
+        id: "intro",
+        kind: "dialogue",
+        ...CORY,
+        lines: [
+          "다리를 놓았다고 바로 달리면 안 돼.",
+          "전령은 날기 전에 목적지 주소를 한 번 더 읽어. 잘못된 곳으로 보내면 기록이 길을 잃거든.",
+          "`git remote -v`로 origin이 어디를 가리키는지 확인하자.",
+        ],
+      },
+      {
+        id: "challenge",
+        kind: "terminal",
+        briefing: "`git remote -v`로 origin 주소를 확인하라.",
+        hint: "`git remote -v`",
+        initialFs: repoSeed("/quest/git-quest", {}, { remotes: { origin: "https://github.com/Reasonofmoon/git-quest.git" } }),
+        initialCwd: "/quest/git-quest",
+        successWhen: { type: "lastOutputMatches", pattern: "origin\\s+https://github\\.com/Reasonofmoon/git-quest\\.git" },
+      },
+      {
+        id: "outro",
+        kind: "dialogue",
+        ...CORY,
+        lines: [
+          "주소가 맞아. 이제 첫 push가 하늘 아카이브의 올바른 서랍으로 날아갈 거야.",
+        ],
+      },
+    ],
+  },
+  {
     id: "forge-10",
     realmId: "forge-of-origin",
-    order: 11,
+    order: 13,
     title: "첫 푸시",
     fantasyTitle: "기원의 대장간 10장 — 「하늘로 보내라」",
     summary: "첫 커밋을 origin/main으로 push한다.",
@@ -263,7 +355,7 @@ export const FORGE_MISSIONS: readonly Mission[] = [
   {
     id: "forge-11",
     realmId: "forge-of-origin",
-    order: 12,
+    order: 14,
     title: "평행우주 가르기",
     fantasyTitle: "기원의 대장간 11장 — 「feature-bio」",
     summary: "새 브랜치를 만들고 그 브랜치로 이동한다.",
@@ -285,7 +377,7 @@ export const FORGE_MISSIONS: readonly Mission[] = [
   {
     id: "forge-12",
     realmId: "forge-of-origin",
-    order: 13,
+    order: 15,
     title: "두 우주의 합",
     fantasyTitle: "기원의 대장간 12장 — 「깨끗한 merge」",
     summary: "feature 브랜치를 main에 병합한다.",
@@ -302,7 +394,7 @@ export const FORGE_MISSIONS: readonly Mission[] = [
   {
     id: "forge-boss-2",
     realmId: "forge-of-origin",
-    order: 14,
+    order: 16,
     title: "그렘의 충돌 함정",
     fantasyTitle: "보스 2 — 「같은 줄의 두 운명」",
     summary: "merge conflict를 만들고 충돌 마커를 제거해 해결 커밋을 남긴다.",
@@ -325,7 +417,7 @@ export const FORGE_MISSIONS: readonly Mission[] = [
   {
     id: "forge-13",
     realmId: "forge-of-origin",
-    order: 15,
+    order: 17,
     title: "봉인의 두루마리",
     fantasyTitle: "기원의 대장간 13장 — 「.gitignore」",
     summary: "추적하면 안 되는 파일을 .gitignore로 제외한다.",
@@ -343,7 +435,7 @@ export const FORGE_MISSIONS: readonly Mission[] = [
   {
     id: "forge-14",
     realmId: "forge-of-origin",
-    order: 16,
+    order: 18,
     title: "풀 리퀘스트",
     fantasyTitle: "기원의 대장간 14장 — 「검토의 문」",
     summary: "GitHub CLI로 Pull Request를 만든다.",
@@ -365,7 +457,7 @@ export const FORGE_MISSIONS: readonly Mission[] = [
   {
     id: "forge-15",
     realmId: "forge-of-origin",
-    order: 17,
+    order: 19,
     title: "신탁의 봉인",
     fantasyTitle: "기원의 대장간 15장 — 「merge and delete」",
     summary: "Pull Request를 병합하고 사용한 브랜치를 정리한다.",
@@ -388,7 +480,7 @@ export const FORGE_MISSIONS: readonly Mission[] = [
   {
     id: "forge-boss-3",
     realmId: "forge-of-origin",
-    order: 18,
+    order: 20,
     title: "그렘의 최후",
     fantasyTitle: "최종 보스 — 「잘못된 화로」",
     summary: "홈 디렉토리에 잘못 만든 .git을 제거하고 올바른 폴더에서 다시 초기화한다.",

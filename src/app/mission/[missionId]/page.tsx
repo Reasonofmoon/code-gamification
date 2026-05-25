@@ -15,6 +15,7 @@ import type { RealmId } from "@/types/mission";
 import { TerminalPanel } from "@/components/mission/TerminalPanel";
 import { VimEditor } from "@/components/mission/VimEditor";
 import { CodeEditor } from "@/components/mission/CodeEditor";
+import { ReactLabPanel } from "@/components/mission/ReactLabPanel";
 import { DialoguePanel } from "@/components/mission/DialoguePanel";
 import { BossStageCutscene } from "@/components/mission/BossStageCutscene";
 import { ResultModal } from "@/components/game/ResultModal";
@@ -279,6 +280,8 @@ function MissionRunner({ mission }: { mission: Mission }) {
                 ? "주문"
                 : s.kind === "vim"
                 ? "검술"
+                : s.kind === "react-lab"
+                ? "웹룬"
                 : "룬어"}
             </span>
           ))}
@@ -301,7 +304,7 @@ function MissionRunner({ mission }: { mission: Mission }) {
       {currentStep.kind !== "dialogue" && (
         <section className="parchment p-5">
           <div className="text-xs uppercase tracking-widest text-muted">
-            Step {stepIndex + 1} / {totalSteps} — {currentStep.kind === "terminal" || currentStep.kind === "terminal-chain" ? "주문 시전" : currentStep.kind === "vim" ? "검술 수련" : "룬어 봉인"}
+            Step {stepIndex + 1} / {totalSteps} — {currentStep.kind === "terminal" || currentStep.kind === "terminal-chain" ? "주문 시전" : currentStep.kind === "vim" ? "검술 수련" : currentStep.kind === "react-lab" ? "React 실습" : "룬어 봉인"}
           </div>
           <p className="mt-2 text-foreground/90">{currentStep.briefing}</p>
           {currentStep.hint && (
@@ -344,6 +347,9 @@ function MissionRunner({ mission }: { mission: Mission }) {
         )}
         {currentStep.kind === "language" && (
           <CodeEditor step={currentStep} onSuccess={() => advance()} />
+        )}
+        {currentStep.kind === "react-lab" && (
+          <ReactLabPanel step={currentStep} onSuccess={() => advance()} />
         )}
       </section>
 

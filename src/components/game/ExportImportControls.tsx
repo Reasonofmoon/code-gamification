@@ -41,18 +41,21 @@ export function ExportImportControls() {
     <div className="flex flex-wrap items-center gap-2">
       <button
         onClick={handleExport}
+        aria-label="진행도 JSON 내보내기"
         className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-border hover:bg-surface-strong"
       >
         <Download className="size-3.5" /> 내보내기
       </button>
       <button
         onClick={() => fileRef.current?.click()}
+        aria-label="진행도 JSON 가져오기"
         className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-border hover:bg-surface-strong"
       >
         <Upload className="size-3.5" /> 가져오기
       </button>
       <button
         onClick={handleReset}
+        aria-label="저장된 진행도 초기화"
         className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-border hover:bg-danger/10 text-danger"
       >
         <RotateCcw className="size-3.5" /> 초기화
@@ -62,6 +65,7 @@ export function ExportImportControls() {
         type="file"
         accept="application/json"
         className="hidden"
+        aria-label="진행도 JSON 파일 선택"
         onChange={(e) => {
           const f = e.target.files?.[0];
           if (f) handleImport(f);

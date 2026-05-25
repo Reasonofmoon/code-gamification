@@ -45,6 +45,30 @@ body {
   min-height: 100vh;
 }
 
+:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 50;
+  transform: translateY(-150%);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface-strong);
+  color: var(--foreground);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  transition: transform 150ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 .parchment {
   background: linear-gradient(180deg, rgba(247, 185, 85, 0.05), rgba(247, 185, 85, 0));
   border: 1px solid var(--border);

@@ -199,9 +199,379 @@ export const LANGUAGE_MISSIONS: readonly Mission[] = [
   },
 
   {
-    id: "runescar-05",
+    id: "runescar-js-bridge-01",
     realmId: "runescar",
     order: 5,
+    title: "기록 배열의 룬 — filter · map",
+    fantasyTitle: "고대어 다리 1장 — 「많은 기록에서 필요한 이름만 고르라」",
+    summary: "JavaScript 배열과 객체를 함께 다뤄 통과한 영웅 이름만 추린다.",
+    isBoss: false,
+    xpReward: 115,
+    steps: [
+      {
+        id: "intro",
+        kind: "dialogue",
+        ...SEREN,
+        lines: [
+          "JavaScript 는 웹의 룬어입니다. 실제 웹 앱에서는 숫자 하나보다 *기록 묶음* 을 더 자주 다루지요.",
+          "기록 하나는 객체, 여러 기록은 배열이옵니다.",
+          "`filter` 는 조건에 맞는 기록만 남기고, `map` 은 남은 기록에서 필요한 모양만 꺼내는 체와 칼이옵니다.",
+          "기계 신탁의 탑에서 API 응답을 다루려면 이 감각이 반드시 필요하지요.",
+        ],
+      },
+      {
+        id: "challenge",
+        kind: "language",
+        briefing:
+          "`passed` 가 true 인 기록의 `name` 만 골라 `세렌,카이` 를 출력하라.",
+        hint:
+          "`records.filter((r) => r.passed).map((r) => r.name).join(',')` 를 사용하세요.",
+        languageId: "javascript",
+        starterCode: [
+          "const records = [",
+          "  { name: '엘라', passed: false },",
+          "  { name: '세렌', passed: true },",
+          "  { name: '카이', passed: true },",
+          "];",
+          "",
+          "// TODO: passed 가 true 인 name 만 골라 출력하라",
+        ].join("\n"),
+        testCases: [{ stdin: "", expectedStdout: "세렌,카이" }],
+      },
+      {
+        id: "outro",
+        kind: "dialogue",
+        ...SEREN,
+        lines: [
+          "기록 속에서 필요한 이름만 남았사옵니다.",
+          "웹 화면의 목록, 검색 결과, 미션 카드도 대부분 이런 배열 변환에서 시작하지요.",
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "runescar-js-bridge-02",
+    realmId: "runescar",
+    order: 6,
+    title: "응답 해독의 룬 — JSON.parse",
+    fantasyTitle: "고대어 다리 2장 — 「문자열 속 신탁을 깨우라」",
+    summary: "API가 돌려준 JSON 문자열을 객체로 바꿔 필요한 값을 읽는다.",
+    isBoss: false,
+    xpReward: 120,
+    steps: [
+      {
+        id: "intro",
+        kind: "dialogue",
+        ...SEREN,
+        lines: [
+          "원격 신탁은 대개 문자열로 응답합니다.",
+          "그 문자열이 JSON 형식이면, `JSON.parse` 로 JavaScript 객체로 깨울 수 있지요.",
+          "이걸 모르면 API를 불러도 값에 닿지 못합니다.",
+          "오늘은 작은 신탁 응답에서 이름과 점수를 읽어 보겠사옵니다.",
+        ],
+      },
+      {
+        id: "challenge",
+        kind: "language",
+        briefing:
+          "JSON 문자열을 파싱해 `Oracle:95` 를 출력하라.",
+        hint:
+          "`const data = JSON.parse(raw); console.log(data.name + ':' + data.score);`",
+        languageId: "javascript",
+        starterCode: [
+          "const raw = '{\"name\":\"Oracle\",\"score\":95}';",
+          "",
+          "// TODO: raw 를 객체로 바꾸고 name 과 score 를 출력하라",
+        ].join("\n"),
+        testCases: [{ stdin: "", expectedStdout: "Oracle:95" }],
+      },
+      {
+        id: "outro",
+        kind: "dialogue",
+        ...SEREN,
+        lines: [
+          "문자열이 객체로 깨어났사옵니다.",
+          "이제 `curl`, SDK, fetch 응답이 모두 같은 모양의 기록으로 보일 것이옵니다.",
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "runescar-js-bridge-03",
+    realmId: "runescar",
+    order: 7,
+    title: "기다림의 룬 — async · Promise",
+    fantasyTitle: "고대어 다리 3장 — 「늦게 오는 응답을 기다리라」",
+    summary: "Promise로 도착하는 값을 async 함수에서 기다린 뒤 출력한다.",
+    isBoss: false,
+    xpReward: 130,
+    steps: [
+      {
+        id: "intro",
+        kind: "dialogue",
+        ...SEREN,
+        lines: [
+          "웹의 응답은 즉시 오지 않습니다. API, 파일, AI 신탁은 모두 시간이 걸리지요.",
+          "JavaScript 는 이런 기다림을 `Promise` 로 표현하고, `async` 와 `await` 로 읽기 쉽게 다룹니다.",
+          "진짜 네트워크는 쓰지 않겠사옵니다. 대신 늦게 오는 값을 흉내 내며 형태를 익히지요.",
+        ],
+      },
+      {
+        id: "challenge",
+        kind: "language",
+        briefing:
+          "`askOracle()` 의 Promise 값을 기다려 `준비 완료` 를 출력하라.",
+        hint:
+          "`async function main() { const message = await askOracle(); console.log(message); } main();`",
+        languageId: "javascript",
+        starterCode: [
+          "function askOracle() {",
+          "  return Promise.resolve('준비 완료');",
+          "}",
+          "",
+          "// TODO: async main 함수를 만들고 askOracle() 결과를 await 하라",
+        ].join("\n"),
+        testCases: [{ stdin: "", expectedStdout: "준비 완료" }],
+      },
+      {
+        id: "outro",
+        kind: "dialogue",
+        ...SEREN,
+        lines: [
+          "기다림의 룬이 흐름을 끊지 않고 응답을 받아냈사옵니다.",
+          "이제 기계 신탁의 탑에서 SDK, 스트리밍, API 호출이 갑자기 낯설게 느껴지지 않을 것이옵니다.",
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "runescar-ui-bridge-01",
+    realmId: "runescar",
+    order: 8,
+    title: "컴포넌트의 룬 — props",
+    fantasyTitle: "웹룬 다리 1장 — 「재료를 받아 같은 틀로 그리라」",
+    summary: "React 컴포넌트의 props 감각을 순수 함수로 연습한다.",
+    isBoss: false,
+    xpReward: 120,
+    steps: [
+      {
+        id: "intro",
+        kind: "dialogue",
+        ...SEREN,
+        lines: [
+          "웹 화면은 작은 조각들의 합이옵니다. React 에서는 그 조각을 *컴포넌트* 라 부르지요.",
+          "컴포넌트는 바깥에서 받은 재료, 즉 `props` 로 다른 모습을 그립니다.",
+          "오늘은 실제 JSX 대신 순수 함수로 같은 감각을 익히겠사옵니다.",
+        ],
+      },
+      {
+        id: "challenge",
+        kind: "language",
+        briefing:
+          "`renderMissionCard(mission)` 함수가 잠긴 미션이면 `LOCKED: <title>`, 아니면 `OPEN: <title>` 을 반환하게 하라.",
+        hint:
+          "`return mission.locked ? 'LOCKED: ' + mission.title : 'OPEN: ' + mission.title;`",
+        languageId: "javascript",
+        starterCode: [
+          "function renderMissionCard(mission) {",
+          "  // TODO: mission.locked 에 따라 다른 문자열을 반환하라",
+          "}",
+          "",
+          "console.log(renderMissionCard({ title: '첫 룬', locked: false }));",
+          "console.log(renderMissionCard({ title: '보스 시험', locked: true }));",
+        ].join("\n"),
+        testCases: [
+          {
+            stdin: "",
+            expectedStdout: ["OPEN: 첫 룬", "LOCKED: 보스 시험"].join("\n"),
+          },
+        ],
+      },
+      {
+        id: "outro",
+        kind: "dialogue",
+        ...SEREN,
+        lines: [
+          "같은 함수가 다른 재료를 받아 다른 화면 조각을 만들었사옵니다.",
+          "이것이 React 컴포넌트의 첫 감각이지요.",
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "runescar-ui-bridge-02",
+    realmId: "runescar",
+    order: 9,
+    title: "상태 전이의 룬 — reducer",
+    fantasyTitle: "웹룬 다리 2장 — 「행동이 상태를 바꾼다」",
+    summary: "버튼 클릭이나 완료 이벤트가 UI 상태를 어떻게 바꾸는지 reducer로 연습한다.",
+    isBoss: false,
+    xpReward: 130,
+    steps: [
+      {
+        id: "intro",
+        kind: "dialogue",
+        ...SEREN,
+        lines: [
+          "웹 앱은 멈춘 그림이 아니라, 행동에 반응하는 지도입니다.",
+          "사용자가 클릭하면 상태가 바뀌고, 상태가 바뀌면 화면도 바뀌지요.",
+          "`reducer` 는 이전 상태와 행동을 받아 다음 상태를 만드는 작은 규칙서입니다.",
+        ],
+      },
+      {
+        id: "challenge",
+        kind: "language",
+        briefing:
+          "`progressReducer(state, action)` 을 완성해 `CLEAR_MISSION` 이 오면 cleared 를 1 늘리고 xp 를 action.xp 만큼 더하라.",
+        hint:
+          "`return { cleared: state.cleared + 1, xp: state.xp + action.xp };`",
+        languageId: "javascript",
+        starterCode: [
+          "function progressReducer(state, action) {",
+          "  if (action.type === 'CLEAR_MISSION') {",
+          "    // TODO: cleared 와 xp 를 갱신한 새 객체를 반환하라",
+          "  }",
+          "  return state;",
+          "}",
+          "",
+          "const next = progressReducer({ cleared: 2, xp: 140 }, { type: 'CLEAR_MISSION', xp: 60 });",
+          "console.log(`${next.cleared}/${next.xp}`);",
+        ].join("\n"),
+        testCases: [{ stdin: "", expectedStdout: "3/200" }],
+      },
+      {
+        id: "outro",
+        kind: "dialogue",
+        ...SEREN,
+        lines: [
+          "상태가 예측 가능한 규칙으로 바뀌었사옵니다.",
+          "이 감각은 React 의 `useState`, `useReducer`, Zustand 저장소를 이해하는 바탕이 됩니다.",
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "runescar-ui-bridge-03",
+    realmId: "runescar",
+    order: 10,
+    title: "입력 검증의 룬 — validation",
+    fantasyTitle: "웹룬 다리 3장 — 「문 앞에서 위험한 값을 돌려보내라」",
+    summary: "폼 입력을 검사하고 사용자에게 보여줄 오류 메시지를 만든다.",
+    isBoss: false,
+    xpReward: 130,
+    steps: [
+      {
+        id: "intro",
+        kind: "dialogue",
+        ...SEREN,
+        lines: [
+          "좋은 웹 앱은 사용자가 실수했을 때 조용히 무너지지 않습니다.",
+          "입력값을 검사하고, 무엇을 고쳐야 하는지 짧고 정확히 알려주지요.",
+          "서버 검증도 중요하지만, 화면 가까이의 검증은 학습자를 덜 헤매게 합니다.",
+        ],
+      },
+      {
+        id: "challenge",
+        kind: "language",
+        briefing:
+          "`validateName(name)` 이 빈 문자열이면 `이름을 입력하세요`, 2글자 미만이면 `이름이 너무 짧습니다`, 통과하면 `OK` 를 반환하게 하라.",
+        hint:
+          "`trim()` 으로 공백을 지우고, 빈 값 검사 후 길이를 검사하세요.",
+        languageId: "javascript",
+        starterCode: [
+          "function validateName(name) {",
+          "  const value = name.trim();",
+          "  // TODO: 빈 값, 짧은 값, 정상 값을 구분하라",
+          "}",
+          "",
+          "console.log(validateName('   '));",
+          "console.log(validateName('카'));",
+          "console.log(validateName('카이'));",
+        ].join("\n"),
+        testCases: [
+          {
+            stdin: "",
+            expectedStdout: ["이름을 입력하세요", "이름이 너무 짧습니다", "OK"].join("\n"),
+          },
+        ],
+      },
+      {
+        id: "outro",
+        kind: "dialogue",
+        ...SEREN,
+        lines: [
+          "문 앞에서 위험한 값이 멈췄사옵니다.",
+          "폼, 로그인, 저장, 코드 실행 요청은 모두 이런 검증을 필요로 하지요.",
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "runescar-ui-bridge-04",
+    realmId: "runescar",
+    order: 11,
+    title: "다음 미션 선택의 룬 — selector",
+    fantasyTitle: "웹룬 다리 4장 — 「상태에서 다음 길을 찾아라」",
+    summary: "미션 목록과 클리어 기록을 받아 다음 추천 미션을 고르는 selector를 만든다.",
+    isBoss: false,
+    xpReward: 140,
+    steps: [
+      {
+        id: "intro",
+        kind: "dialogue",
+        ...SEREN,
+        lines: [
+          "화면은 원본 데이터를 그대로 보여주지 않습니다.",
+          "대개 상태에서 필요한 조각을 골라, 지금 사용자에게 맞는 형태로 바꾸지요.",
+          "이런 함수를 selector 라고 부르면 이해가 쉽습니다.",
+          "CodeQuest 의 다음 추천 경로도 사실 이런 선택 로직에서 시작합니다.",
+        ],
+      },
+      {
+        id: "challenge",
+        kind: "language",
+        briefing:
+          "`selectNextMission(missions, clearedIds)` 가 아직 클리어하지 않은 첫 미션 title 을 반환하게 하라.",
+        hint:
+          "`missions.find((mission) => !clearedIds.includes(mission.id))` 를 사용하세요.",
+        languageId: "javascript",
+        starterCode: [
+          "function selectNextMission(missions, clearedIds) {",
+          "  // TODO: clearedIds 에 없는 첫 미션의 title 을 반환하라",
+          "}",
+          "",
+          "const missions = [",
+          "  { id: 'm1', title: '첫 룬' },",
+          "  { id: 'm2', title: '기록 배열' },",
+          "  { id: 'm3', title: '기다림의 룬' },",
+          "];",
+          "",
+          "console.log(selectNextMission(missions, ['m1']));",
+        ].join("\n"),
+        testCases: [{ stdin: "", expectedStdout: "기록 배열" }],
+      },
+      {
+        id: "outro",
+        kind: "dialogue",
+        ...SEREN,
+        lines: [
+          "상태에서 다음 길을 찾아냈사옵니다.",
+          "이제 단순 문법을 넘어, 실제 앱이 데이터를 화면으로 바꾸는 흐름을 보기 시작한 것입니다.",
+        ],
+      },
+    ],
+  },
+
+  {
+    id: "runescar-05",
+    realmId: "runescar",
+    order: 12,
     title: "리스트의 룬 — sum",
     fantasyTitle: "고대어 5장 — 「많음을 한 번에 묶다」",
     summary: "여러 룬을 한 묶음으로 — Python 리스트.",
@@ -243,7 +613,7 @@ export const LANGUAGE_MISSIONS: readonly Mission[] = [
   {
     id: "runescar-06",
     realmId: "runescar",
-    order: 6,
+    order: 13,
     title: "정의의 룬 — def",
     fantasyTitle: "고대어 6장 — 「룬을 새로 만들어 부르라」",
     summary: "Python 의 함수 — def 로 의식을 새긴다.",
@@ -291,7 +661,7 @@ export const LANGUAGE_MISSIONS: readonly Mission[] = [
   {
     id: "runescar-07",
     realmId: "runescar",
-    order: 7,
+    order: 14,
     title: "자유 챌린지 1 — FizzBuzz (JS)",
     fantasyTitle: "고대어 7장 — 「숫자에 깃든 두 정령」",
     summary: "조건과 반복을 엮어 두 정령을 부르는 의식.",
@@ -360,7 +730,7 @@ export const LANGUAGE_MISSIONS: readonly Mission[] = [
   {
     id: "runescar-08",
     realmId: "runescar",
-    order: 8,
+    order: 15,
     title: "자유 챌린지 2 — 룬의 거울 (Python)",
     fantasyTitle: "고대어 8장 — 「룬의 거울」",
     summary: "문자열을 뒤집는 가장 우아한 슬라이싱.",
@@ -406,7 +776,7 @@ export const LANGUAGE_MISSIONS: readonly Mission[] = [
   {
     id: "runescar-09",
     realmId: "runescar",
-    order: 9,
+    order: 16,
     title: "룬의 시험 — 공허의 제단",
     fantasyTitle: "🐉 보스 — 「아카식의 시험관 코덱스」",
     summary: "공허의 제단에서 시험관 코덱스가 자격을 검증한다.",

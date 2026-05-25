@@ -278,9 +278,174 @@ export const STORYBOOK_MISSIONS: readonly Mission[] = [
     ],
   },
   {
-    id: "storybook-06",
+    id: "storybook-bridge-01",
     realmId: "storybook",
     order: 6,
+    title: "루미의 잃어버린 장면 목록",
+    fantasyTitle: "코딩동화 다리 1장 — 「리스트는 순서 있는 기억」",
+    summary:
+      "세렌 루미가 리스트 인덱스로 시간책의 첫 장면과 마지막 장면을 다시 찾는다.",
+    isBoss: false,
+    xpReward: 95,
+    steps: [
+      {
+        id: "intro",
+        kind: "dialogue",
+        ...LUMI,
+        lines: [
+          "함수를 배웠으니 이제 여러 기억을 한 줄로 세워 볼 차례예요.",
+          "시간책은 장면을 순서대로 보관합니다. 파이썬에서는 이런 순서 있는 묶음을 `list` 라고 부르지요.",
+          "첫 장면은 `scenes[0]`, 마지막 장면은 `scenes[-1]` 처럼 꺼낼 수 있어요.",
+          "심화 문법으로 가기 전에, 먼저 리스트에서 원하는 장면을 안전하게 꺼내 보아요.",
+        ],
+      },
+      {
+        id: "challenge",
+        kind: "language",
+        briefing:
+          "리스트 `scenes` 의 첫 장면과 마지막 장면을 꺼내 `문열림 -> 축제` 를 출력하라.",
+        hint:
+          "`first = scenes[0]`, `last = scenes[-1]` 로 꺼낸 뒤 f-string 으로 출력하세요.",
+        languageId: "python",
+        starterCode: [
+          "scenes = [\"문열림\", \"별수집\", \"우체국\", \"축제\"]",
+          "",
+          "# TODO: 첫 장면과 마지막 장면을 꺼내라",
+          "first = \"\"",
+          "last = \"\"",
+          "",
+          "print(f\"{first} -> {last}\")",
+        ].join("\n"),
+        testCases: [{ stdin: "", expectedStdout: "문열림 -> 축제" }],
+      },
+      {
+        id: "outro",
+        kind: "dialogue",
+        ...LUMI,
+        lines: [
+          "시간책의 처음과 끝이 이어졌어요.",
+          "리스트를 읽는 법을 알면, 다음에는 많은 기록 중 필요한 것만 고르는 주문도 배울 수 있답니다.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "storybook-bridge-02",
+    realmId: "storybook",
+    order: 7,
+    title: "볼트의 연습 점수판",
+    fantasyTitle: "코딩동화 다리 2장 — 「조건과 반복을 함께 쓰기」",
+    summary:
+      "카엘 볼트가 반복문과 조건문을 조합해 통과한 연습 점수만 센다.",
+    isBoss: false,
+    xpReward: 105,
+    steps: [
+      {
+        id: "intro",
+        kind: "dialogue",
+        ...BOLT,
+        lines: [
+          "별을 더하는 법은 배웠지? 이번엔 수련 점수판을 보자.",
+          "모든 점수가 성공은 아니야. 70점 이상만 통과로 세어야 해.",
+          "반복문은 하나씩 살피고, 조건문은 통과 여부를 판단한다.",
+          "두 주문을 같이 쓰면 데이터 속에서 의미 있는 기록만 골라낼 수 있어.",
+        ],
+      },
+      {
+        id: "challenge",
+        kind: "language",
+        briefing:
+          "`scores = [40, 75, 90, 60, 100]` 에서 70점 이상만 세어 `통과: 3명` 을 출력하라.",
+        hint:
+          "`for score in scores:` 안에서 `if score >= 70:` 일 때 count 를 1 늘리세요.",
+        languageId: "python",
+        starterCode: [
+          "scores = [40, 75, 90, 60, 100]",
+          "count = 0",
+          "",
+          "# TODO: 70점 이상인 점수만 count 하라",
+          "",
+          "print(f\"통과: {count}명\")",
+        ].join("\n"),
+        testCases: [{ stdin: "", expectedStdout: "통과: 3명" }],
+      },
+      {
+        id: "outro",
+        kind: "dialogue",
+        ...BOLT,
+        lines: [
+          "좋아, 수련장을 통과한 친구만 정확히 셌어.",
+          "이 조합은 앞으로 로그 필터링, 추천 후보 고르기, 미션 평가에서 계속 다시 쓰일 거야.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "storybook-bridge-03",
+    realmId: "storybook",
+    order: 8,
+    title: "픽스의 작은 추천 함수",
+    fantasyTitle: "코딩동화 다리 3장 — 「함수는 선택을 반복 가능하게 만든다」",
+    summary:
+      "어린 카이 픽스가 딕셔너리와 조건문을 함수로 묶어 안전한 추천기를 만든다.",
+    isBoss: false,
+    xpReward: 115,
+    steps: [
+      {
+        id: "intro",
+        kind: "dialogue",
+        ...PIX,
+        lines: [
+          "우체국 자동 응답기처럼, 추천도 여러 번 부를 수 있으면 편해.",
+          "하지만 모르는 이름이 들어오면 주문이 깨지면 안 돼.",
+          "딕셔너리에서 값을 찾고, 없을 때 기본 답을 돌려주는 함수를 만들어 보자.",
+          "이 다리를 건너면 심화 문법도 갑자기 튀어나온 괴물이 아니라, 익숙한 조합처럼 보일 거야.",
+        ],
+      },
+      {
+        id: "challenge",
+        kind: "language",
+        briefing:
+          "`recommend(hero)` 함수를 완성해 `세렌: 책갈피`, 모르는 이름은 `기본 지도` 를 반환하라.",
+        hint:
+          "`return gifts.get(hero, '기본 지도')` 를 함수 안에 넣어 보세요.",
+        languageId: "python",
+        starterCode: [
+          "gifts = {",
+          "    \"아리아\": \"방패\",",
+          "    \"세렌\": \"책갈피\",",
+          "    \"카이\": \"나침반\",",
+          "}",
+          "",
+          "def recommend(hero):",
+          "    # TODO: hero 에 맞는 선물을 반환하고, 없으면 기본 지도를 반환하라",
+          "    return \"\"",
+          "",
+          "print(f\"세렌: {recommend('세렌')}\")",
+          "print(f\"글리치: {recommend('글리치')}\")",
+        ].join("\n"),
+        testCases: [
+          {
+            stdin: "",
+            expectedStdout: ["세렌: 책갈피", "글리치: 기본 지도"].join("\n"),
+          },
+        ],
+      },
+      {
+        id: "outro",
+        kind: "dialogue",
+        ...PIX,
+        lines: [
+          "모르는 이름도 안전하게 지나갔어.",
+          "이제 리스트, 조건, 반복, 딕셔너리, 함수를 함께 쓸 수 있어. 다음 장의 한 줄 주문도 사실 이 조합을 짧게 적는 법이야.",
+        ],
+      },
+    ],
+  },
+  {
+    id: "storybook-06",
+    realmId: "storybook",
+    order: 9,
     title: "시간 로그를 고르는 한 줄 주문",
     fantasyTitle: "심화 1장 — 「리스트 컴프리헨션은 시간책의 체」",
     summary:
@@ -335,7 +500,7 @@ export const STORYBOOK_MISSIONS: readonly Mission[] = [
   {
     id: "storybook-07",
     realmId: "storybook",
-    order: 7,
+    order: 10,
     title: "픽스의 흐르는 페이지",
     fantasyTitle: "심화 2장 — 「제너레이터는 한 번에 다 들지 않는다」",
     summary:
@@ -385,7 +550,7 @@ export const STORYBOOK_MISSIONS: readonly Mission[] = [
   {
     id: "storybook-08",
     realmId: "storybook",
-    order: 8,
+    order: 11,
     title: "녹스의 검사 인장",
     fantasyTitle: "심화 3장 — 「데코레이터는 함수에 망토를 입힌다」",
     summary:
@@ -441,7 +606,7 @@ export const STORYBOOK_MISSIONS: readonly Mission[] = [
   {
     id: "storybook-09",
     realmId: "storybook",
-    order: 9,
+    order: 12,
     title: "아리아의 안전한 서고",
     fantasyTitle: "심화 4장 — 「컨텍스트 매니저는 문을 닫아 준다」",
     summary:
@@ -494,7 +659,7 @@ export const STORYBOOK_MISSIONS: readonly Mission[] = [
   {
     id: "storybook-10",
     realmId: "storybook",
-    order: 10,
+    order: 13,
     title: "글리치와 미래 추천기",
     fantasyTitle: "🐉 심화 보스 — 「dataclass 로 운명을 정렬하라」",
     summary:
